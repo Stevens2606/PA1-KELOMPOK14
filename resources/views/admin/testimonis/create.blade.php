@@ -3,7 +3,13 @@
 
 <head>
     @include('admin.head')
-    <title>Edit Menu</title>
+    <title>Tambah Testimoni Baru</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.10.2/jsoneditor.min.css"
+        integrity="sha512-iR59xL+qf9Yf41lJw/bfo4M3XUqM4Lh940mgh8R0nEnU11KRA9hE99wtUdgxGNQJq6tsF95OGfWY/EdRQ+oGxw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.10.2/jsoneditor.min.js"
+        integrity="sha512-K5fzj2k+jXJg5+q+B2l20bC45Xugw909Jg3Xn/0k7ehUaJpT3jW6030g1i9xXGPO11s9U1dG8sU89uG+Eewg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body class="sb-nav-fixed">
@@ -47,17 +53,18 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Edit Menu</h1>
+                    <h1 class="mt-4">Tambah Testimoni Baru</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('admin.menus.index') }}">Daftar Menu</a></li>
-                        <li class="breadcrumb-item active">Edit Menu</li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.testimonials.index') }}">Daftar
+                                Testimoni</a></li>
+                        <li class="breadcrumb-item active">Tambah Testimoni</li>
                     </ol>
 
                     <div class="card mb-4">
                         <div class="card-header">
-                            <i class="fas fa-edit me-1"></i>
-                            Edit Menu
+                            <i class="fas fa-plus me-1"></i>
+                            Tambah Testimoni Baru
                         </div>
                         <div class="card-body">
                             @if ($errors->any())
@@ -70,60 +77,32 @@
                             </div>
                             @endif
 
-                            <form action="{{ route('admin.menus.update', $menu->id) }}" method="POST"
-                                enctype="multipart/form-data">
+                            <form action="{{ route('admin.testimonials.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-                                @method('PUT')
-
                                 <div class="mb-3">
-                                    <label for="nama" class="form-label">Nama:</label>
-                                    <input type="text" class="form-control" id="nama" name="nama"
-                                        value="{{ $menu->nama }}" required>
+                                    <label for="name" class="form-label">Nama</label>
+                                    <input type="text" class="form-control" id="name" name="name"
+                                        value="{{ old('name') }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="job" class="form-label">Pekerjaan</label>
+                                    <input type="text" class="form-control" id="job" name="job"
+                                        value="{{ old('job') }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="testimonial_editor" class="form-label">Testimoni (JSON Editor)</label>
+                                    <div id="testimonial_editor" style="height: 200px;"></div>
+                                    <input type="hidden" name="testimonial" id="testimonial_data">
+                                    <small class="form-text text-muted">Enter testimonial content as a JSON string.</small>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="image" class="form-label">Gambar</label>
+                                    <input class="form-control" type="file" id="image" name="image">
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="deskripsi" class="form-label">Deskripsi:</label>
-                                    <textarea class="form-control" id="deskripsi"
-                                        name="deskripsi">{{ $menu->deskripsi }}</textarea>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="harga" class="form-label">Harga:</label>
-                                    <input type="number" class="form-control" id="harga" name="harga" step="0.01"
-                                        value="{{ $menu->harga }}" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="kategori" class="form-label">Kategori:</label>
-                                    <select class="form-control" id="kategori" name="kategori" required>
-                                        <option value="FOOD" {{ $menu->kategori=='FOOD' ? 'selected' : '' }}>FOOD
-                                        </option>
-                                        <option value="DIMSUM" {{ $menu->kategori=='DIMSUM' ? 'selected' : '' }}>DIMSUM
-                                        </option>
-                                        <option value="SNACK" {{ $menu->kategori=='SNACK' ? 'selected' : '' }}>SNACK
-                                        </option>
-                                        <option value="DRINKS" {{ $menu->kategori=='DRINKS' ? 'selected' : '' }}>DRINKS
-                                        </option>
-                                    </select>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label>Gambar Saat Ini:</label><br>
-                                    @if($menu->gambar)
-                                    <img src="{{ asset('images/' . $menu->gambar) }}" alt="{{ $menu->nama }}"
-                                        width="100"><br><br>
-                                    @else
-                                    Tidak Ada Gambar
-                                    @endif
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="gambar" class="form-label">Upload Gambar Baru:</label>
-                                    <input type="file" class="form-control" id="gambar" name="gambar">
-                                </div>
-
-                                <button type="submit" class="btn btn-primary">Update</button>
-                                <a href="{{ route('admin.menus.index') }}" class="btn btn-secondary">Batal</a>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                <a href="{{ route('admin.testimonials.index') }}"
+                                    class="btn btn-secondary">Batal</a>
                             </form>
                         </div>
                     </div>
@@ -135,7 +114,7 @@
                         <div class="text-muted">Copyright © Your Website 2023</div>
                         <div>
                             <a href="#">Privacy Policy</a>
-                            ·
+                           
                             <a href="#">Terms & Conditions</a>
                         </div>
                     </div>
@@ -146,12 +125,42 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
+        crossorigin="anonymous"></script>
     <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
         crossorigin="anonymous"></script>
     <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
+
+    <script>
+        // Testimonial Editor
+        const testimonialContainer = document.getElementById("testimonial_editor");
+        const testimonialOptions = {
+            mode: 'code', // 'code' for text editing, 'tree' for visual editing
+            onChange: function() {
+                try {
+                    const json = testimonialEditor.get();
+                    document.getElementById('testimonial_data').value = JSON.stringify(json);
+                } catch (e) {
+                    // Handle invalid JSON
+                    console.error("Invalid JSON in Testimonial Editor", e);
+                    document.getElementById('testimonial_data').value = ''; // Clear the hidden input
+                }
+            }
+        };
+        const testimonialEditor = new JSONEditor(testimonialContainer, testimonialOptions);
+
+        // Set initial value if old('testimonial') exists
+        const initialTestimonialValue = `{!! old('testimonial', '""') !!}`;  // Default to empty string
+        try {
+            testimonialEditor.set(JSON.parse(initialTestimonialValue));
+            document.getElementById('testimonial_data').value = JSON.stringify(JSON.parse(initialTestimonialValue));
+        } catch (e) {
+            console.error("Error parsing initial Testimonial JSON", e);
+        }
+    </script>
+
 </body>
 
 </html>

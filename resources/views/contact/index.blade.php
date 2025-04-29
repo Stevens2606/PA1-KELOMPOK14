@@ -10,8 +10,8 @@
     <meta name="keywords" content="contact, cafe, reservation, inquiries">
 
     <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
+    <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,14 +21,14 @@
         rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
 
     <!-- Main CSS File -->
-    <link href="assets/css/main.css" rel="stylesheet">
+    <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
 
     <style>
         /* Style untuk mempercantik peta */
@@ -57,11 +57,12 @@
     <header id="header" class="header d-flex align-items-center sticky-top">
         <div class="container position-relative d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+            <img src="assets/img/logo.png" alt="">
                 <h1 class="sitename">Quality Time</h1>
                 <span>.</span>
             </a>
 
-           @include('layouts.navbar')
+            @include('layouts.navbar')
         </div>
     </header><!-- End Header -->
 
@@ -72,7 +73,7 @@
             <div class="container">
                 <div class="section-header">
                     <h2>Contact Us</h2>
-                    <p>Need help? <span>Contact us today!</span></p>
+                    <p>Need help? <span>Contact Us!</span></p>
                 </div>
 
                 <div class="row gy-4">
@@ -130,23 +131,39 @@
                             </div><!-- End Info Item -->
                         </div>
 
-                        <form action="forms/contact.php" method="post" class="php-email-form">
+                        <form action="{{ route('contact.store') }}" method="post" class="php-email-form">
+                            @csrf
                             <div class="row gy-3">
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+
+                                @if (session('success'))
+                                    <div class="alert alert-success">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
                                 <div class="col-md-6">
                                     <input type="text" name="name" class="form-control" placeholder="Your Name"
-                                        required>
+                                        value="{{ old('name') }}" required>
                                 </div>
                                 <div class="col-md-6">
                                     <input type="email" class="form-control" name="email" placeholder="Your Email"
-                                        required>
+                                        value="{{ old('email') }}" required>
                                 </div>
                                 <div class="col-12">
                                     <input type="text" class="form-control" name="subject" placeholder="Subject"
-                                        required>
+                                        value="{{ old('subject') }}" required>
                                 </div>
                                 <div class="col-12">
                                     <textarea class="form-control" name="message" rows="5" placeholder="Message"
-                                        required></textarea>
+                                        required>{{ old('message') }}</textarea>
                                 </div>
                                 <div class="col-12 text-center">
                                     <div class="loading">Loading</div>
@@ -162,56 +179,59 @@
         </section><!-- End Contact Section -->
     </main>
 
-    <!-- ======= Footer ======= -->
     <footer id="footer" class="footer dark-background">
-        <div class="container">
-            <div class="row gy-3">
-                <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-geo-alt icon"></i>
-                    <div class="address">
-                        <h4>Address</h4>
-                        <p>A108 Adam Street</p>
-                        <p>New York, NY 535022</p>
-                    </div>
-                </div>
 
-                <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-telephone icon"></i>
-                    <div>
-                        <h4>Contact</h4>
-                        <p>
-                            <strong>Phone:</strong> <span>+1 5589 55488 55</span><br>
-                            <strong>Email:</strong> <span>info@example.com</span><br>
-                        </p>
-                    </div>
-                </div>
+<div class="container">
+  <div class="row gy-3">
+    <div class="col-lg-3 col-md-6 d-flex">
+      <i class="bi bi-geo-alt icon"></i>
+      <div class="address">
+        <h4>Address</h4>
+        <p>Jl. Patuan Nagari No.49, Ps. Porsea, Kec. Porsea, Toba, Sumatera Utara 22384</p>
+        <p></p>
+      </div>
 
-                <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-clock icon"></i>
-                    <div>
-                        <h4>Opening Hours</h4>
-                        <p>
-                            <strong>Mon-Sat:</strong> <span>11AM - 23PM</span><br>
-                            <strong>Sunday</strong>: <span>Closed</span>
-                        </p>
-                    </div>
-                </div>
+    </div>
 
-                <div class="col-lg-3 col-md-6">
-                    <h4>Follow Us</h4>
-                    <div class="social-links d-flex">
-                        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-                    </div>
-                </div>
+    <div class="col-lg-3 col-md-6 d-flex">
+      <i class="bi bi-telephone icon"></i>
+      <div>
+        <h4>Contact</h4>
+        <p>
+          <strong>Phone:</strong> <span>+62 822-7378-2156</span><br>
+          <strong>Email:</strong> <span>qualitytimecafe45@gmail.com
+          </span><br>
+        </p>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 d-flex">
+      <i class="bi bi-clock icon"></i>
+      <div>
+        <h4>Opening Hours</h4>
+        <p>
+          <strong>Mon-Sun:</strong> <span>10 am - 11pm</span><br>
+          
+        </p>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+      <h4>Follow Us</h4>
+      <div class="social-links d-flex">
+        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+      </div>
+    </div>
+
             </div>
         </div>
 
         <!-- <div class="container copyright text-center mt-4">
             <p>© <span>Copyright</span> <strong class="px-1 sitename">Yummy</strong> <span>All Rights Reserved</span></p>
-           
+
         </div> -->
     </footer><!-- End Footer -->
 
@@ -223,15 +243,16 @@
     <div id="preloader"></div>
 
     <!-- Vendor JS Files -->
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
-    <script src="assets/vendor/aos/aos.js"></script>
-    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- Hapus atau modifikasi baris di bawah jika Anda tidak ingin menggunakan validasi sisi klien -->
+    <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+    <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
+    <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
+    <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
 
     <!-- Main JS File -->
-    <script src="assets/js/main.js"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
 
 </body>
 

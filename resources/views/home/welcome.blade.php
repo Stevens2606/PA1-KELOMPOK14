@@ -52,12 +52,12 @@
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.png" alt=""> -->
 
-         <img src="assets/img/logo.jpg" alt="">
+         <img src="assets/img/logo.png" alt="">
          <h1 class="sitename">Quality Time</h1>
         <span>.</span>
       </a>
 
-      @include('layouts.navbar')
+      @include('layouts.navbar')    
 
 
       <!-- <a class="btn-getstarted" href="/loginform  ">Login</a> -->

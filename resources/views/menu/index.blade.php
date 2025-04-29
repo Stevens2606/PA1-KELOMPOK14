@@ -85,6 +85,7 @@
     <header id="header" class="header d-flex align-items-center sticky-top">
         <div class="container position-relative d-flex align-items-center justify-content-between">
             <a href="{{ route('home') }}" class="logo d-flex align-items-center me-auto me-xl-0">
+                 <img src="assets/img/logo.png" alt="">
                 <h1 class="sitename">Quality Time</h1>
                 <span>.</span>
             </a>

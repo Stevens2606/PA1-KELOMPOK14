@@ -1,11 +1,11 @@
 <nav id="navmenu" class="navmenu">
     <ul>
-        <li><a href="{{ route('home') }}">Home</a></li>
-        <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">About</a></li>
-        <li><a href="{{ route('menu') }}" class="{{ request()->routeIs('menu') ? 'active' : '' }}">Menu</a></li>
-        <li><a href="{{ route('testimoni') }}" class="{{ request()->routeIs('testimoni') ? 'active' : '' }}">Testimoni</a></li>
-        <li><a href="{{ route('gallery') }}" class="{{ request()->routeIs('gallery') ? 'active' : '' }}">Gallery</a></li>
-        <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">Contact</a></li>
+    <li><a href="{{ route('home') }}">Home</a></li>
+<li><a href="{{ route('about') }}">About</a></li>
+<li><a href="{{ route('menu.public') }}">Menu</a></li>
+<li><a href="{{ route('testimoni.public') }}">Testimoni</a></li>
+<li><a href="{{ route('gallery') }}">Gallery</a></li>
+<li><a href="{{ route('contact.index') }}">Contact</a></li>
 
         @auth
             @if (Auth::user()->isAdmin())

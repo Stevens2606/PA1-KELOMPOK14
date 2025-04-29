@@ -18,7 +18,7 @@
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
                 <a href="/" class="h1">
-                    <img src="images/logo.png" alt="Logo" width="100px"><br>
+                    <img src="img/logo.png" alt="Logo" width="100px"><br>
                     <b>Quality Time</b>
                 </a>
             </div>
@@ -47,18 +47,18 @@
                     </div>
 
                     <div class="input-group mb-3">
-                        <input type="password" id="password" name="password" 
-                               class="form-control @error('password') is-invalid @enderror" 
-                               placeholder="Password" required>
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <i class="fas fa-eye" id="togglePassword"></i>
+                      <input type="password" id="password" name="password"
+                      class="form-control @error('password') is-invalid @enderror"
+                      placeholder="Password" required>
+                           <div class="input-group-append">
+                           <div class="input-group-text" id="togglePassword">
+                         <i class="fas fa-eye"></i>  <!-- HANYA SATU IKON MATA DI SINI -->
                             </div>
-                        </div>
-                        @error('password')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                     </div>
+                      @error('password')
+                      <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                    </div>
+                     </div>
 
                     <div class="row">
                         <div class="col-8">

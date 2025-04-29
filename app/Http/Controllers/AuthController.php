@@ -16,18 +16,18 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-     public function showLoginForm()
+    public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    // Register (Pendaftaran) - menyesuaikan jika diperlukan untuk form biasa
+    // Register (Pendaftaran)
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed', //Tambahkan confirmed untuk konfirmasi password
+            'password' => 'required|string|min:8|confirmed', // Tambahkan confirmed untuk konfirmasi password
         ]);
 
         if ($validator->fails()) {
@@ -56,18 +56,29 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            $user = Auth::user(); //Ambil user yang terotentikasi
+            $user = Auth::user();
 
             if ($user->isAdmin()) {
-                return redirect()->route('admin.dashboard'); // Redirect ke dashboard admin
+                return redirect()->route('admin.dashboard');
             } else {
-                return redirect()->route('welcome'); // Redirect ke halaman welcome
+                return redirect()->route('welcome');
             }
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->withInput(); // Kembalikan ke form login dengan error
+        // Autentikasi gagal
+        $user = User::where('email', $request->email)->first(); // Cek apakah email ada
+
+        if ($user) {
+            // Email ditemukan, tapi password salah
+            return back()->withErrors([
+                'password' => 'Password yang Anda masukkan salah.', // Pesan password salah
+            ])->withInput(['email' => $request->email]); // Kembalikan ke form dengan email diisi
+        } else {
+            // Email tidak ditemukan
+            return back()->withErrors([
+                'email' => 'Email ini tidak terdaftar.', // Pesan email tidak ditemukan
+            ])->withInput(); // Kembalikan ke form tanpa mengisi apapun
+        }
     }
 
     // Logout

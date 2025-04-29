@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('testimonis', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('email')->nullable(); // Opsional
-            $table->text('pesan');
-            $table->integer('rating');
+            $table->text('isi');
+            $table->integer('rating')->default(5); // Kolom rating, nilai default 5
             $table->timestamps();
         });
     }

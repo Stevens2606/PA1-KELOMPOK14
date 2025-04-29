@@ -70,7 +70,8 @@
                             </div>
                             @endif
 
-                            <form action="{{ route('admin.menus.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('admin.menus.store') }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="nama" class="form-label">Nama Menu</label>
@@ -89,8 +90,17 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="kategori" class="form-label">Kategori</label>
-                                    <input type="text" class="form-control" id="kategori" name="kategori"
-                                        value="{{ old('kategori') }}" required>
+                                    <select class="form-control" id="kategori" name="kategori" required>
+                                        <option value="" disabled selected>Pilih Kategori</option>
+                                        <option value="FOOD" {{ old('kategori') == 'FOOD' ? 'selected' : '' }}>FOOD
+                                        </option>
+                                        <option value="DIMSUM" {{ old('kategori') == 'DIMSUM' ? 'selected' : '' }}>DIMSUM
+                                        </option>
+                                        <option value="SNACKS" {{ old('kategori') == 'SNACKS' ? 'selected' : '' }}>SNACKS
+                                        </option>
+                                        <option value="DRINKS" {{ old('kategori') == 'DRINKS' ? 'selected' : '' }}>DRINKS
+                                        </option>
+                                    </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="gambar" class="form-label">Gambar</label>

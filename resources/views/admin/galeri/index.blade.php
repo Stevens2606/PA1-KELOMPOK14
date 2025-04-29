@@ -2,8 +2,18 @@
 <html lang="en">
 
 <head>
-    @include('admin.head')
-    <title>Daftar Menu</title>
+    <!-- @include('admin.head') -->
+    <title>Daftar Galeri</title>
+
+    <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Dashboard - SB Admin</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
 <body class="sb-nav-fixed">
@@ -47,16 +57,16 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Daftar Menu</h1>
+                    <h1 class="mt-4">Daftar Galeri</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Daftar Menu</li>
+                        <li class="breadcrumb-item active">Daftar Galeri</li>
                     </ol>
 
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Daftar Menu
+                            Daftar Galeri
                         </div>
                         <div class="card-body">
                             @if(session('success'))
@@ -65,58 +75,51 @@
                             </div>
                             @endif
 
-                            <a href="{{ route('admin.menus.create') }}" class="btn btn-primary mb-3">Tambah Menu Baru</a>
+                            <a href="{{ route('admin.galeri.create') }}" class="btn btn-primary mb-3">Tambah Galeri Baru</a>
 
                             <table id="datatablesSimple" class="table table-bordered">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Nama</th>
-                                        <th>Deskripsi</th>
-                                        <th>Harga</th>
-                                        <th>Kategori</th>
+                                        <th>Judul</th>
                                         <th>Gambar</th>
+                                        <th>Deskripsi</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Nama</th>
-                                        <th>Deskripsi</th>
-                                        <th>Harga</th>
-                                        <th>Kategori</th>
+                                        <th>Judul</th>
                                         <th>Gambar</th>
+                                        <th>Deskripsi</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    @foreach($menus as $menu)
+                                    @foreach($galeris as $galeri)
                                     <tr>
-                                        <td>{{ $menu->id }}</td>
-                                        <td>{{ $menu->nama }}</td>
-                                        <td>{{ $menu->deskripsi }}</td>
-                                        <td>Rp. {{ number_format($menu->harga, 0, ',', '.') }}</td>
-                                        <td>{{ $menu->kategori }}</td>
+                                        <td>{{ $galeri->id }}</td>
+                                        <td>{{ $galeri->judul }}</td>
                                         <td>
-                                            @if($menu->gambar)
-                                            <img src="{{ asset('images/' . $menu->gambar) }}" alt="{{ $menu->nama }}"
-                                                width="50">
+                                            @if($galeri->gambar)
+                                            <img src="{{ asset('storage/galeri/' . $galeri->gambar) }}" alt="{{ $galeri->judul }}" width="50">
                                             @else
                                             Tidak Ada Gambar
                                             @endif
                                         </td>
+                                        <td>{{ $galeri->deskripsi }}</td>
                                         <td>
-                                            <a href="{{ route('admin.menus.show', $menu->id) }}"
+                                            <a href="{{ route('admin.galeri.show', $galeri->id) }}"
                                                 class="btn btn-info btn-sm">Lihat</a>
-                                            <a href="{{ route('admin.menus.edit', $menu->id) }}"
+                                            <a href="{{ route('admin.galeri.edit', $galeri->id) }}"
                                                 class="btn btn-warning btn-sm">Edit</a>
-                                            <form action="{{ route('admin.menus.destroy', $menu->id) }}" method="POST"
+                                            <form action="{{ route('admin.galeri.destroy', $galeri->id) }}" method="POST"
                                                 style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus menu ini?')">Hapus</button>
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus galeri ini?')">Hapus</button>
                                             </form>
                                         </td>
                                     </tr>

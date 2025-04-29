@@ -1,88 +1,123 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\MenuController; // Tambahkan import untuk MenuController
-use Illuminate\Http\Request;
-
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\TestimoniController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\AboutController; // Import AboutController
+use App\Http\Controllers\GaleriController;  // Import GaleriController
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
 */
 
 // **Halaman Statis**
 Route::get('/', function () {
     return view('home.welcome');
-})->name('home'); // Route untuk halaman utama
+})->name('home');
 
-Route::get('/about', function () {
-    return view('about.index');
-})->name('about'); // Route untuk halaman about
+// Route::get('/about', function () {  // Hapus atau komentari yang ini
+//     return view('about.index');
+// })->name('about');
 
-//Route::get('/menu', function () { //Route ini ditimpa karena menggunakan MenuController
-//    return view('menu.index');
-//})->name('menu'); // Route untuk halaman menu
-
-Route::get('/testimoni', function () {
-    return view('testimoni.index');
-})->name('testimoni'); // Route untuk halaman testimoni
+Route::get('/about', [AboutController::class, 'showAboutPage'])->name('about');  // Tambahkan ini
 
 Route::get('/gallery', function () {
     return view('gallery.index');
-})->name('gallery'); // Route untuk halaman gallery
+})->name('gallery');
 
-Route::get('/contact', function () {
-    return view('contact.index');
-})->name('contact'); // Route untuk halaman contact
+Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
-// **Autentikasi (AuthController)**
+Route::get('/galeri', [GaleriController::class, 'showPublic'])->name('galeri.showPublic');
+
+// **Autentikasi**
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.post'); // route bernama register.post
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post'); //route bernama login.post
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// **Rute yang Membutuhkan Autentikasi (Middleware 'auth')**
+// **Rute yang Membutuhkan Autentikasi**
 Route::middleware(['auth'])->group(function () {
     Route::get('/welcome', function () {
-        return view('home.welcome'); // halaman welcome
+        return view('home.welcome');
     })->name('welcome');
 
     Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
 });
 
-// **Rute untuk Admin (Middleware 'auth' dan 'isAdmin')**
-Route::middleware(['auth', 'isAdmin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard'); // Halaman dashboard admin
+// **Public Routes for Menu and Testimonials**
+Route::get('/menu', [MenuController::class, 'showPublic'])->name('menu.public');
+Route::get('/menu/{menu}', [MenuController::class, 'show'])->name('menus.detail_public');
+
+// **Testimoni Routes (Public)**
+Route::get('/testimoniPublic', [TestimoniController::class, 'showPublic'])->name('testimoni.public'); // Menampilkan daftar testimoni dan formulir
+Route::post('/testimoni', [TestimoniController::class, 'store'])->name('testimoni.store'); // Menyimpan testimoni baru
+
+// Route::get('/testimoni/create', [TestimoniController::class, 'create'])->name('testimoni.create'); // Hapus ini, karena formulir ada di halaman index
+
+// **Rute untuk Admin**
+Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
     })->name('admin.dashboard');
 
-    Route::get('/pegawai', function () {
-        return view('pegawai.index');
-    })->name('pegawai'); // Route untuk halaman pegawai (hanya admin)
+    // **CRUD Menu Routes**
+    Route::resource('menus', MenuController::class)->names([
+        'index' => 'admin.menus.index',
+        'create' => 'admin.menus.create',
+        'store' => 'admin.menus.store',
+        'show' => 'admin.menus.show',
+        'edit' => 'admin.menus.edit',
+        'update' => 'admin.menus.update',
+        'destroy' => 'admin.menus.destroy',
+    ]);
 
+    // **CRUD Testimoni Routes**
+    Route::resource('testimoni', TestimoniController::class)->names([
+        'index' => 'admin.testimoni.index',
+        'create' => 'admin.testimoni.create',
+        'store' => 'admin.testimoni.store',
+        'show' => 'admin.testimoni.show',
+        'edit' => 'admin.testimoni.edit',
+        'update' => 'admin.testimoni.update',
+        'destroy' => 'admin.testimoni.destroy',
+    ]);
 
-    // **CRUD Menu Routes (Admin Only)**
-    Route::get('/admin/menus', [MenuController::class, 'index'])->name('admin.menus.index');           // Daftar menu
-    Route::get('/admin/menus/create', [MenuController::class, 'create'])->name('admin.menus.create');    // Form tambah menu
-    Route::post('/admin/menus', [MenuController::class, 'store'])->name('admin.menus.store');           // Simpan menu baru
-    Route::get('/admin/menus/{menu}', [MenuController::class, 'show'])->name('admin.menus.show');            // Detail menu
-    Route::get('/admin/menus/{menu}/edit', [MenuController::class, 'edit'])->name('admin.menus.edit');       // Form edit menu
-    Route::put('/admin/menus/{menu}', [MenuController::class, 'update'])->name('admin.menus.update');         // Update menu (PUT)
-    Route::delete('/admin/menus/{menu}', [MenuController::class, 'destroy'])->name('admin.menus.destroy');     // Hapus menu
+    // **CRUD Contact Messages**
+    Route::get('/contact-messages', [ContactController::class, 'indexAdmin'])->name('admin.contact_messages.index');
+    Route::get('/contact-messages/{contactMessage}', [ContactController::class, 'showAdmin'])->name('admin.contact_messages.show');
+    Route::delete('/admin/contact-messages/{contactMessage}', [ContactController::class, 'destroy'])->name('admin.contact_messages.destroy');
+
+    // **CRUD About Routes**
+    Route::resource('abouts', AboutController::class)->names([
+        'index' => 'admin.abouts.index',
+        'create' => 'admin.abouts.create',
+        'store' => 'admin.abouts.store',
+        'show' => 'admin.abouts.show',
+        'edit' => 'admin.abouts.edit',
+        'update' => 'admin.abouts.update',
+        'destroy' => 'admin.abouts.destroy',
+    ]);
+
+    // **CRUD Galeri Routes (Admin)**
+    Route::prefix('galeri')->group(function () {
+        Route::get('/', [GaleriController::class, 'index'])->name('admin.galeri.index');
+        Route::get('/create', [GaleriController::class, 'create'])->name('admin.galeri.create');
+        Route::post('/', [GaleriController::class, 'store'])->name('admin.galeri.store');
+        Route::get('/{galeri}', [GaleriController::class, 'show'])->name('admin.galeri.show');
+        Route::get('/{galeri}/edit', [GaleriController::class, 'edit'])->name('admin.galeri.edit');
+        Route::put('/{galeri}', [GaleriController::class, 'update'])->name('admin.galeri.update');
+        Route::delete('/{galeri}', [GaleriController::class, 'destroy'])->name('admin.galeri.destroy');
+    });
+
 });
 
-// **Public Menu Route (Accessible to All)**
-Route::get('/menu', [MenuController::class, 'showPublic'])->name('menu'); // Daftar menu untuk publik
-Route::get('/menu/{menu}', [MenuController::class, 'show'])->name('menus.detail_public');  //Detail menu untuk public, ganti 'show' dengan method yang sesuai
+// **Public Route for Galeri**
+Route::get('/galeri/{galeri}', [GaleriController::class, 'showPublic'])->name('galeri.showPublic');
