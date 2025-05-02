@@ -34,7 +34,7 @@
                 <form action="/login" method="POST">
                     @csrf
                     <div class="input-group mb-3">
-                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" 
+                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
                                placeholder="Email" required autofocus>
                         <div class="input-group-append">
                             <div class="input-group-text">
@@ -63,7 +63,7 @@
                     <div class="row">
                         <div class="col-8">
                             <div class="icheck-primary">
-                                <input type="checkbox" id="remember">
+                                <input type="checkbox" id="remember" name="remember">
                                 <label for="remember">
                                     Ingat Saya
                                 </label>
@@ -88,17 +88,46 @@
     <script src="/assets/dist/js/adminlte.min.js"></script>
 
     <script>
-        document.getElementById('togglePassword').addEventListener('click', function () {
-            const password = document.getElementById('password');
-            if (password.type === 'password') {
-                password.type = 'text';
-                this.classList.add('fa-eye-slash');
-            } else {
-                password.type = 'password';
-                this.classList.remove('fa-eye-slash');
-            }
-        });
-    </script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var popoverBtn = document.getElementById("popoverBtn");
+
+    var popover = new bootstrap.Popover(popoverBtn, {
+      title: "Gabung",
+      content: `<div style="text-align: center;">
+                        <button onclick="window.location.href='/loginform'" class="btn btn-primary btn-sm mb-2">Login</button>
+                        <br>
+                        <button onclick="window.location.href='/registerform'" class="btn btn-success btn-sm">Register</button>
+                      </div>`,
+      html: true,
+      placement: "bottom",
+    });
+
+    // Agar popover bisa ditutup saat klik di luar area popover
+    document.addEventListener("click", function (event) {
+      if (!popoverBtn.contains(event.target)) {
+        popover.hide();
+      }
+    });
+  });
+
+    function order(menuName, quantityId) {
+      // Periksa apakah pengguna sudah login
+      @if (Auth::check())
+        var quantity = document.getElementById(quantityId).value;
+        var phoneNumber = '6285358599959';
+        var message = encodeURIComponent(
+          "Halo Quality Time,\n\nSaya ingin memesan:\n " + quantity + " " + menuName + "\n\nMohon info selanjutnya. Terima kasih."
+        );
+        var whatsappURL = "https://wa.me/" + phoneNumber + "?text=" + message;
+        window.open(whatsappURL, '_blank');
+      @else
+        // Jika belum login, langsung alihkan ke halaman login
+        window.location.href = "{{ route('loginform') }}"; // Menggunakan route name
+      @endif
+    }
+</script>
+
+    <!--   -->
 
 </body>
-</html> 
+</html>

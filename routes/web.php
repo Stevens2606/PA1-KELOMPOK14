@@ -5,8 +5,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\TestimoniController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\AboutController; // Import AboutController
-use App\Http\Controllers\GaleriController;  // Import GaleriController
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\GaleriController;
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\OrderController; // Import OrderController
 
 /*
 |--------------------------------------------------------------------------
@@ -19,17 +21,13 @@ Route::get('/', function () {
     return view('home.welcome');
 })->name('home');
 
-// Route::get('/about', function () {  // Hapus atau komentari yang ini
-//     return view('about.index');
-// })->name('about');
-
-Route::get('/about', [AboutController::class, 'showAboutPage'])->name('about');  // Tambahkan ini
+Route::get('/about', [AboutController::class, 'showAboutPage'])->name('about');
 
 Route::get('/gallery', function () {
     return view('gallery.index');
 })->name('gallery');
 
-Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+Route::get('/contact', [ContactController::class, 'showPublic'])->name('contact.index');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 Route::get('/galeri', [GaleriController::class, 'showPublic'])->name('galeri.showPublic');
@@ -50,17 +48,28 @@ Route::middleware(['auth'])->group(function () {
     })->name('welcome');
 
     Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+
+    // **Menu Route (Memerlukan Autentikasi)**
+    Route::get('/menu', [MenuController::class, 'showPublic'])->name('menu.public');
+    Route::get('/menu/{menu}', [MenuController::class, 'show'])->name('menus.detail_public');
+
+    // **Reservasi Route (Memerlukan Autentikasi)**
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
+    Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
+    Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
+    Route::get('/reservations/{reservation}', [ReservationController::class, 'show'])->name('reservations.show');
+    Route::get('/reservations/{reservation}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
+    Route::put('/reservations/{reservation}', [ReservationController::class, 'update'])->name('reservations.update');
+    Route::delete('/reservations/{reservation}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+
+    // **Orders Route (Memerlukan Autentikasi)**
+    Route::get('/orders', [OrderController::class, 'indexPublic'])->name('orders.index');
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 });
 
-// **Public Routes for Menu and Testimonials**
-Route::get('/menu', [MenuController::class, 'showPublic'])->name('menu.public');
-Route::get('/menu/{menu}', [MenuController::class, 'show'])->name('menus.detail_public');
-
 // **Testimoni Routes (Public)**
-Route::get('/testimoniPublic', [TestimoniController::class, 'showPublic'])->name('testimoni.public'); // Menampilkan daftar testimoni dan formulir
-Route::post('/testimoni', [TestimoniController::class, 'store'])->name('testimoni.store'); // Menyimpan testimoni baru
-
-// Route::get('/testimoni/create', [TestimoniController::class, 'create'])->name('testimoni.create'); // Hapus ini, karena formulir ada di halaman index
+Route::get('/testimoniPublic', [TestimoniController::class, 'showPublic'])->name('testimoni.public');
+Route::post('/testimoni', [TestimoniController::class, 'store'])->name('testimoni.store');
 
 // **Rute untuk Admin**
 Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
@@ -69,54 +78,75 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     })->name('admin.dashboard');
 
     // **CRUD Menu Routes**
-    Route::resource('menus', MenuController::class)->names([
-        'index' => 'admin.menus.index',
-        'create' => 'admin.menus.create',
-        'store' => 'admin.menus.store',
-        'show' => 'admin.menus.show',
-        'edit' => 'admin.menus.edit',
-        'update' => 'admin.menus.update',
-        'destroy' => 'admin.menus.destroy',
-    ]);
+    Route::get('/menus', [MenuController::class, 'index'])->name('admin.menus.index');
+    Route::get('/menus/create', [MenuController::class, 'create'])->name('admin.menus.create');
+    Route::post('/menus', [MenuController::class, 'store'])->name('admin.menus.store');
+    Route::get('/menus/{menu}', [MenuController::class, 'show'])->name('admin.menus.show');
+    Route::get('/menus/{menu}/edit', [MenuController::class, 'edit'])->name('admin.menus.edit');
+    Route::put('/menus/{menu}', [MenuController::class, 'update'])->name('admin.menus.update');
+    Route::delete('/menus/{menu}', [MenuController::class, 'destroy'])->name('admin.menus.destroy');
 
     // **CRUD Testimoni Routes**
-    Route::resource('testimoni', TestimoniController::class)->names([
-        'index' => 'admin.testimoni.index',
-        'create' => 'admin.testimoni.create',
-        'store' => 'admin.testimoni.store',
-        'show' => 'admin.testimoni.show',
-        'edit' => 'admin.testimoni.edit',
-        'update' => 'admin.testimoni.update',
-        'destroy' => 'admin.testimoni.destroy',
-    ]);
+    Route::get('/testimoni', [TestimoniController::class, 'index'])->name('admin.testimoni.index');
+    Route::get('/testimoni/create', [TestimoniController::class, 'create'])->name('admin.testimoni.create');
+    Route::post('/testimoni', [TestimoniController::class, 'store'])->name('admin.testimoni.store');
+    Route::get('/testimoni/{testimoni}', [TestimoniController::class, 'show'])->name('admin.testimoni.show');
+    Route::get('/testimoni/{testimoni}/edit', [TestimoniController::class, 'edit'])->name('admin.testimoni.edit');
+    Route::put('/testimoni/{testimoni}', [TestimoniController::class, 'update'])->name('admin.testimoni.update');
+    Route::delete('/testimoni/{testimoni}', [TestimoniController::class, 'destroy'])->name('admin.testimoni.destroy');
 
     // **CRUD Contact Messages**
     Route::get('/contact-messages', [ContactController::class, 'indexAdmin'])->name('admin.contact_messages.index');
     Route::get('/contact-messages/{contactMessage}', [ContactController::class, 'showAdmin'])->name('admin.contact_messages.show');
-    Route::delete('/admin/contact-messages/{contactMessage}', [ContactController::class, 'destroy'])->name('admin.contact_messages.destroy');
+    Route::delete('/contact-messages/{contactMessage}', [ContactController::class, 'destroy'])->name('admin.contact_messages.destroy');
 
     // **CRUD About Routes**
-    Route::resource('abouts', AboutController::class)->names([
-        'index' => 'admin.abouts.index',
-        'create' => 'admin.abouts.create',
-        'store' => 'admin.abouts.store',
-        'show' => 'admin.abouts.show',
-        'edit' => 'admin.abouts.edit',
-        'update' => 'admin.abouts.update',
-        'destroy' => 'admin.abouts.destroy',
-    ]);
+    Route::get('/abouts', [AboutController::class, 'index'])->name('admin.abouts.index');
+    Route::get('/abouts/create', [AboutController::class, 'create'])->name('admin.abouts.create');
+    Route::post('/abouts', [AboutController::class, 'store'])->name('admin.abouts.store');
+    Route::get('/abouts/{about}', [AboutController::class, 'show'])->name('admin.abouts.show');
+    Route::get('/abouts/{about}/edit', [AboutController::class, 'edit'])->name('admin.abouts.edit');
+    Route::put('/abouts/{about}', [AboutController::class, 'update'])->name('admin.abouts.update');
+    Route::delete('/abouts/{about}', [AboutController::class, 'destroy'])->name('admin.abouts.destroy');
 
     // **CRUD Galeri Routes (Admin)**
-    Route::prefix('galeri')->group(function () {
-        Route::get('/', [GaleriController::class, 'index'])->name('admin.galeri.index');
-        Route::get('/create', [GaleriController::class, 'create'])->name('admin.galeri.create');
-        Route::post('/', [GaleriController::class, 'store'])->name('admin.galeri.store');
-        Route::get('/{galeri}', [GaleriController::class, 'show'])->name('admin.galeri.show');
-        Route::get('/{galeri}/edit', [GaleriController::class, 'edit'])->name('admin.galeri.edit');
-        Route::put('/{galeri}', [GaleriController::class, 'update'])->name('admin.galeri.update');
-        Route::delete('/{galeri}', [GaleriController::class, 'destroy'])->name('admin.galeri.destroy');
-    });
+    Route::get('/galeri', [GaleriController::class, 'index'])->name('admin.galeri.index');
+    Route::get('/galeri/create', [GaleriController::class, 'create'])->name('admin.galeri.create');
+    Route::post('/galeri', [GaleriController::class, 'store'])->name('admin.galeri.store');
+    Route::get('/galeri/{galeri}', [GaleriController::class, 'show'])->name('admin.galeri.show');
+    Route::get('/galeri/{galeri}/edit', [GaleriController::class, 'edit'])->name('admin.galeri.edit');
+    Route::put('/galeri/{galeri}', [GaleriController::class, 'update'])->name('admin.galeri.update');
+    Route::delete('/galeri/{galeri}', [GaleriController::class, 'destroy'])->name('admin.galeri.destroy');
 
+    // **CRUD Contacts Routes**
+     Route::get('/contacts', [ContactController::class, 'index'])->name('admin.contacts.index');
+    Route::get('/contacts/create', [ContactController::class, 'create'])->name('admin.contacts.create');
+    Route::post('/contacts', [ContactController::class, 'store'])->name('admin.contacts.store');
+    Route::get('/contacts/{contact}', [ContactController::class, 'show'])->name('admin.contacts.show');
+    Route::get('/contacts/{contact}/edit', [ContactController::class, 'edit'])->name('admin.contacts.edit');
+    Route::put('/contacts/{contact}', [ContactController::class, 'update'])->name('admin.contacts.update');
+    Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('admin.contacts.destroy');
+
+
+   // **Orders Route (Admin)**
+   Route::get('/orders', [OrderController::class, 'index'])->name('admin.orders.index');
+   Route::get('/orders/create', [OrderController::class, 'create'])->name('admin.orders.create');
+   Route::get('/orders/{order}', [OrderController::class, 'show'])->name('admin.orders.show');
+   Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('admin.orders.edit');
+   Route::put('/orders/{order}', [OrderController::class, 'update'])->name('admin.orders.update');
+   Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('admin.orders.destroy');
+   Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
+
+    // **Reservasi Route (Admin)**
+    Route::get('/reservations', [ReservationController::class, 'indexAdmin'])->name('admin.reservations.index');
+    Route::get('/reservations/create', [ReservationController::class, 'create'])->name('admin.reservations.create');
+    Route::post('/reservations', [ReservationController::class, 'store'])->name('admin.reservations.store');
+    Route::get('/reservations/{reservation}', [ReservationController::class, 'show'])->name('admin.reservations.show');
+    Route::get('/reservations/{reservation}/edit', [ReservationController::class, 'edit'])->name('admin.reservations.edit');
+    Route::put('/reservations/{reservation}', [ReservationController::class, 'update'])->name('admin.reservations.update');
+    Route::delete('/reservations/{reservation}', [ReservationController::class, 'destroy'])->name('admin.reservations.destroy');
+    Route::post('reservations/{reservation}/confirm', [ReservationController::class, 'confirm'])->name('admin.reservations.confirm');
+    Route::post('reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('admin.reservations.cancel');
 });
 
 // **Public Route for Galeri**

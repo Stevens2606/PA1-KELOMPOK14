@@ -2,48 +2,92 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ContactMessage; // Import model
+use App\Models\Contact;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
-    public function store(Request $request)
+    public function showPublic()
     {
-        // Validasi data dari form
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'subject' => 'required|string|max:255',
-            'message' => 'required|string',
-        ]);
-
-        // Simpan data ke database
-        ContactMessage::create($validatedData);
-
-        // Kirim respon sukses (bisa diarahkan kembali ke halaman kontak atau menampilkan pesan)
-        return redirect()->route('contact.index')->with('success', 'Pesan Anda telah terkirim!');
+        $contacts = Contact::all(); // Ambil semua data kontak
+        return view('contact.index', compact('contacts')); // Kirim data ke view
     }
 
-    // Metode untuk menampilkan daftar pesan (khusus untuk admin)
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $messages = ContactMessage::orderBy('created_at', 'desc')->get(); // Ambil semua pesan, urutkan dari terbaru
-        return view('contact.index', compact('messages')); // Kirim ke view admin
+        $contacts = Contact::all(); // Ambil semua data kontak
+        return view('admin.contacts.index', compact('contacts')); // Kirim data ke view
     }
 
-    // Metode untuk menampilkan detail pesan (khusus untuk admin)
-    public function show(ContactMessage $contactMessage)
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
-        // Tandai pesan sebagai sudah dibaca
-        $contactMessage->update(['is_read' => true]);
-
-        return view('admin.contact_messages.show', compact('contactMessage'));
+        return view('admin.contacts.create');
     }
 
-    // (Opsional) Metode untuk menghapus pesan
-    public function destroy(ContactMessage $contactMessage)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
     {
-        $contactMessage->delete();
-        return redirect()->route('admin.contact_messages.index')->with('success', 'Pesan berhasil dihapus.');
+        $request->validate([
+            'phone_number' => 'required',
+            'email' => 'required|email',
+            'address_embed' => 'required',
+        ]);
+
+        Contact::create($request->all());
+
+        return redirect()->route('admin.contacts.index')
+                         ->with('success','Kontak berhasil ditambahkan.');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Contact $contact)
+    {
+        return view('admin.contacts.show', compact('contact'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Contact $contact)
+    {
+        return view('admin.contacts.edit', compact('contact'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Contact $contact)
+    {
+        $request->validate([
+            'phone_number' => 'required',
+            'email' => 'required|email',
+            'address_embed' => 'required',
+        ]);
+
+        $contact->update($request->all());
+
+        return redirect()->route('admin.contacts.index')
+                         ->with('success','Kontak berhasil diperbarui');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Contact $contact)
+    {
+        $contact->delete();
+
+        return redirect()->route('admin.contacts.index')
+                         ->with('success','Kontak berhasil dihapus');
     }
 }

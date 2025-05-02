@@ -59,9 +59,9 @@ class AuthController extends Controller
             $user = Auth::user();
 
             if ($user->isAdmin()) {
-                return redirect()->route('admin.dashboard');
+                return redirect()->intended(route('admin.dashboard'));
             } else {
-                return redirect()->route('welcome');
+                return redirect()->intended(route('home')); // Menggunakan intended()
             }
         }
 
@@ -126,4 +126,4 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
         ]);
     }
-}
+}           

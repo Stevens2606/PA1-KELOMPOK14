@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->nullable(); // Opsional
-            $table->string('password');
-            $table->boolean('is_admin')->default(false);
-            $table->timestamps();
+        Schema::table('orders', function (Blueprint $table) {
+            $table->decimal('price', 15, 2)->after('quantity'); // Sesuaikan posisi kolom jika perlu
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('testimonis');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->dropColumn('price');
+        });
     }
 };

@@ -48,6 +48,13 @@
             position: absolute;
             border: 0;
         }
+
+        /* Style untuk pesan error */
+        .error-message {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
     </style>
 </head>
 
@@ -129,50 +136,47 @@
                                     </div>
                                 </div>
                             </div><!-- End Info Item -->
+
+                            <form id="contactForm" action="{{ route('contact.store') }}" method="post" class="php-email-form">
+                                @csrf
+                                <div class="row gy-3">
+                                    <div class="col-md-6">
+                                        <input type="text" name="name" class="form-control" placeholder="Your Name"
+                                            value="{{ old('name') }}" required>
+                                        @error('name')
+                                            <div class="error-message">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="email" class="form-control" name="email" placeholder="Your Email"
+                                            value="{{ old('email') }}" required>
+                                        @error('email')
+                                            <div class="error-message">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" name="subject" placeholder="Subject"
+                                            value="{{ old('subject') }}" required>
+                                        @error('subject')
+                                            <div class="error-message">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-12">
+                                        <textarea class="form-control" name="message" rows="5" placeholder="Message"
+                                            required>{{ old('message') }}</textarea>
+                                        @error('message')
+                                            <div class="error-message">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <div class="loading">Loading</div>
+                                        <div class="error-message"></div>
+                                        <div class="sent-message">Your message has been sent. Thank you!</div>
+                                        <button type="submit">Send Message</button>
+                                    </div>
+                                </div>
+                            </form><!-- End Contact Form -->
                         </div>
-
-                        <form action="{{ route('contact.store') }}" method="post" class="php-email-form">
-                            @csrf
-                            <div class="row gy-3">
-                                @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
-
-                                @if (session('success'))
-                                    <div class="alert alert-success">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
-                                <div class="col-md-6">
-                                    <input type="text" name="name" class="form-control" placeholder="Your Name"
-                                        value="{{ old('name') }}" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="email" class="form-control" name="email" placeholder="Your Email"
-                                        value="{{ old('email') }}" required>
-                                </div>
-                                <div class="col-12">
-                                    <input type="text" class="form-control" name="subject" placeholder="Subject"
-                                        value="{{ old('subject') }}" required>
-                                </div>
-                                <div class="col-12">
-                                    <textarea class="form-control" name="message" rows="5" placeholder="Message"
-                                        required>{{ old('message') }}</textarea>
-                                </div>
-                                <div class="col-12 text-center">
-                                    <div class="loading">Loading</div>
-                                    <div class="error-message"></div>
-                                    <div class="sent-message">Your message has been sent. Thank you!</div>
-                                    <button type="submit">Send Message</button>
-                                </div>
-                            </div>
-                        </form><!-- End Contact Form -->
                     </div>
                 </div>
             </div>
@@ -253,6 +257,22 @@
 
     <!-- Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.getElementById('contactForm');
+
+        contactForm.addEventListener('submit', function(event) {
+            @guest
+                // Jika user belum login
+                event.preventDefault(); // Mencegah form dikirim
+                window.location.href = "{{ route('login') }}"; // Redirect ke halaman login
+            @else
+                // Jika user sudah login, biarkan form dikirim seperti biasa
+            @endguest
+        });
+    });
+    </script>
 
 </body>
 

@@ -2,17 +2,8 @@
 <html lang="en">
 
 <head>
-    <!-- @include('admin.head') -->
-    <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Dashboard - SB Admin</title>
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-        <link href="css/styles.css" rel="stylesheet" />
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <title>Tambah Menu Baru</title>
+    @include('admin.head')
+    <title>Edit Reservasi</title>
 </head>
 
 <body class="sb-nav-fixed">
@@ -56,17 +47,17 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Tambah Menu Baru</h1>
+                    <h1 class="mt-4">Edit Reservasi</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('admin.menus.index') }}">Daftar Menu</a></li>
-                        <li class="breadcrumb-item active">Tambah Menu</li>
+                        <li class="breadcrumb-item"><a href="{{ route('reservations.index') }}">Daftar Reservasi</a></li>
+                        <li class="breadcrumb-item active">Edit Reservasi</li>
                     </ol>
 
                     <div class="card mb-4">
                         <div class="card-header">
-                            <i class="fas fa-plus me-1"></i>
-                            Tambah Menu Baru
+                            <i class="fas fa-edit me-1"></i>
+                            Edit Reservasi
                         </div>
                         <div class="card-body">
                             @if ($errors->any())
@@ -79,49 +70,53 @@
                             </div>
                             @endif
 
-                            <form action="{{ route('admin.menus.store') }}" method="POST"
-                                enctype="multipart/form-data">
+                            <form action="{{ route('reservations.update', $reservation->id) }}" method="POST">
                                 @csrf
+                                @method('PUT')
+
                                 <div class="mb-3">
-                                    <label for="nama" class="form-label">Nama Menu</label>
-                                    <input type="text" class="form-control" id="nama" name="nama"
-                                        value="{{ old('nama') }}" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="deskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="deskripsi" name="deskripsi"
-                                        rows="3">{{ old('deskripsi') }}</textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="harga" class="form-label">Harga</label>
-                                    <input type="number" class="form-control" id="harga" name="harga"
-                                        value="{{ old('harga') }}" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="kategori" class="form-label">Kategori</label>
-                                    <select class="form-control" id="kategori" name="kategori" required>
-                                        <option value="" disabled selected>Pilih Kategori</option>
-                                        <option value="FOOD" {{ old('kategori') == 'FOOD' ? 'selected' : '' }}>FOOD
-                                        </option>
-                                        <option value="DIMSUM" {{ old('kategori') == 'DIMSUM' ? 'selected' : '' }}>DIMSUM
-                                        </option>
-                                        <option value="SNACKS" {{ old('kategori') == 'SNACKS' ? 'selected' : '' }}>SNACKS
-                                        </option>
-                                        <option value="DRINKS" {{ old('kategori') == 'DRINKS' ? 'selected' : '' }}>DRINKS
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="gambar" class="form-label">Gambar</label>
-                                    <input class="form-control" type="file" id="gambar" name="gambar">
+                                    <label for="name" class="form-label">Nama:</label>
+                                    <input type="text" class="form-control" id="name" name="name"
+                                        value="{{ $reservation->name }}" required>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary">Simpan</button>
-                                <a href="{{ route('admin.menus.index') }}" class="btn btn-secondary">Batal</a>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email:</label>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        value="{{ $reservation->email }}" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Telepon:</label>
+                                    <input type="text" class="form-control" id="phone" name="phone"
+                                        value="{{ $reservation->phone }}" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="reservation_time" class="form-label">Waktu Reservasi:</label>
+                                    <input type="datetime-local" class="form-control" id="reservation_time"
+                                        name="reservation_time"
+                                        value="{{ $reservation->reservation_time->format('Y-m-d\TH:i') }}" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="number_of_guests" class="form-label">Jumlah Tamu:</label>
+                                    <input type="number" class="form-control" id="number_of_guests"
+                                        name="number_of_guests" value="{{ $reservation->number_of_guests }}" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="notes" class="form-label">Catatan:</label>
+                                    <textarea class="form-control" id="notes" name="notes"
+                                        rows="3">{{ $reservation->notes }}</textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <a href="{{ route('reservations.index') }}" class="btn btn-secondary">Batal</a>
                             </form>
                         </div>
                     </div>
-                </div>
+                  </div>
             </main>
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">

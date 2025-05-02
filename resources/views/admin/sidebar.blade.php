@@ -13,30 +13,50 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                     Daftar Menu
                 </a>
-                 <!-- Testimoni Link -->
-                <a class="nav-link" href="{{ route('admin.testimoni.index') }}">  <!--  Ganti 'testimonis' dengan rute yang benar jika berbeda -->
-                    <div class="sb-nav-link-icon"><i class="fas fa-comment"></i></div>  <!-- Gunakan ikon yang sesuai, ini hanya contoh -->
+
+                <!-- Testimoni Link -->
+                <a class="nav-link" href="{{ route('admin.testimoni.index') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-comment"></i></div>
                     Testimoni
                 </a>
-                 <!-- About Us Link -->
+
+                <!-- About Us Link -->
                 <a class="nav-link" href="{{ route('admin.abouts.index') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-info-circle"></i></div>
                     About Us
                 </a>
+
+                <!-- Gallery Link -->
                 <a class="nav-link" href="{{ route('admin.galeri.index') }}">
-                    <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                    <div class="sb-nav-link-icon"><i class="fas fa-images"></i></div>
                     Gallery
                 </a>
-            </div>
 
-            
+                <!-- Contact Link -->
+                <a class="nav-link" href="{{ route('admin.contacts.index') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-envelope"></i></div>
+                    Contact
+                </a>
+
+                <!-- Reservations Link -->
+                <a class="nav-link" href="{{ route('admin.reservations.index') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-calendar"></i></div>
+                    Reservations
+                </a>
+
+                <!-- Orders Link -->
+                <a class="nav-link" href="{{ route('admin.orders.index') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
+                    Orders
+                </a>
+            </div>
         </div>
         <div class="sb-sidenav-footer">
             <div class="small">Logged in as:</div>
             @auth
-                {{ Auth::user()->name }}
+            {{ Auth::user()->name }}
             @else
-                Pengguna tidak login
+            Pengguna tidak login
             @endauth
         </div>
     </nav>

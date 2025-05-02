@@ -2,9 +2,7 @@
 <html lang="en">
 
 <head>
-    @include('admin.head')
-    <title>Daftar Menu</title>
-    <meta charset="utf-8" />
+<meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
@@ -18,7 +16,7 @@
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+        <a class="navbar-brand ps-3" href="{{ route('admin.dashboard') }}">Quality Time</a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                 class="fas fa-bars"></i></button>
@@ -27,7 +25,8 @@
             <div class="input-group">
                 <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
                     aria-describedby="btnNavbarSearch" />
-                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
+                        class="fas fa-search"></i></button>
             </div>
         </form>
         <!-- Navbar-->
@@ -56,16 +55,16 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Daftar Menu</h1>
+                    <h1 class="mt-4">Daftar Order</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Daftar Menu</li>
+                        <li class="breadcrumb-item active">Daftar Order</li>
                     </ol>
 
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Daftar Menu
+                            Daftar Order
                         </div>
                         <div class="card-body">
                             @if(session('success'))
@@ -74,59 +73,62 @@
                             </div>
                             @endif
 
-                            <a href="{{ route('admin.menus.create') }}" class="btn btn-primary mb-3">Tambah Menu
-                                Baru</a>
-
-                            <table id="datatablesSimple" class="table table-bordered">
+                            <table id="datatablesSimple">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Nama</th>
-                                        <th>Deskripsi</th>
-                                        <th>Harga</th>
-                                        <th>Kategori</th>
-                                        <th>Gambar</th>
+                                        <th>User</th>
+                                        <th>Menu</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Total Harga</th>
+                                        <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Nama</th>
-                                        <th>Deskripsi</th>
-                                        <th>Harga</th>
-                                        <th>Kategori</th>
-                                        <th>Gambar</th>
+                                        <th>User</th>
+                                        <th>Menu</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Total Harga</th>
+                                        <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    @foreach($menus as $menu)
+                                    @foreach($orders as $order)
                                     <tr>
-                                        <td>{{ $menu->id }}</td>
-                                        <td>{{ $menu->nama }}</td>
-                                        <td>{{ $menu->deskripsi }}</td>
-                                        <td>Rp. {{ number_format($menu->harga, 0, ',', '.') }}</td>
-                                        <td>{{ $menu->kategori }}</td>
+                                        <td>{{ $order->id }}</td>
+                                        <td>{{ $order->user->name ?? 'Guest' }}</td> <!-- Asumsi ada relasi "user" -->
+                                        <td>{{ $order->menu->nama ?? 'Tidak Ada' }}</td> <!-- Asumsi ada relasi "menu" -->
+                                        <td>{{ $order->quantity }}</td>
+                                        <td>Rp {{ number_format($order->price, 0, ',', '.') }}</td>
+                                        <td>Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
+                                        <td>{{ $order->status }}</td>
                                         <td>
-                                            @if($menu->gambar)
-                                            <img src="{{ asset('storage/menus/' . $menu->gambar) }}"
-                                                alt="{{ $menu->nama }}" width="50">
-                                            @else
-                                            Tidak Ada Gambar
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('admin.menus.show', $menu->id) }}"
-                                                class="btn btn-info btn-sm">Lihat</a>
-                                            <a href="{{ route('admin.menus.edit', $menu->id) }}"
-                                                class="btn btn-warning btn-sm">Edit</a>
-                                            <form action="{{ route('admin.menus.destroy', $menu->id) }}" method="POST"
-                                                style="display: inline-block;">
+                                            <!-- Form untuk update status -->
+                                            <form action="{{ route('admin.orders.updateStatus', $order->id) }}" method="POST" style="display: inline-block;">
+                                                @csrf
+                                                @method('PUT')
+                                                <select name="status" class="form-control form-control-sm">
+                                                    <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                                    <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>Processing</option>
+                                                    <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>Shipped</option>
+                                                    <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>Delivered</option>
+                                                    <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                                </select>
+                                                <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                                            </form>
+
+                                            <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-info btn-sm">Lihat</a>
+                                            <a href="{{ route('admin.orders.edit', $order->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                            <form action="{{ route('admin.orders.destroy', $order->id) }}" method="POST" style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus menu ini?')">Hapus</button>
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus order ini?')">Hapus</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -140,7 +142,7 @@
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright © Your Website 2023</div>
+                        <div class="text-muted">Copyright © Quality Time 2024</div>
                         <div>
                             <a href="#">Privacy Policy</a>
                             ·
@@ -153,14 +155,14 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
-    <script src="{{ asset('js/scripts.js') }}"></script>
+    <script src="{{ asset('assets/js/scripts.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
         crossorigin="anonymous"></script>
     <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
         crossorigin="anonymous"></script>
-    <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
+    <script src="{{ asset('assets/js/datatables-simple-demo.js') }}"></script>
 </body>
 
 </html>

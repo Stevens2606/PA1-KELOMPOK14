@@ -150,7 +150,7 @@
               <h3>Tambahkan Testimoni Anda</h3>
               <p>Terima kasih atas kesediaan Anda memberikan testimoni. Testimoni Anda akan kami tinjau dan
                 tampilkan (jika sesuai).</p>
-              <form action="{{ route('testimoni.store') }}" method="POST">
+              <form action="{{ route('testimoni.store') }}" method="POST" id="testimoniForm">
                 @csrf
                 <div class="mb-3">
                   <label for="nama" class="form-label">Nama Anda <span class="text-danger">*</span></label>
@@ -208,6 +208,7 @@
             </div>
           </div>
         </div>
+         
       </div>
     </section><!-- End Testimonials Section -->
 
@@ -234,6 +235,22 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
+   <script>
+       document.addEventListener('DOMContentLoaded', function() {
+           const testimoniForm = document.getElementById('testimoniForm');
+
+           testimoniForm.addEventListener('submit', function(event) {
+               @guest
+                   // Jika user belum login, alihkan ke halaman login
+                   event.preventDefault(); // Mencegah form dikirim
+                   window.location.href = "{{ route('login') }}";
+               @else
+                   // Jika user sudah login, biarkan form dikirim seperti biasa
+               @endguest
+           });
+       });
+   </script>
 
 </body>
 
