@@ -149,15 +149,13 @@
                                     @csrf
                                     <input type="hidden" name="menu_id" value="{{ $menu->id }}">
                                     <input type="hidden" name="price" value="{{ $menu->harga }}">
-                                    <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                                    <input type="hidden" name="user_id" value="{{ Auth::id() ?? 1 }}">
                                       <div class="quantity-container">
                                         <label for="food_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
                                         <input type="number" class="quantity-input" value="1" min="1"
                                             id="food_{{ $menu->id }}" name="quantity">
                                     </div>
-                                    @if(Auth::check() && Auth::user()->role != 'admin')
                                     <button type="submit" class="order-button">Pesan</button>
-                                    @endif
                                 </form>
                             </div><!-- End Menu Item -->
                             @endif
@@ -187,15 +185,13 @@
                                     @csrf
                                     <input type="hidden" name="menu_id" value="{{ $menu->id }}">
                                     <input type="hidden" name="price" value="{{ $menu->harga }}">
-                                    <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                                     <input type="hidden" name="user_id" value="{{ Auth::id() ?? 1 }}">
                                     <div class="quantity-container">
                                         <label for="dimsum_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
                                         <input type="number" class="quantity-input" value="1" min="1"
                                             id="dimsum_{{ $menu->id }}" name="quantity">
                                     </div>
-                                    @if(Auth::check() && Auth::user()->role != 'admin')
                                     <button type="submit" class="order-button">Pesan</button>
-                                    @endif
                                 </form>
                             </div><!-- End Menu Item -->
                             @endif
@@ -226,15 +222,13 @@
                                     @csrf
                                     <input type="hidden" name="menu_id" value="{{ $menu->id }}">
                                     <input type="hidden" name="price" value="{{ $menu->harga }}">
-                                    <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                                     <input type="hidden" name="user_id" value="{{ Auth::id() ?? 1 }}">
                                     <div class="quantity-container">
                                         <label for="snack_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
                                         <input type="number" class="quantity-input" value="1" min="1"
                                             id="snack_{{ $menu->id }}" name="quantity">
                                     </div>
-                                    @if(Auth::check() && Auth::user()->role != 'admin')
                                     <button type="submit" class="order-button">Pesan</button>
-                                    @endif
                                 </form>
                             </div><!-- End Menu Item -->
                             @endif
@@ -264,15 +258,13 @@
                                     @csrf
                                     <input type="hidden" name="menu_id" value="{{ $menu->id }}">
                                     <input type="hidden" name="price" value="{{ $menu->harga }}">
-                                    <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                                     <input type="hidden" name="user_id" value="{{ Auth::id() ?? 1 }}">
                                       <div class="quantity-container">
                                         <label for="drinks_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
                                         <input type="number" class="quantity-input" value="1" min="1"
                                             id="drinks_{{ $menu->id }}" name="quantity">
                                     </div>
-                                    @if(Auth::check() && Auth::user()->role != 'admin')
-                                    <button type="submit" class="order-button">Pesan</button>
-                                    @endif
+                                   <button type="submit" class="order-button">Pesan</button>
                                 </form>
                             </div><!-- End Menu Item -->
                             @endif
@@ -355,4 +347,5 @@
                 <script src="{{ asset('assets/js/main.js') }}"></script>
 
 </body>
+
 </html>

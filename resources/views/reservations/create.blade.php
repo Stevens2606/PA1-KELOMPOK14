@@ -77,7 +77,7 @@
             background-color: #3e8e41;
         }
 
-        .btn-secondary {
+        .btn-secondary {    
             background-color: #555;
             border: none;
             color: white;
