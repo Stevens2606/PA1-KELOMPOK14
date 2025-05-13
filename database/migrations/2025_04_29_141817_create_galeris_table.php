@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('galeris', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
-            $table->string('gambar'); // Menyimpan nama file gambar
-            $table->text('deskripsi')->nullable(); // Deskripsi boleh kosong
+            $table->text('deskripsi')->nullable();
+            $table->string('gambar'); // Nama file gambar
             $table->timestamps();
         });
     }

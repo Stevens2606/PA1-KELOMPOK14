@@ -64,7 +64,7 @@
     <header id="header" class="header d-flex align-items-center sticky-top">
         <div class="container position-relative d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-            <img src="assets/img/logo.png" alt="">
+                <img src="assets/img/logo.png" alt="">
                 <h1 class="sitename">Quality Time</h1>
                 <span>.</span>
             </a>
@@ -95,51 +95,69 @@
                     </div><!-- End Google Maps -->
 
                     <div class="col-lg-6">
-                        <div class="row gy-4">
-                            <div class="col-md-6">
-                                <div class="info-item d-flex align-items-center">
-                                    <i class="icon bi bi-geo-alt flex-shrink-0"></i>
-                                    <div>
-                                        <h3>Address</h3>
-                                        <p>Jl.Patuan nagari no 45 Porsea </p>
-                                    </div>
-                                </div>
-                            </div><!-- End Info Item -->
+                        @if(count($contacts) > 0)
+                            @foreach($contacts as $contact)
+                                <div class="row gy-4">
+                                    <div class="col-md-6">
+                                        <div class="info-item d-flex align-items-center">
+                                            <i class="icon bi bi-geo-alt flex-shrink-0"></i>
+                                            <div>
+                                                <h3>Address</h3>
+                                                <p>{{ $contact->address }}</p>
+                                            </div>
+                                        </div>
+                                    </div><!-- End Info Item -->
 
-                            <div class="col-md-6">
-                                <div class="info-item d-flex align-items-center">
-                                    <i class="icon bi bi-telephone flex-shrink-0"></i>
-                                    <div>
-                                        <h3>Call Us</h3>
-                                        <p>0822 7378 2156 </p>
-                                    </div>
-                                </div>
-                            </div><!-- End Info Item -->
+                                    <div class="col-md-6">
+                                        <div class="info-item d-flex align-items-center">
+                                            <i class="icon bi bi-telephone flex-shrink-0"></i>
+                                            <div>
+                                                <h3>Call Us</h3>
+                                                <p>{{ $contact->phone_number }}</p>
+                                            </div>
+                                        </div>
+                                    </div><!-- End Info Item -->
 
-                            <div class="col-md-6">
-                                <div class="info-item d-flex align-items-center">
-                                    <i class="icon bi bi-envelope flex-shrink-0"></i>
-                                    <div>
-                                        <h3>Email Us</h3>
-                                        <p>qualitytimecafe45@gmail.com
-                                        </p>
-                                    </div>
-                                </div>
-                            </div><!-- End Info Item -->
+                                    <div class="col-md-6">
+                                        <div class="info-item d-flex align-items-center">
+                                            <i class="icon bi bi-envelope flex-shrink-0"></i>
+                                            <div>
+                                                <h3>Email Us</h3>
+                                                <p>{{ $contact->email }}</p>
+                                            </div>
+                                        </div>
+                                    </div><!-- End Info Item -->
 
-                            <div class="col-md-6">
-                                <div class="info-item d-flex align-items-center">
-                                    <i class="icon bi bi-clock flex-shrink-0"></i>
-                                    <div>
-                                        <h3>Opening Hours</h3>
-                                        <p><strong>Mon-Sun:</strong>10 am - 11pm<br><strong>
-                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="info-item d-flex align-items-center">
+                                            <i class="icon bi bi-clock flex-shrink-0"></i>
+                                            <div>
+                                                <h3>Opening Hours</h3>
+                                                <p><strong>Mon-Sun:</strong> {{ $contact->opening_hours }}</p>
+                                            </div>
+                                        </div>
+                                    </div><!-- End Info Item -->
                                 </div>
-                            </div><!-- End Info Item -->
+                            @endforeach
 
-                            <form id="contactForm" action="{{ route('contact.store') }}" method="post" class="php-email-form">
+                            <form id="contactForm" action="{{ route('contact.storePublic') }}" method="post" class="php-email-form">
                                 @csrf
                                 <div class="row gy-3">
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+
+                                    @if (session('success'))
+                                        <div class="alert alert-success">
+                                            {{ session('success') }}
+                                        </div>
+                                    @endif
                                     <div class="col-md-6">
                                         <input type="text" name="name" class="form-control" placeholder="Your Name"
                                             value="{{ old('name') }}" required>
@@ -176,7 +194,11 @@
                                     </div>
                                 </div>
                             </form><!-- End Contact Form -->
-                        </div>
+                        @else
+                            <div class="col-lg-6">
+                                <p>No contact information available.</p>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -185,57 +207,52 @@
 
     <footer id="footer" class="footer dark-background">
 
-<div class="container">
-  <div class="row gy-3">
-    <div class="col-lg-3 col-md-6 d-flex">
-      <i class="bi bi-geo-alt icon"></i>
-      <div class="address">
-        <h4>Address</h4>
-        <p>Jl. Patuan Nagari No.49, Ps. Porsea, Kec. Porsea, Toba, Sumatera Utara 22384</p>
-        <p></p>
-      </div>
+        <div class="container">
+            <div class="row gy-3">
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <i class="bi bi-geo-alt icon"></i>
+                    <div class="address">
+                        <h4>Address</h4>
+                        <p>Jl. Patuan Nagari No.49, Ps. Porsea, Kec. Porsea, Toba, Sumatera Utara 22384</p>
+                        <p></p>
+                    </div>
+                </div>
 
-    </div>
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <i class="bi bi-telephone icon"></i>
+                    <div>
+                        <h4>Contact</h4>
+                        <p>
+                            <strong>Phone:</strong> <span>+62 822-7378-2156</span><br>
+                            <strong>Email:</strong> <span>qualitytimecafe45@gmail.com</span><br>
+                        </p>
+                    </div>
+                </div>
 
-    <div class="col-lg-3 col-md-6 d-flex">
-      <i class="bi bi-telephone icon"></i>
-      <div>
-        <h4>Contact</h4>
-        <p>
-          <strong>Phone:</strong> <span>+62 822-7378-2156</span><br>
-          <strong>Email:</strong> <span>qualitytimecafe45@gmail.com
-          </span><br>
-        </p>
-      </div>
-    </div>
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <i class="bi bi-clock icon"></i>
+                    <div>
+                        <h4>Opening Hours</h4>
+                        <p>
+                            <strong>Mon-Sun:</strong> <span>10 am - 11 pm</span><br>
+                        </p>
+                    </div>
+                </div>
 
-    <div class="col-lg-3 col-md-6 d-flex">
-      <i class="bi bi-clock icon"></i>
-      <div>
-        <h4>Opening Hours</h4>
-        <p>
-          <strong>Mon-Sun:</strong> <span>10 am - 11pm</span><br>
-          
-        </p>
-      </div>
-    </div>
-
-    <div class="col-lg-3 col-md-6">
-      <h4>Follow Us</h4>
-      <div class="social-links d-flex">
-        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-      </div>
-    </div>
-
+                <div class="col-lg-3 col-md-6">
+                    <h4>Follow Us</h4>
+                    <div class="social-links d-flex">
+                        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- <div class="container copyright text-center mt-4">
             <p>© <span>Copyright</span> <strong class="px-1 sitename">Yummy</strong> <span>All Rights Reserved</span></p>
-
         </div> -->
     </footer><!-- End Footer -->
 
@@ -248,8 +265,6 @@
 
     <!-- Vendor JS Files -->
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <!-- Hapus atau modifikasi baris di bawah jika Anda tidak ingin menggunakan validasi sisi klien -->
-    <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
     <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
     <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
@@ -257,22 +272,6 @@
 
     <!-- Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const contactForm = document.getElementById('contactForm');
-
-        contactForm.addEventListener('submit', function(event) {
-            @guest
-                // Jika user belum login
-                event.preventDefault(); // Mencegah form dikirim
-                window.location.href = "{{ route('login') }}"; // Redirect ke halaman login
-            @else
-                // Jika user sudah login, biarkan form dikirim seperti biasa
-            @endguest
-        });
-    });
-    </script>
 
 </body>
 

@@ -4,67 +4,72 @@ namespace App\Http\Controllers;
 
 use App\Models\Galeri;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage; // Import Storage
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class GaleriController extends Controller
 {
-    // Fungsi untuk tampilan publik
-    public function showPublic()
-    {
-        $galeris = Galeri::all();
-        return view('galeri.show', compact('galeris'));
-    }
-
-    // Fungsi di bawah ini untuk admin
+    // Daftar Galeri (Admin)
     public function index()
     {
         $galeris = Galeri::all();
         return view('admin.galeri.index', compact('galeris'));
     }
 
+    // Form Tambah Galeri (Admin)
     public function create()
     {
         return view('admin.galeri.create');
     }
 
+    // Simpan Galeri Baru (Admin)
     public function store(Request $request)
     {
-        $request->validate([
-            'judul' => 'required',
+        $validator = Validator::make($request->all(), [
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
             'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'deskripsi' => 'nullable',
         ]);
 
-        $gambar = $request->file('gambar');
-        $namaGambar = time() . '.' . $gambar->getClientOriginalExtension();
-        $pathGambar = $gambar->storeAs('public/galeri', $namaGambar); // Simpan di storage/app/public/galeri
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $gambarPath = $request->file('gambar')->store('public/galeri');
 
         Galeri::create([
             'judul' => $request->judul,
-            'gambar' => $namaGambar, // Simpan hanya nama file
             'deskripsi' => $request->deskripsi,
+            'gambar' => str_replace('public/', '', $gambarPath),
         ]);
 
         return redirect()->route('admin.galeri.index')->with('success', 'Galeri berhasil ditambahkan.');
     }
 
+    // Tampilkan Detail Galeri (Admin)
     public function show(Galeri $galeri)
     {
         return view('admin.galeri.show', compact('galeri'));
     }
 
+    // Form Edit Galeri (Admin)
     public function edit(Galeri $galeri)
     {
         return view('admin.galeri.edit', compact('galeri'));
     }
 
+    // Update Galeri (Admin)
     public function update(Request $request, Galeri $galeri)
     {
-        $request->validate([
-            'judul' => 'required',
-            'gambar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'deskripsi' => 'nullable',
+        $validator = Validator::make($request->all(), [
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
 
         $data = [
             'judul' => $request->judul,
@@ -72,27 +77,31 @@ class GaleriController extends Controller
         ];
 
         if ($request->hasFile('gambar')) {
-            // Hapus gambar lama jika ada
-            Storage::delete('public/galeri/' . $galeri->gambar);
+            Storage::delete('public/' . $galeri->gambar);
 
-            $gambar = $request->file('gambar');
-            $namaGambar = time() . '.' . $gambar->getClientOriginalExtension();
-            $gambar->storeAs('public/galeri', $namaGambar);
-            $data['gambar'] = $namaGambar;
+            $gambarPath = $request->file('gambar')->store('public/galeri');
+            $data['gambar'] = str_replace('public/', '', $gambarPath);
         }
 
         $galeri->update($data);
 
-        return redirect()->route('admin.galeri.index')->with('success', 'Galeri berhasil diupdate.');
+        return redirect()->route('admin.galeri.index')->with('success', 'Galeri berhasil diperbarui.');
     }
 
+    // Hapus Galeri (Admin)
     public function destroy(Galeri $galeri)
     {
-        // Hapus gambar dari storage
-        Storage::delete('public/galeri/' . $galeri->gambar);
+        Storage::delete('public/' . $galeri->gambar);
 
         $galeri->delete();
 
         return redirect()->route('admin.galeri.index')->with('success', 'Galeri berhasil dihapus.');
+    }
+
+    // Tampilkan Galeri Publik
+    public function showPublic()
+    {
+        $galeris = Galeri::all();
+        return view('gallery.index', compact('galeris'));
     }
 }

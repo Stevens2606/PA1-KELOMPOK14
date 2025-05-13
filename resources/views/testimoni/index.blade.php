@@ -130,11 +130,11 @@
               <p>{{ $testimoni->isi }}</p>
               <div class="profile">
                 @if($testimoni->jenis_kelamin == 'laki-laki')
-                  <img src="{{ asset('assets/img/testimonials/male_avatar.png') }}" alt="Foto {{ $testimoni->nama }}">
+                <img src="{{ asset('assets/img/pria.png') }}" alt="Foto {{ $testimoni->nama }}">
                 @elseif($testimoni->jenis_kelamin == 'perempuan')
-                  <img src="{{ asset('assets/img/testimonials/female_avatar.png') }}" alt="Foto {{ $testimoni->nama }}">
+                <img src="{{ asset('assets/img/wanita.png') }}" alt="Foto {{ $testimoni->nama }}">
                 @else
-                  <img src="{{ asset('assets/img/testimonials/default_avatar.png') }}" alt="Foto {{ $testimoni->nama }}">
+                <img src="{{ asset('assets/img/testimonials/default_avatar.png') }}" alt="Foto {{ $testimoni->nama }}">
                 @endif
                 <h3 style="color: black;">{{ $testimoni->nama }}</h3>
               </div>
@@ -208,7 +208,7 @@
             </div>
           </div>
         </div>
-         
+
       </div>
     </section><!-- End Testimonials Section -->
 
@@ -236,21 +236,39 @@
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
 
-   <script>
-       document.addEventListener('DOMContentLoaded', function() {
-           const testimoniForm = document.getElementById('testimoniForm');
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const testimoniForm = document.getElementById('testimoniForm');
+      const jenisKelaminLaki = document.getElementById('laki-laki'); // ID radio button laki-laki
+      const jenisKelaminPerempuan = document.getElementById('perempuan'); // ID radio button perempuan
 
-           testimoniForm.addEventListener('submit', function(event) {
-               @guest
-                   // Jika user belum login, alihkan ke halaman login
-                   event.preventDefault(); // Mencegah form dikirim
-                   window.location.href = "{{ route('login') }}";
-               @else
-                   // Jika user sudah login, biarkan form dikirim seperti biasa
-               @endguest
-           });
-       });
-   </script>
+      // Fungsi untuk menangani submit form (jika diperlukan logika tambahan)
+      testimoniForm.addEventListener('submit', function(event) {
+        @guest
+        // Jika user belum login, alihkan ke halaman login
+        event.preventDefault(); // Mencegah form dikirim
+        window.location.href = "{{ route('login') }}";
+        @else
+        // Jika user sudah login, biarkan form dikirim seperti biasa
+        @endguest
+      });
+
+      // Fungsi untuk menangani perubahan radio button jenis kelamin
+
+      // Menambahkan event listener untuk radio button laki-laki
+      jenisKelaminLaki.addEventListener('change', function() {
+        // Tidak perlu mengubah gambar di sini karena gambar sudah ditentukan di backend (blade template)
+        // Kita hanya mengirimkan data jenis kelamin ke server
+        console.log("Jenis kelamin: Laki-laki dipilih");
+      });
+
+      // Menambahkan event listener untuk radio button perempuan
+      jenisKelaminPerempuan.addEventListener('change', function() {
+        // Sama seperti di atas, tidak perlu mengubah gambar
+        console.log("Jenis kelamin: Perempuan dipilih");
+      });
+    });
+  </script>
 
 </body>
 

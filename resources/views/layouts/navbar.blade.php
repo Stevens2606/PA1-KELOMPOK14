@@ -4,10 +4,11 @@
 <li><a href="{{ route('about') }}">About</a></li>
 <li><a href="{{ route('menu.public') }}">Menu</a></li>
 <li><a href="{{ route('testimoni.public') }}">Testimoni</a></li>
-<li><a href="{{ route('gallery') }}">Gallery</a></li>
+<li><a href="{{ route('galeri.showPublic') }}">Gallery</a></li>
 <li><a href="{{ route('contact.index') }}">Contact</a></li>
 <li><a href="{{ route('reservations.index') }}">Reservasi</a></li>
 <li><a href="{{ route('orders.index') }}">Order</a></li>
+<li><a href="{{ route('cart.index') }}">Cart</a></li>
 
         @auth
             @if (Auth::user()->isAdmin())

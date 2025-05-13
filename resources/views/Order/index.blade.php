@@ -1,19 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
     <title>Daftar Order Saya</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-
-    <!-- Favicons -->
+    <!-- Favicons, Fonts, Vendor CSS Files, Main CSS File (Pastikan semua link benar) -->
     <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
     <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
-
-    <!-- Fonts -->
+    <!--Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -29,53 +23,17 @@
 
     <!-- Main CSS File -->
     <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
-
     <style>
         /* Gaya tambahan yang diperlukan untuk order, disesuaikan agar serasi */
-    .order-list {
-        margin-top: 20px;
-    }
+        :root {
+            --primary-color: #3498db;
+            --primary-color-darker: #2980b9;
+            --light-gray: #f8f9fa;
+            --text-color: #333;
+            --dark-gray: #343a40;
+            /* Warna abu-abu gelap untuk latar belakang */
+        }
 
-    .order-item {
-        border: 1px solid #ddd;
-        padding: 10px;
-        margin-bottom: 15px;
-        /* background-color: #f9f9f9;  Hapus atau komentari baris ini */
-        color: #000000; /* Warna teks hitam */
-    }
-
-    .order-item h4 {
-        margin-top: 0;
-        color: #000000; /* Warna teks hitam */
-    }
-
-    .order-item p {
-        margin-bottom: 5px;
-        color: #000000; /* Warna teks hitam */
-    }
-
-    /* Atur teks section menjadi hitam*/
-    #orders {
-        color: #000000;
-    }
-
-    #orders .section-header h2,
-    #orders .section-header p {
-        color: #000000; /* Teks hitam pada judul */
-    }
-
-    /* Atur warna footer menjadi hitam */
-    #footer {
-        color: #000000; /* Teks hitam pada footer */
-    }
-
-    #footer h4,
-    #footer p,
-    #footer a {
-        color: #000000; /* Teks hitam pada footer */
-    }
-        
-        /* Gaya tambahan yang diperlukan untuk order, disesuaikan agar serasi */
         .order-list {
             margin-top: 20px;
         }
@@ -84,27 +42,61 @@
             border: 1px solid #ddd;
             padding: 10px;
             margin-bottom: 15px;
-            background-color: #f9f9f9;
+            color: var(--light-gray);
         }
 
         .order-item h4 {
             margin-top: 0;
+            color: var(--primary-color);
         }
 
         .order-item p {
             margin-bottom: 5px;
+            color: var(--light-gray);
         }
 
-        .dark-background {
-            background-color: #222222;
-            color: #ffffff;
+        #orders {
+            color: var(--light-gray);
+            background-color: var(--dark-gray);
+            padding: 30px 0;
+        }
+
+        #orders .section-header h2,
+        #orders .section-header p {
+            color: var(--light-gray);
+        }
+
+        #footer {
+            color: var(--light-gray);
+            background-color: var(--dark-gray);
+        }
+
+        #footer h4,
+        #footer p,
+        #footer a {
+            color: var(--light-gray);
+        }
+
+        .social-links a {
+            color: var(--light-gray);
+            border: 1px solid var(--light-gray);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 5px;
+            transition: color 0.3s, border-color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
         }
     </style>
-
 </head>
-
 <body class="index-page">
-
     <!-- ======= Header ======= -->
     <header id="header" class="header d-flex align-items-center sticky-top">
         <div class="container position-relative d-flex align-items-center justify-content-between">
@@ -113,14 +105,13 @@
                 <h1>Quality Time</h1>
                 <span>.</span>
             </a>
-
             @include('layouts.navbar')
         </div>
     </header><!-- End Header -->
 
     <main id="main">
         <!-- ======= Order Section ======= -->
-        <section id="orders" class="menu dark-background">
+        <section id="orders" class="menu">
             <div class="container">
                 <div class="section-header text-center">
                     <h2>Daftar Order Saya</h2>
@@ -138,9 +129,11 @@
                         @foreach($orders as $order)
                             <div class="order-item">
                                 <h4>Order #{{ $order->id }}</h4>
-                                <p>Menu: {{ $order->menu->nama ?? 'Tidak Ada' }}</p>
-                                <p>Quantity: {{ $order->quantity }}</p>
-                                <p>Harga per Item: Rp {{ number_format($order->price, 0, ',', '.') }}</p>
+                                @foreach($order->orderItems as $orderItem)
+                                    <p>Menu: {{ $orderItem->menu->nama ?? 'Tidak Ada' }}</p>
+                                    <p>Quantity: {{ $orderItem->quantity }}</p>
+                                    <p>Harga per Item: Rp {{ number_format($orderItem->price, 0, ',', '.') }}</p>
+                                @endforeach
                                 <p>Total Harga: Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
                                 <p>Status: {{ $order->status }}</p>
                                 <p>Tanggal Order: {{ $order->created_at->format('d-m-Y H:i') }}</p>
@@ -155,8 +148,8 @@
     </main>
 
     <!-- ======= Footer ======= -->
-    <footer id="footer" class="footer dark-background">
-
+    <footer id="footer" class="footer">
+        <!-- Footer Content (Pastikan semua link benar) -->
         <div class="container">
             <div class="row gy-3">
                 <div class="col-lg-3 col-md-6 d-flex">
@@ -166,7 +159,6 @@
                         <p>Jl. Patuan Nagari No.49, Ps. Porsea, Kec. Porsea, Toba, Sumatera Utara 22384</p>
                     </div>
                 </div>
-
                 <div class="col-lg-3 col-md-6 d-flex">
                     <i class="bi bi-telephone icon"></i>
                     <div>
@@ -177,7 +169,6 @@
                         </p>
                     </div>
                 </div>
-
                 <div class="col-lg-3 col-md-6 d-flex">
                     <i class="bi bi-clock icon"></i>
                     <div>
@@ -187,7 +178,6 @@
                         </p>
                     </div>
                 </div>
-
                 <div class="col-lg-3 col-md-6">
                     <h4>Follow Us</h4>
                     <div class="social-links d-flex">
@@ -211,8 +201,7 @@
     <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
     <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+    <!-- Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
-
 </body>
-
-</html>
+</html> 

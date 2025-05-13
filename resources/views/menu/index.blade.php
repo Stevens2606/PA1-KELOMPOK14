@@ -75,6 +75,21 @@
             font-size: 14px;
             font-weight: bold;
         }
+
+        /* Style untuk button group */
+        .button-group {
+            display: flex;
+            /* Menggunakan Flexbox */
+            justify-content: center;
+            /* Mengatur tombol agar berada di tengah horizontal */
+            margin-top: 10px;
+            /* Memberi jarak dari elemen di atasnya */
+        }
+
+        .button-group .order-button {
+            margin: 0 5px;
+            /* Memberi jarak antar tombol */
+        }
     </style>
 
 </head>
@@ -98,6 +113,15 @@
         <!-- ======= Menu Section ======= -->
         <section id="menu" class="menu dark-background">
             <div class="container">
+
+                {{-- Alert jika sukses --}}
+                @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+
                 <div class="section-header text-center">
                     <h2>Our Menu</h2>
                     <p>Check Our <span> Menu</span></p>
@@ -145,19 +169,27 @@
                                 <h4>{{ $menu->nama }}</h4>
                                 <p class="ingredients">{{ $menu->deskripsi }} </p>
                                 <p class="price">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
-                                <form action="{{ route('orders.store') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                    <input type="hidden" name="price" value="{{ $menu->harga }}">
-                                    <input type="hidden" name="user_id" value="{{ Auth::id() ?? 1 }}">
-                                      <div class="quantity-container">
-                                        <label for="food_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
-                                        <input type="number" class="quantity-input" value="1" min="1"
-                                            id="food_{{ $menu->id }}" name="quantity">
-                                    </div>
-                                    <button type="submit" class="order-button">Pesan</button>
-                                </form>
-                            </div><!-- End Menu Item -->
+                                <div class="quantity-container">
+                                    <label for="food_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
+                                    <input type="number" class="quantity-input" value="1" min="1"
+                                        id="food_{{ $menu->id }}" name="quantity">
+                                </div>
+                                <div class="button-group">
+                                    <form action="{{ route('cart.add') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                        <input type="hidden" name="quantity" value="{{1}}">
+                                        <button type="submit" class="order-button">Tambah ke Keranjang</button>
+                                    </form>
+                                    <form action="{{ route('orders.store') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                        <input type="hidden" name="price" value="{{ $menu->harga }}">
+                                        <input type="hidden" name="quantity" value="{{1}}">
+                                        <button type="submit" class="order-button">Pesan</button>
+                                    </form>
+                                </div>
+                            </div>
                             @endif
                             @endforeach
                         </div>
@@ -181,18 +213,26 @@
                                 <h4>{{ $menu->nama }}</h4>
                                 <p class="ingredients">{{ $menu->deskripsi }}</p>
                                 <p class="price">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
-                                <form action="{{ route('orders.store') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                    <input type="hidden" name="price" value="{{ $menu->harga }}">
-                                     <input type="hidden" name="user_id" value="{{ Auth::id() ?? 1 }}">
-                                    <div class="quantity-container">
-                                        <label for="dimsum_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
-                                        <input type="number" class="quantity-input" value="1" min="1"
-                                            id="dimsum_{{ $menu->id }}" name="quantity">
-                                    </div>
-                                    <button type="submit" class="order-button">Pesan</button>
-                                </form>
+                                <div class="quantity-container">
+                                    <label for="dimsum_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
+                                    <input type="number" class="quantity-input" value="1" min="1"
+                                        id="dimsum_{{ $menu->id }}" name="quantity">
+                                </div>
+                                <div class="button-group">
+                                    <form action="{{ route('cart.add') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                        <input type="hidden" name="quantity" value="{{1}}">
+                                        <button type="submit" class="order-button">Tambah ke Keranjang</button>
+                                    </form>
+                                    <form action="{{ route('orders.store') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                        <input type="hidden" name="price" value="{{ $menu->harga }}">
+                                        <input type="hidden" name="quantity" value="{{1}}">
+                                        <button type="submit" class="order-button">Pesan</button>
+                                    </form>
+                                </div>
                             </div><!-- End Menu Item -->
                             @endif
                             @endforeach
@@ -218,18 +258,26 @@
                                 <h4>{{ $menu->nama }}</h4>
                                 <p class="ingredients">{{ $menu->deskripsi }}</p>
                                 <p class="price">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
-                                <form action="{{ route('orders.store') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                    <input type="hidden" name="price" value="{{ $menu->harga }}">
-                                     <input type="hidden" name="user_id" value="{{ Auth::id() ?? 1 }}">
-                                    <div class="quantity-container">
-                                        <label for="snack_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
-                                        <input type="number" class="quantity-input" value="1" min="1"
-                                            id="snack_{{ $menu->id }}" name="quantity">
-                                    </div>
-                                    <button type="submit" class="order-button">Pesan</button>
-                                </form>
+                                <div class="quantity-container">
+                                    <label for="snack_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
+                                    <input type="number" class="quantity-input" value="1" min="1"
+                                        id="snack_{{ $menu->id }}" name="quantity">
+                                </div>
+                                <div class="button-group">
+                                    <form action="{{ route('cart.add') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                        <input type="hidden" name="quantity" value="{{1}}">
+                                        <button type="submit" class="order-button">Tambah ke Keranjang</button>
+                                    </form>
+                                    <form action="{{ route('orders.store') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                        <input type="hidden" name="price" value="{{ $menu->harga }}">
+                                        <input type="hidden" name="quantity" value="{{1}}">
+                                        <button type="submit" class="order-button">Pesan</button>
+                                    </form>
+                                </div>
                             </div><!-- End Menu Item -->
                             @endif
                             @endforeach
@@ -254,18 +302,26 @@
                                 <h4>{{ $menu->nama }}</h4>
                                 <p class="ingredients">{{ $menu->deskripsi }}</p>
                                 <p class="price">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
-                                <form action="{{ route('orders.store') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                    <input type="hidden" name="price" value="{{ $menu->harga }}">
-                                     <input type="hidden" name="user_id" value="{{ Auth::id() ?? 1 }}">
-                                      <div class="quantity-container">
-                                        <label for="drinks_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
-                                        <input type="number" class="quantity-input" value="1" min="1"
-                                            id="drinks_{{ $menu->id }}" name="quantity">
-                                    </div>
-                                   <button type="submit" class="order-button">Pesan</button>
-                                </form>
+                                <div class="quantity-container">
+                                    <label for="drinks_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
+                                    <input type="number" class="quantity-input" value="1" min="1"
+                                        id="drinks_{{ $menu->id }}" name="quantity">
+                                </div>
+                                <div class="button-group">
+                                    <form action="{{ route('cart.add') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                         <input type="hidden" name="quantity" value="{{1}}">
+                                        <button type="submit" class="order-button">Tambah ke Keranjang</button>
+                                    </form>
+                                    <form action="{{ route('orders.store') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                        <input type="hidden" name="price" value="{{ $menu->harga }}">
+                                         <input type="hidden" name="quantity" value="{{1}}">
+                                        <button type="submit" class="order-button">Pesan</button>
+                                    </form>
+                                </div>
                             </div><!-- End Menu Item -->
                             @endif
                             @endforeach
@@ -324,9 +380,6 @@
                     </div>
                 </div>
 
-
-
-
                 <!-- Scroll Top -->
                 <a href="#" id="scroll-top"
                     class="scroll-top d-flex align-items-center justify-content-center"><i
@@ -345,6 +398,29 @@
 
                 <!-- Main JS File -->
                 <script src="{{ asset('assets/js/main.js') }}"></script>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // Get all menu items
+                        const menuItems = document.querySelectorAll('.menu-item');
+
+                        menuItems.forEach(menuItem => {
+                            const menuId = menuItem.dataset.menuId;
+
+                            // Get the quantity input and hidden inputs for cart and order
+                            const quantityInput = document.getElementById(`food_${menuId}`);
+                            const cartQuantityInput = document.getElementById(`cart_quantity_${menuId}`);
+                            const orderQuantityInput = document.getElementById(`order_quantity_${menuId}`);
+
+                            // Add event listener to quantity input
+                            quantityInput.addEventListener('change', function() {
+                                const quantity = quantityInput.value;
+                                cartQuantityInput.value = quantity;
+                                orderQuantityInput.value = quantity;
+                            });
+                        });
+                    });
+                </script>
 
 </body>
 

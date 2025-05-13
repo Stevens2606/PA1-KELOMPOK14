@@ -59,7 +59,7 @@ class TestimoniController extends Controller
 
         Testimoni::create($request->all());
 
-        return redirect()->route('admin.testimoni.index')->with('success', 'Testimoni berhasil ditambahkan.'); // Redirect ke index admin
+        return redirect()->route('testimoni.public')->with('success', 'Testimoni berhasil ditambahkan.'); // Redirect ke index admin
     }
 
     /**

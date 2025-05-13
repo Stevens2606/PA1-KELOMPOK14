@@ -83,7 +83,7 @@ class ReservationController extends Controller
     {
         $reservation->delete();
 
-        return redirect()->route('reservations.index')->with('success', 'Reservasi berhasil dihapus.');
+        return redirect()->route('admin.reservations.index')->with('success', 'Reservasi berhasil dihapus.');
     }
 
     public function indexAdmin()

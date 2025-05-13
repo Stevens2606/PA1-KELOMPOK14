@@ -11,108 +11,115 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 20px;
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        ol.breadcrumb {
+            background-color: transparent;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+        ol.breadcrumb li {
+            display: inline;
+        }
+        ol.breadcrumb li a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        ol.breadcrumb li.active {
+            color: #6c757d;
+        }
+        .detail-container {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .detail-row {
+            margin-bottom: 10px;
+        }
+        .detail-label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
 </head>
 
-<body class="sb-nav-fixed">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="{{ route('admin.dashboard') }}">Quality Time</a>
-        <!-- Sidebar Toggle-->
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
-                class="fas fa-bars"></i></button>
-        <!-- Navbar Search-->
-        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-            <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
-                    aria-describedby="btnNavbarSearch" />
-                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
-                        class="fas fa-search"></i></button>
+<body>
+    
+    <div class="container">
+        <h1>Detail Reservasi</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.reservations.index') }}">Daftar Reservasi</a></li>
+            <li class="breadcrumb-item active">Detail Reservasi</li>
+        </ol>
+
+        <div class="detail-container">
+            <div class="detail-row">
+                <span class="detail-label">ID:</span>
+                <span>{{ $reservation->id }}</span>
             </div>
-        </form>
-        <!-- Navbar-->
-        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                    data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">Settings</a></li>
-                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
-                    <li>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="dropdown-item">Logout</button>
-                        </form>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
-    <div id="layoutSidenav">
-        @include('admin.sidebar')
-        <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid px-4">
-                    <h1 class="mt-4">Detail Reservasi</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('admin.reservations.index') }}">Daftar
-                                Reservasi</a></li>
-                        <li class="breadcrumb-item active">Detail Reservasi</li>
-                    </ol>
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-info-circle me-1"></i>
-                            Detail Reservasi
-                        </div>
-                        <div class="card-body">
-                            <dl class="row">
-                                <dt class="col-sm-3">ID</dt>
-                                <dd class="col-sm-9">{{ $reservation->id }}</dd>
 
-                                <dt class="col-sm-3">Nama</dt>
-                                <dd class="col-sm-9">{{ $reservation->name }}</dd>
+            <div class="detail-row">
+                <span class="detail-label">Nama:</span>
+                <span>{{ $reservation->name }}</span>
+            </div>
 
-                                <dt class="col-sm-3">Email</dt>
-                                <dd class="col-sm-9">{{ $reservation->email }}</dd>
+            <div class="detail-row">
+                <span class="detail-label">Email:</span>
+                <span>{{ $reservation->email }}</span>
+            </div>
 
-                                <dt class="col-sm-3">Telepon</dt>
-                                <dd class="col-sm-9">{{ $reservation->phone }}</dd>
+            <div class="detail-row">
+                <span class="detail-label">Telepon:</span>
+                <span>{{ $reservation->phone }}</span>
+            </div>
 
-                                <dt class="col-sm-3">Waktu Reservasi</dt>
-                                <dd class="col-sm-9">{{ $reservation->reservation_time->format('d-m-Y H:i') }}</dd>
+            <div class="detail-row">
+                <span class="detail-label">Waktu Reservasi:</span>
+                <span>{{ $reservation->reservation_time->format('d-m-Y H:i') }}</span>
+            </div>
 
-                                <dt class="col-sm-3">Jumlah Tamu</dt>
-                                <dd class="col-sm-9">{{ $reservation->number_of_guests }}</dd>
+            <div class="detail-row">
+                <span class="detail-label">Jumlah Tamu:</span>
+                <span>{{ $reservation->number_of_guests }}</span>
+            </div>
 
-                                <dt class="col-sm-3">Catatan</dt>
-                                <dd class="col-sm-9">{{ $reservation->notes ?? '-' }}</dd>
+            <div class="detail-row">
+                <span class="detail-label">Catatan:</span>
+                <span>{{ $reservation->notes ?? '-' }}</span>
+            </div>
 
-                                <dt class="col-sm-3">Status</dt>
-                                <dd class="col-sm-9">{{ $reservation->status }}</dd>
-                            </dl>
-                            <a href="{{ route('admin.reservations.index') }}"
-                                class="btn btn-secondary">Kembali ke Daftar Reservasi</a>
-                        </div>
-                    </div>
-                </div>
-            </main>
-            <footer class="py-4 bg-light mt-auto">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright © Quality Time 2024</div>
-                        <div>
-                            <a href="#">Privacy Policy</a>
-                            ·
-                            <a href="#">Terms & Conditions</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+            <div class="detail-row">
+                <span class="detail-label">Status:</span>
+                <span>{{ $reservation->status }}</span>
+            </div>
+
+            <a href="{{ route('admin.reservations.index') }}" class="btn btn-secondary">Kembali ke Daftar Reservasi</a>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>

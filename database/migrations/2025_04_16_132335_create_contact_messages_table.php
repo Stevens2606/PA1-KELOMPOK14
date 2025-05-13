@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('contact_messages', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable(); // Kolom untuk user_id, nullable jika pesan bisa dari pengunjung
             $table->string('name');
             $table->string('email');
             $table->string('subject');
             $table->text('message');
             $table->timestamps();
-            $table->boolean('is_read')->default(false); // Kolom untuk menandai pesan sudah dibaca admin
+            $table->boolean('is_read')->default(false);
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

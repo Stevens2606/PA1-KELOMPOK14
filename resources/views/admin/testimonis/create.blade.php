@@ -56,7 +56,7 @@
                     <h1 class="mt-4">Tambah Testimoni Baru</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('admin.testimonials.index') }}">Daftar
+                        <li class="breadcrumb-item"><a href="{{ route('admin.testimoni.index') }}">Daftar
                                 Testimoni</a></li>
                         <li class="breadcrumb-item active">Tambah Testimoni</li>
                     </ol>
@@ -77,7 +77,7 @@
                             </div>
                             @endif
 
-                            <form action="{{ route('admin.testimonials.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('admin.testimoni.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Nama</label>
@@ -101,7 +101,7 @@
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">Simpan</button>
-                                <a href="{{ route('admin.testimonials.index') }}"
+                                <a href="{{ route('admin.testimoni.index') }}"
                                     class="btn btn-secondary">Batal</a>
                             </form>
                         </div>

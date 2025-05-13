@@ -14,6 +14,7 @@ class Testimoni extends Model
         'nama',
         'isi',
         'rating',
+        'jenis_kelamin',
         'status', // Atau kolom-kolom lain yang Anda punya
     ];
 }

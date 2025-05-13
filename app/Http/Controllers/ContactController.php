@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContactMessage;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 
@@ -45,6 +46,33 @@ class ContactController extends Controller
 
         return redirect()->route('admin.contacts.index')
                          ->with('success','Kontak berhasil ditambahkan.');
+    }
+
+    public function storePublic(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|max:255',
+                'email' => 'required|email|max:255',
+                'subject' => 'required|max:255',
+                'message' => 'required',
+            ]);
+
+            // Simpan data ke database (jika diperlukan)
+            // atau
+            // Kirim email
+
+            // Misalnya, menyimpan ke database:
+            \App\Models\ContactMessage::create($validatedData); // Ganti Message dengan ContactMessage
+
+            return redirect()->route('contact')->with('success', 'Your message has been sent. Thank you!');
+
+        } catch (\Exception $e) {
+            \Log::error($e); // Catat error ke log Laravel
+            // Atau, tampilkan pesan error (hanya untuk debugging, jangan di produksi!)
+            // dd($e);
+            return redirect()->back()->with('error', 'An error occurred. Please try again.');
+        }
     }
 
     /**

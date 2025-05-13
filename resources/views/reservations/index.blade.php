@@ -32,6 +32,22 @@
 
     <style>
         /* Gaya tambahan yang diperlukan untuk order, disesuaikan agar serasi */
+        :root {
+            --primary-color: #3498db;
+            --primary-color-darker: #2980b9;
+            --light-gray: #f8f9fa;
+            --text-color: #333;
+            --dark-gray: #2C3E50;
+            /* Warna abu-abu gelap untuk latar belakang */
+        }
+
+        body {
+            background-color: var(--light-gray);
+            /* Latar belakang luar body */
+            min-height: 100vh;
+            /* Menambahkan tinggi minimum untuk body */
+        }
+
         .reservation-list {
             margin-top: 20px;
         }
@@ -40,41 +56,56 @@
             border: 1px solid #ddd;
             padding: 10px;
             margin-bottom: 15px;
-            background-color: #ffffff; /* Warna latar belakang putih */
-            color: #000000; /* Warna teks hitam */
+            background-color: #ffffff;
+            /* Warna latar belakang putih */
+            color: #000000;
+            /* Warna teks hitam */
         }
 
         .reservation-item h4 {
             margin-top: 0;
-            color: #000000; /* Warna teks hitam */
+            color: #000000;
+            /* Warna teks hitam */
         }
 
         .reservation-item p {
             margin-bottom: 5px;
-            color: #000000; /* Warna teks hitam */
+            color: #000000;
+            /* Warna teks hitam */
         }
 
         /* Menghapus dark-background dari section reservations */
         #reservations {
-            background-color: #f8f9fa; /* Latar belakang terang */
-            color: #000000; /* Teks hitam */
+            background-color: var(--bs-body-color);
+            /* Latar belakang seperti pada gambar */
+            color: #ffffff;
+            /* Teks putih */
+            padding: 30px 0;
+            min-height: calc(100vh - 150px);
+            /* Sesuaikan 150px dengan perkiraan tinggi header + footer */
+            display: flex;
+            flex-direction: column; /* Menata elemen di dalam section secara vertikal */
         }
 
         #reservations .section-header h2,
         #reservations .section-header p {
-            color: #000000; /* Teks hitam pada judul */
+            color: #ffffff;
+            /* Teks putih pada judul */
         }
 
-        /* Atur footer menjadi putih */
+        /* Atur footer menjadi seperti gambar */
         #footer {
-            background-color: #f8f9fa; /* Latar belakang terang */
-            color: #000000; /* Teks hitam */
+            background-color: var(--bs-body-color);
+            /* Latar belakang gelap */
+            color: #ffffff;
+            /* Teks putih */
         }
 
         #footer h4,
         #footer p,
         #footer a {
-            color: #000000; /* Teks hitam pada footer */
+            color: #ffffff;
+            /* Teks putih pada footer */
         }
 
         /* Tombol action agar teks nya berwarna hitam */
@@ -83,6 +114,10 @@
             color: #000000;
         }
 
+        /* Flex grow untuk konten utama */
+        .content {
+            flex-grow: 1; /* Mengizinkan konten utama untuk mengisi ruang yang tersedia */
+        }
     </style>
 
 </head>
@@ -116,52 +151,61 @@
                 </div>
 
                 @if(session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
                 @endif
 
-                @if(count($reservations) > 0)
+                <!-- content container -->
+                <div class="content">
+                    @if(count($reservations) > 0)
                     <div class="reservation-list">
                         @foreach($reservations as $reservation)
-                            <div class="reservation-item">
-                                <h4>Reservasi #{{ $reservation->id }}</h4>
-                                <p>Nama: {{ $reservation->name }}</p>
-                                <p>Email: {{ $reservation->email }}</p>
-                                <p>Telepon: {{ $reservation->phone }}</p>
-                                <p>Waktu Reservasi: {{ $reservation->reservation_time->format('d-m-Y H:i') }}</p>
-                                <p>Jumlah Tamu: {{ $reservation->number_of_guests }}</p>
-                                <p>Status: {{ $reservation->status }}</p>
+                        <div class="reservation-item">
+                            <h4>Reservasi #{{ $reservation->id }}</h4>
+                            <p>Nama: {{ $reservation->name }}</p>
+                            <p>Email: {{ $reservation->email }}</p>
+                            <p>Telepon: {{ $reservation->phone }}</p>
+                            <p>Waktu Reservasi: {{ $reservation->reservation_time->format('d-m-Y H:i') }}</p>
+                            <p>Jumlah Tamu: {{ $reservation->number_of_guests }}</p>
+                            <p>Status: {{ $reservation->status }}</p>
 
-                                <div class="action-buttons">
-                                    <a href="{{ route('admin.reservations.show', $reservation->id) }}" class="btn btn-info btn-sm">Lihat</a>
+                            <div class="action-buttons">
+                                <a href="{{ route('admin.reservations.show', $reservation->id) }}"
+                                    class="btn btn-info btn-sm">Lihat</a>
 
-                                    @if ($reservation->status == 'pending')
-                                        <form action="{{ route('admin.reservations.confirm', $reservation->id) }}" method="POST" style="display: inline-block;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Apakah Anda yakin ingin mengkonfirmasi reservasi ini?')">Konfirmasi</button>
-                                        </form>
-                                    @endif
+                                @if ($reservation->status == 'pending')
+                                <form action="{{ route('admin.reservations.confirm', $reservation->id) }}"
+                                    method="POST" style="display: inline-block;">
+                                    @csrf
+                                </form>
+                                @endif
 
-                                    @if ($reservation->status != 'cancelled')
-                                        <form action="{{ route('admin.reservations.cancel', $reservation->id) }}" method="POST" style="display: inline-block;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin membatalkan reservasi ini?')">Batal</button>
-                                        </form>
-                                    @endif
+                                @if ($reservation->status != 'cancelled')
+                                <form action="{{ route('admin.reservations.cancel', $reservation->id) }}"
+                                    method="POST" style="display: inline-block;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Apakah Anda yakin ingin membatalkan reservasi ini?')">Batal</button>
+                                </form>
+                                @endif
 
-                                    <form action="{{ route('admin.reservations.destroy', $reservation->id) }}" method="POST" style="display: inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus reservasi ini?')">Hapus</button>
-                                    </form>
-                                </div>
+                                <form action="{{ route('admin.reservations.destroy', $reservation->id) }}"
+                                    method="POST" style="display: inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Apakah Anda yakin ingin menghapus reservasi ini?')">Hapus</button>
+                                </form>
                             </div>
+                        </div>
                         @endforeach
                     </div>
-                @else
+                    @else
                     <p class="text-center">Tidak ada reservasi yang ditemukan.</p>
-                @endif
+                    @endif
+                </div>
+                <!-- End content container -->
             </div>
         </section><!-- End Reservation Section -->
     </main>
@@ -213,7 +257,8 @@
         </div>
     </footer><!-- End Footer -->
 
-    <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
 
     <div id="preloader"></div>
 
@@ -227,4 +272,4 @@
 
 </body>
 
-</html> 
+</html>
