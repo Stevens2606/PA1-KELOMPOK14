@@ -15,11 +15,20 @@ class AdminUserSeeder extends Seeder
     {
         // Cek apakah sudah ada admin, jika ada, jangan buat lagi
         
-            User::create([
+            User::create
+            (
+                [
                 'name' => 'Administrator', // Ganti dengan nama yang Anda inginkan
                 'email' => 'admin@example.com', // Ganti dengan email admin Anda
                 'password' => Hash::make('password'), // Ganti dengan password yang lebih kuat!
                 'is_admin' => true,
-            ]);
+                ],
+                [
+                'name' => 'Bos', // Ganti dengan nama yang Anda inginkan
+                'email' => 'boscafee@gmail.com', // Ganti dengan email admin Anda
+                'password' => Hash::make('qualitytime'), // Ganti dengan password yang lebih kuat!
+                'is_admin' => true,
+                ]
+        );
     }
 }
