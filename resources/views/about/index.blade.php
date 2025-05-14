@@ -254,7 +254,7 @@
         placement: "bottom",
       });
 
-      // Agar popover bisa ditutup saat klik di luar area popover
+      Agar popover bisa ditutup saat klik di luar area popover
       document.addEventListener("click", function (event) {
         if (!popoverBtn.contains(event.target)) {
           popover.hide();
