@@ -1,19 +1,4 @@
 <!-- resources/views/admin/orders/index.blade.php -->
-
-<!--
-=========================================================
-* Material Dashboard 3 - v3.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard
-* Copyright 2024 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,7 +10,7 @@
     <title>
         Daftar Pesanan
     </title>
-    <!--     Fonts and icons     -->
+    <!-- Fonts and icons -->
     <link rel="stylesheet" type="text/css"
         href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" />
     <!-- Nucleo Icons -->
@@ -161,6 +146,21 @@
             margin-top: auto;
             /* Mendorong footer ke bagian bawah */
         }
+
+        /* Style untuk Notification */
+        .notification-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Toast styles */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            /* Ensure it's on top */
+        }
     </style>
 </head>
 
@@ -216,85 +216,11 @@
                             <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="material-symbols-rounded">notifications</i>
+                                <span class="badge bg-danger" id="notification-count">0</span>
                             </a>
                             <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
-                                aria-labelledby="dropdownMenuButton">
-                                <li class="mb-2">
-                                    <a class="dropdown-item border-radius-md" href="javascript:;">
-                                        <div class="d-flex py-1">
-                                            <div class="my-auto">
-                                                <img src="{{ asset('admin/admintemplate/img/team-2.jpg') }}"
-                                                    class="avatar avatar-sm  me-3 ">
-                                            </div>
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="text-sm font-weight-normal mb-1">
-                                                    <span class="font-weight-bold">New message</span> from Laur
-                                                </h6>
-                                                <p class="text-xs text-secondary mb-0">
-                                                    <i class="fa fa-clock me-1"></i>
-                                                    13 minutes ago
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="mb-2">
-                                    <a class="dropdown-item border-radius-md" href="javascript:;">
-                                        <div class="d-flex py-1">
-                                            <div class="my-auto">
-                                                <img src="{{ asset('admin/admintemplate/img/small-logos/logo-spotify.svg') }}"
-                                                    class="avatar avatar-sm bg-gradient-dark  me-3 ">
-                                            </div>
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="text-sm font-weight-normal mb-1">
-                                                    <span class="font-weight-bold">New album</span> by Travis Scott
-                                                </h6>
-                                                <p class="text-xs text-secondary mb-0">
-                                                    <i class="fa fa-clock me-1"></i>
-                                                    1 day
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item border-radius-md" href="javascript:;">
-                                        <div class="d-flex py-1">
-                                            <div class="avatar avatar-sm bg-gradient-secondary  me-3  my-auto">
-                                                <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    xmlns:xlink="http://www.w3.org/1999/xlink">
-                                                    <title>credit-card</title>
-                                                    <g stroke="none" stroke-width="1" fill="none"
-                                                        fill-rule="evenodd">
-                                                        <g transform="translate(-2169.000000, -745.000000)"
-                                                            fill="#FFFFFF" fill-rule="nonzero">
-                                                            <g transform="translate(1716.000000, 291.000000)">
-                                                                <g transform="translate(453.000000, 454.000000)">
-                                                                    <path class="color-background"
-                                                                        d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z"
-                                                                        opacity="0.593633743"></path>
-                                                                    <path class="color-background"
-                                                                        d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z">
-                                                                    </path>
-                                                                </g>
-                                                            </g>
-                                                        </g>
-                                                    </g>
-                                                </svg>
-                                            </div>
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="text-sm font-weight-normal mb-1">
-                                                    Payment successfully completed
-                                                </h6>
-                                                <p class="text-xs text-secondary mb-0">
-                                                    <i class="fa fa-clock me-1"></i>
-                                                    2 days
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
+                                aria-labelledby="dropdownMenuButton" id="notification-list">
+                                <!-- Notifications will be appended here -->
                             </ul>
                         </li>
                     </ul>
@@ -560,11 +486,28 @@
             </div>
         </div>
     </div>
+
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="notificationToast" class="toast" role="alert" aria-live="polite" aria-atomic="true"
+            data-bs-delay="5000">
+            <div class="toast-header">
+                <strong class="me-auto">Notifikasi</strong>
+                <small class="text-muted">Baru saja</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <!-- Notification message will be displayed here -->
+            </div>
+        </div>
+    </div>
+
     <!--   Core JS Files   -->
     <script src="{{ asset('admin/admintemplate/js/core/popper.min.js') }}"></script>
     <script src="{{ asset('admin/admintemplate/js/core/bootstrap.min.js') }}"></script>
     <script src="{{ asset('admin/admintemplate/js/plugins/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('admin/admintemplate/js/plugins/smooth-scrollbar.min.js') }}"></script>
+    <!-- Pusher Library -->
+    <script src="https://js.pusher.com/8.4.0/pusher.min.js"></script>
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -578,6 +521,55 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="{{ asset('admin/admintemplate/js/material-dashboard.min.js?v=3.2.0') }}"></script>
+    <script>
+        // Pusher.logToConsole = true; // For debugging
+        var pusher = new Pusher('{{ env("PUSHER_APP_KEY") }}', { // Replace with your Pusher key
+            cluster: '{{ env("PUSHER_APP_CLUSTER") }}' // Replace with your Pusher cluster
+        });
+
+        var channel = pusher.subscribe('orders'); // Channel name
+
+        channel.bind('order.status.updated', function (data) { // Event Name
+            // Terima notifikasi
+            let notificationList = document.getElementById('notification-list');
+            let notificationCount = document.getElementById('notification-count');
+            let notificationToast = document.getElementById('notificationToast');
+
+            // Buat item notifikasi baru
+            let notificationItem = document.createElement('li');
+            notificationItem.classList.add('mb-2');
+            notificationItem.innerHTML = `
+                <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                        <div class="d-flex flex-column justify-content-center">
+                            <h6 class="text-sm font-weight-normal mb-1">
+                                Pesanan <b>${data.order_id}</b> telah diubah statusnya menjadi <b>${data.status}</b>
+                            </h6>
+                            <p class="text-xs text-secondary mb-0">
+                                <i class="fa fa-clock me-1"></i>
+                                Baru saja
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            `;
+
+            // Tambahkan notifikasi ke daftar
+            notificationList.prepend(notificationItem);
+
+            // Update jumlah notifikasi
+            let currentCount = parseInt(notificationCount.innerText);
+            notificationCount.innerText = currentCount + 1;
+
+            // Tampilkan notifikasi (misalnya, dengan toaster)
+            // Tampilkan pesan toast
+            let toastBody = notificationToast.querySelector('.toast-body');
+            toastBody.innerHTML = `Pesanan <b>${data.order_id}</b> telah diubah statusnya menjadi <b>${data.status}</b>`;
+
+            let toast = new bootstrap.Toast(notificationToast);
+            toast.show();
+        });
+    </script>
 </body>
 
 </html>
