@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\About;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; // Import Auth facade
+use Illuminate\Support\Facades\Validator; // Import Validator facade
 
 class AboutController extends Controller
 {
@@ -29,18 +31,32 @@ class AboutController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'mission' => 'nullable|string',
             'vision' => 'nullable|string',
-            'team' => 'nullable|json',
-            'values' => 'nullable|json',
+            'team' => 'nullable|array', // Ubah validasi menjadi array
+            'values' => 'nullable|array', // Ubah validasi menjadi array
             'video_url' => 'nullable|url|max:255',
         ]);
 
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
         try {
-            About::create($request->all());
+            About::create([
+                'user_id' => Auth::id(), // Set user_id saat membuat About baru
+                'title' => $request->title,
+                'description' => $request->description,
+                'mission' => $request->mission,
+                'vision' => $request->vision,
+                'team' => $request->team, // Tidak perlu json_encode lagi
+                'values' => $request->values, // Tidak perlu json_encode lagi
+                'video_url' => $request->video_url,
+            ]);
+
             return redirect()->route('admin.abouts.index')
                 ->with('success', 'About section created successfully.');
         } catch (\Exception $e) {
@@ -69,18 +85,30 @@ class AboutController extends Controller
      */
     public function update(Request $request, About $about)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'mission' => 'nullable|string',
             'vision' => 'nullable|string',
-            'team' => 'nullable|json',
-            'values' => 'nullable|json',
+            'team' => 'nullable|array', // Ubah validasi menjadi array
+            'values' => 'nullable|array', // Ubah validasi menjadi array
             'video_url' => 'nullable|url|max:255',
         ]);
 
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
         try {
-            $about->update($request->all());
+            $about->update([
+                'title' => $request->title,
+                'description' => $request->description,
+                'mission' => $request->mission,
+                'vision' => $request->vision,
+                'team' => $request->team, // Tidak perlu json_encode lagi
+                'values' => $request->values, // Tidak perlu json_encode lagi
+                'video_url' => $request->video_url,
+            ]);
             return redirect()->route('admin.abouts.index')
                 ->with('success', 'About section updated successfully.');
         } catch (\Exception $e) {
@@ -93,13 +121,13 @@ class AboutController extends Controller
      */
     public function destroy(About $about)
     {
-       try {
-           $about->delete();
-           return redirect()->route('admin.abouts.index')
-               ->with('success', 'About section deleted successfully.');
-       } catch (\Exception $e) {
-           return back()->withErrors(['message' => 'Failed to delete About section. ' . $e->getMessage()]);
-       }
+        try {
+            $about->delete();
+            return redirect()->route('admin.abouts.index')
+                ->with('success', 'About section deleted successfully.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['message' => 'Failed to delete About section. ' . $e->getMessage()]);
+        }
     }
 
     /**

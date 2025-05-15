@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->text('isi');
-            $table->integer('rating')->default(5); // Kolom rating, nilai default 5
+            $table->integer('rating')->default(5);
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL');
+            $table->enum('jenis_kelamin', ['pria', 'wanita', 'lainnya'])->nullable(); // Kolom jenis_kelamin
             $table->timestamps();
         });
     }
@@ -27,4 +30,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('testimonis');
     }
-};      
+};

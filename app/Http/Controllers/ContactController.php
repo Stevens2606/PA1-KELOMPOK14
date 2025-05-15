@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ContactMessage;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;  // Tambahkan ini
 
 class ContactController extends Controller
 {
@@ -42,7 +43,14 @@ class ContactController extends Controller
             'address_embed' => 'required',
         ]);
 
-        Contact::create($request->all());
+        // Dapatkan ID pengguna yang sedang login
+        $userId = Auth::id(); // Menggunakan Auth facade
+
+        // Gabungkan data dari request dengan user_id
+        $data = $request->all();
+        $data['user_id'] = $userId;
+
+        Contact::create($data);
 
         return redirect()->route('admin.contacts.index')
                          ->with('success','Kontak berhasil ditambahkan.');

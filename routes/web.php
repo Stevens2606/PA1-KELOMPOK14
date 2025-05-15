@@ -10,6 +10,7 @@ use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController; // Pastikan nama controllernya benar
+use App\Http\Controllers\WelcomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +19,7 @@ use App\Http\Controllers\CartController; // Pastikan nama controllernya benar
 */
 
 // **Halaman Statis**
-Route::get('/', function () {
-    return view('home.welcome');
-})->name('home');
+Route::get('/', [WelcomeController::class, 'index'])->name('home');
 
 Route::get('/about', [AboutController::class, 'showAboutPage'])->name('about');
 
@@ -33,11 +32,14 @@ Route::get('/menupublic', [MenuController::class, 'showPublic'])->name('menu.pub
 
 Route::get('/menu/{menu}', [MenuController::class, 'showDetailPublic'])->name('menus.detail_public');
 
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {  // Contoh: hanya bisa diakses oleh user yang login
+    Route::resource('home-content', HomeContentController::class);
+}); 
+
 // routes/web.php
 Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
 
-Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
 
 Route::get('/contact', [ContactController::class, 'showPublic'])->name('contact.index');
 Route::post('/contact', [ContactController::class, 'storePublic'])->name('contact.storePublic');
@@ -64,10 +66,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
     Route::post('/pesan', [CartController::class, 'store'])->name('pesan');
+    Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
 
 
-    // **Menu Route (Memerlukan Autentikasi)**
-    
+    // **Menu Testimoni (Memerlukan Autentikasi)**
+    Route::post('/testimoni', [TestimoniController::class, 'submit'])->name('testimoni.submit');
 
     // **Reservasi Route (Memerlukan Autentikasi)**
     Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
@@ -94,7 +97,6 @@ Route::get('/reservations', [ReservationController::class, 'index'])->name('rese
 
 // **Testimoni Routes (Public)**
 Route::get('/testimoniPublic', [TestimoniController::class, 'showPublic'])->name('testimoni.public');
-Route::post('/testimoni', [TestimoniController::class, 'store'])->name('testimoni.store');
 
 // **Rute untuk Admin**
 Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {

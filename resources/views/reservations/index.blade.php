@@ -171,8 +171,8 @@
                             <p>Status: {{ $reservation->status }}</p>
 
                             <div class="action-buttons">
-                                <a href="{{ route('admin.reservations.show', $reservation->id) }}"
-                                    class="btn btn-info btn-sm">Lihat</a>
+                                <!-- <a href="{{ route('admin.reservations.show', $reservation->id) }}"
+                                    class="btn btn-info btn-sm">Lihat</a> -->
 
                                 @if ($reservation->status == 'pending')
                                 <form action="{{ route('admin.reservations.confirm', $reservation->id) }}"
@@ -185,8 +185,8 @@
                                 <form action="{{ route('admin.reservations.cancel', $reservation->id) }}"
                                     method="POST" style="display: inline-block;">
                                     @csrf
-                                    <button type="submit" class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Apakah Anda yakin ingin membatalkan reservasi ini?')">Batal</button>
+                                    <!-- <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Apakah Anda yakin ingin membatalkan reservasi ini?')">Batal</button> -->
                                 </form>
                                 @endif
 
@@ -194,8 +194,8 @@
                                     method="POST" style="display: inline-block;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Apakah Anda yakin ingin menghapus reservasi ini?')">Hapus</button>
+                                    <!-- <button type="submit" class="btn btn-danger btn-sm" -->
+                                        <!-- onclick="return confirm('Apakah Anda yakin ingin menghapus reservasi ini?')">Hapus</button> -->
                                 </form>
                             </div>
                         </div>

@@ -129,9 +129,9 @@
               </div>
               <p>{{ $testimoni->isi }}</p>
               <div class="profile">
-                @if($testimoni->jenis_kelamin == 'laki-laki')
+                @if($testimoni->jenis_kelamin == 'pria')
                 <img src="{{ asset('assets/img/pria.png') }}" alt="Foto {{ $testimoni->nama }}">
-                @elseif($testimoni->jenis_kelamin == 'perempuan')
+                @elseif($testimoni->jenis_kelamin == 'wanita')
                 <img src="{{ asset('assets/img/wanita.png') }}" alt="Foto {{ $testimoni->nama }}">
                 @else
                 <img src="{{ asset('assets/img/testimonials/default_avatar.png') }}" alt="Foto {{ $testimoni->nama }}">
@@ -150,7 +150,7 @@
               <h3>Tambahkan Testimoni Anda</h3>
               <p>Terima kasih atas kesediaan Anda memberikan testimoni. Testimoni Anda akan kami tinjau dan
                 tampilkan (jika sesuai).</p>
-              <form action="{{ route('testimoni.store') }}" method="POST" id="testimoniForm">
+              <form action="{{ route('testimoni.submit') }}" method="POST" id="testimoniForm">
                 @csrf
                 <div class="mb-3">
                   <label for="nama" class="form-label">Nama Anda <span class="text-danger">*</span></label>
@@ -189,17 +189,19 @@
                   </div>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">Jenis Kelamin <span class="text-danger">*</span></label>
+                  <label class="form-label">Jenis Kelamin</label>
                   <div class="d-flex">
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="jenis_kelamin" id="laki-laki" value="laki-laki"
-                        required>
-                      <label class="form-check-label" for="laki-laki">Laki-laki</label>
+                      <input class="form-check-input" type="radio" name="jenis_kelamin" id="laki-laki" value="pria">
+                      <label class="form-check-label" for="laki-laki">Pria</label>
                     </div>
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="jenis_kelamin" id="perempuan" value="perempuan"
-                        required>
+                      <input class="form-check-input" type="radio" name="jenis_kelamin" id="perempuan" value="wanita">
                       <label class="form-check-label" for="perempuan">Perempuan</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="jenis_kelamin" id="lainnya" value="lainnya">
+                      <label class="form-check-label" for="lainnya">Lainnya</label>
                     </div>
                   </div>
                 </div>
@@ -239,10 +241,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const testimoniForm = document.getElementById('testimoniForm');
-      const jenisKelaminLaki = document.getElementById('laki-laki'); // ID radio button laki-laki
-      const jenisKelaminPerempuan = document.getElementById('perempuan'); // ID radio button perempuan
 
-      // Fungsi untuk menangani submit form (jika diperlukan logika tambahan)
       testimoniForm.addEventListener('submit', function(event) {
         @guest
         // Jika user belum login, alihkan ke halaman login
@@ -251,21 +250,6 @@
         @else
         // Jika user sudah login, biarkan form dikirim seperti biasa
         @endguest
-      });
-
-      // Fungsi untuk menangani perubahan radio button jenis kelamin
-
-      // Menambahkan event listener untuk radio button laki-laki
-      jenisKelaminLaki.addEventListener('change', function() {
-        // Tidak perlu mengubah gambar di sini karena gambar sudah ditentukan di backend (blade template)
-        // Kita hanya mengirimkan data jenis kelamin ke server
-        console.log("Jenis kelamin: Laki-laki dipilih");
-      });
-
-      // Menambahkan event listener untuk radio button perempuan
-      jenisKelaminPerempuan.addEventListener('change', function() {
-        // Sama seperti di atas, tidak perlu mengubah gambar
-        console.log("Jenis kelamin: Perempuan dipilih");
       });
     });
   </script>

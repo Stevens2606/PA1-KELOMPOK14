@@ -20,6 +20,8 @@ return new class extends Migration
             $table->integer('number_of_guests'); // Jumlah tamu
             $table->text('notes')->nullable(); // Catatan tambahan (opsional)
             $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('pending'); // Status reservasi
+            $table->unsignedBigInteger('user_id')->nullable(); // Pastikan ini ada
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL');
             $table->timestamps();
         });
     }

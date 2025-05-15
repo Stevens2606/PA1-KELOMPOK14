@@ -318,12 +318,12 @@
                                             </td>
                                             <td class="align-middle">
                                                 <div class="ms-auto text-end pe-3">
-                                                    <a class="btn btn-link text-dark px-3 mb-0" href="{{ route('admin.galeri.show', $galeri->id) }}"><i class="material-icons text-sm me-2">visibility</i>Lihat</a>
-                                                    <a class="btn btn-link text-warning px-3 mb-0" href="{{ route('admin.galeri.edit', $galeri->id) }}"><i class="material-icons text-sm me-2">edit</i>Edit</a>
+                                                    <a class="btn btn-link text-dark px-3 mb-0" href="{{ route('admin.galeri.show', $galeri->id) }}"><i class="material-icons text-sm me-2"></i>Lihat</a>
+                                                    <a class="btn btn-link text-warning px-3 mb-0" href="{{ route('admin.galeri.edit', $galeri->id) }}"><i class="material-icons text-sm me-2"></i>Edit</a>
                                                     <form action="{{ route('admin.galeri.destroy', $galeri->id) }}" method="POST" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-link text-danger text-sm me-0" onclick="return confirm('Apakah Anda yakin ingin menghapus galeri ini?')"><i class="material-icons text-sm me-2">delete</i>Hapus</button>
+                                                        <button type="submit" class="btn btn-link text-danger text-sm me-0" onclick="return confirm('Apakah Anda yakin ingin menghapus galeri ini?')"><i class="material-icons text-sm me-2"></i>Hapus</button>
                                                     </form>
                                                 </div>
                                             </td>

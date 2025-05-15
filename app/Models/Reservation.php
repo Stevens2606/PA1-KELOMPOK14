@@ -17,9 +17,15 @@ class Reservation extends Model
         'number_of_guests',
         'notes',
         'status',
+        'user_id',  // Tambahkan ini
     ];
 
     protected $casts = [
         'reservation_time' => 'datetime',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

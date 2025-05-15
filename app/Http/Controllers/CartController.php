@@ -29,65 +29,65 @@ class CartController extends Controller
     
 
     public function checkout(Request $request)
-    {
-        // Pastikan pengguna sudah login
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Anda harus login untuk melanjutkan.');
+{
+    // Pastikan pengguna sudah login
+    if (!Auth::check()) {
+        return redirect()->route('login')->with('error', 'Anda harus login untuk melanjutkan.');
+    }
+
+    $cart = Cart::with('cartItems')->firstOrCreate(['user_id' => Auth::id()]);
+
+    if (!$cart) {
+        return redirect()->route('menu.public')->with('error', 'Keranjang tidak ditemukan.');
+    }
+
+    $cartItems = $cart->cartItems;
+
+    if ($cartItems->isEmpty()) {
+        return redirect()->route('cart.index')->with('error', 'Keranjang Anda kosong.');
+    }
+
+
+    // START TRANSACTION
+    DB::beginTransaction();
+    try {
+        // Buat pesanan baru
+        $order = new Order();
+        $order->user_id = Auth::id();
+        $order->status = 'pending';
+
+        $totalAmount = 0;
+        // Tambahkan item pesanan ke dalam tabel order_items
+        foreach ($cartItems as $item) {
+            $totalAmount += $item->price * $item->quantity;
+        }
+        $order->total_price = $totalAmount; // Hitung total *sebelum* menyimpan order
+        $order->save(); // Save the order
+
+        // Tambahkan item pesanan ke dalam tabel order_items
+        foreach ($cartItems as $item) {
+            $orderItem = new OrderItem();
+            $orderItem->order_id = $order->id;
+            $orderItem->menu_id = $item->menu_id;
+            $orderItem->quantity = $item->quantity;
+            $orderItem->price = $item->price;
+            $orderItem->save();
         }
 
-        $cart = Cart::with('cartItems')->firstOrCreate(['user_id' => Auth::id()]);
-
-        if (!$cart) {
-            return redirect()->route('menu.public')->with('error', 'Keranjang tidak ditemukan.');
-        }
-
-        $cartItems = $cart->cartItems;
-
-        if ($cartItems->isEmpty()) {
-            return redirect()->route('cart.index')->with('error', 'Keranjang Anda kosong.');
-        }
+        // Hapus semua item di keranjang setelah pesanan dibuat
+        CartItems::where('cart_id', $cart->id)->delete();
 
 
-        // START TRANSACTION
-        DB::beginTransaction();
-        try {
-            // Buat pesanan baru
-            $order = new Order();
-            $order->user_id = Auth::id();
-            // $order->total_amount = $cartItems->sum(function ($item) {
-            //     return $item->price * $item->quantity;
-            // });
-            $order->status = 'pending';
-            $order->save(); // Save the order
+        // COMMIT TRANSACTION
+        DB::commit();
 
-            $totalAmount = 0;
-            // Tambahkan item pesanan ke dalam tabel order_items
-            foreach ($cartItems as $item) {
-                $orderItem = new OrderItem();
-                $orderItem->order_id = $order->id;
-                $orderItem->menu_id = $item->menu_id;
-                $orderItem->quantity = $item->quantity;
-                $orderItem->price = $item->price;
-                $orderItem->save();
-                $totalAmount += $item->price * $item->quantity;
-            }
-            $order->total_price = $totalAmount;
-            $order->save();
-
-            // Hapus semua item di keranjang setelah pesanan dibuat
-            CartItems::where('cart_id', $cart->id)->delete();
+        $orderId = $order->id;
+        //Flash the order id ke sesi
+        Session::flash('order_id', $orderId);
+        return redirect()->route('orders.index')->with('success', 'Pesanan Anda telah berhasil dibuat!');
 
 
-            // COMMIT TRANSACTION
-            DB::commit();
-
-            $orderId = $order->id;
-            //Flash the order id ke sesi
-            Session::flash('order_id', $orderId);
-            return redirect()->route('home')->with('success', 'Pesanan Anda telah berhasil dibuat!');
-
-
-        } catch (\Exception $e) {
+    } catch (\Exception $e) {
     DB::rollback();
     // DEBUG: tampilkan pesan error asli
     dd($e->getMessage());
@@ -95,8 +95,7 @@ class CartController extends Controller
     // return redirect()->back()->with('error', $e->getMessage());
         }
 
-
-    }
+}
 
     /**
      * Show the form for creating a new resource.

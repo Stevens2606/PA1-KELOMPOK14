@@ -15,15 +15,17 @@
             <span class="nav-link-text ms-1">Dashboard</span>
           </a>
         </li>
+
+
         <li class="nav-item">
           <a class="nav-link text-dark" href="{{ route('admin.menus.index') }}">
-            <i class="material-symbols-rounded opacity-5">table_view</i>
+           <i class="material-symbols-rounded opacity-5">table_view</i>
             <span class="nav-link-text ms-1">Menu</span>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-dark" href="{{ route('admin.testimoni.index') }}">
-            <i class="material-symbols-rounded opacity-5">receipt_long</i>
+           <i class="material-symbols-rounded opacity-5">format_quote</i>
             <span class="nav-link-text ms-1">Testimoni</span>
           </a>
         </li>
@@ -41,19 +43,19 @@
         </li>
         <li class="nav-item">
           <a class="nav-link text-dark" href="{{ route('admin.galeri.index') }}">
-            <i class="material-symbols-rounded opacity-5">notifications</i>
+            <i class="material-symbols-rounded opacity-5">album</i>
             <span class="nav-link-text ms-1">Galeri</span>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-dark" href="{{ route('admin.reservations.index') }}">
-            <i class="material-symbols-rounded opacity-5">notifications</i>
+           <i class="material-symbols-rounded opacity-5">event_available</i>
             <span class="nav-link-text ms-1">Reservasi</span>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-dark" href="{{ route('admin.orders.index') }}">
-            <i class="material-symbols-rounded opacity-5">person</i>
+           <i class="material-symbols-rounded opacity-5">person_outline</i>
             <span class="nav-link-text ms-1">Order</span>
           </a>
         </li>
@@ -66,6 +68,8 @@
               <span class="nav-link-text ms-1">Logout</span>
            </a>
         </li>
+
+        
 
     </div>
     <div class="sidenav-footer position-absolute w-100 bottom-0 ">

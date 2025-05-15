@@ -10,6 +10,7 @@ class About extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id', // Tambahkan user_id ke fillable
         'title',
         'description',
         'mission',
@@ -23,4 +24,10 @@ class About extends Model
         'team' => 'array',
         'values' => 'array',
     ];
+
+    // Definisikan relasi dengan model User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

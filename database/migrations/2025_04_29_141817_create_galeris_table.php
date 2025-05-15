@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('galeris', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id'); // Kolom foreign key
             $table->string('judul');
             $table->text('deskripsi')->nullable();
             $table->string('gambar'); // Nama file gambar
             $table->timestamps();
+
+            // Definisikan foreign key constraint
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

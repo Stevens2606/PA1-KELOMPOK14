@@ -6,6 +6,7 @@ use App\Models\Galeri;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth; // Import Auth facade
 
 class GaleriController extends Controller
 {
@@ -38,6 +39,7 @@ class GaleriController extends Controller
         $gambarPath = $request->file('gambar')->store('public/galeri');
 
         Galeri::create([
+            'user_id' => Auth::id(), // Atur user_id ke ID user yang sedang login
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
             'gambar' => str_replace('public/', '', $gambarPath),

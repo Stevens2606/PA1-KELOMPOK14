@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReservationController extends Controller
 {
@@ -37,7 +38,9 @@ class ReservationController extends Controller
             'number_of_guests' => 'required|integer|min:1',
         ]);
 
-        Reservation::create($request->all());
+        $reservation = new Reservation($request->all());
+        $reservation->user_id = Auth::id(); // Set user_id
+        $reservation->save();
 
         return redirect()->route('reservations.index')->with('success', 'Reservasi berhasil dibuat.');
     }

@@ -4,29 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTotalPriceToOrdersTable extends Migration
-{
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+return new class extends Migration {
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->decimal('total_price', 10, 2)->unsigned()->default(0.00)->after('price');
+            // ubah jadi nullable (atau pakai default jika perlu)
+            $table->integer('quantity')->nullable()->change();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('total_price');
+            // kembalikan ke NOT NULL tanpa default
+            $table->integer('quantity')->nullable(false)->change();
         });
     }
-}
+};

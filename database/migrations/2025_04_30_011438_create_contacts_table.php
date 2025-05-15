@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id'); // Foreign Key ke tabel users
             $table->string('phone_number');
             $table->string('email');
             $table->text('address_embed'); // Menyimpan embed code
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

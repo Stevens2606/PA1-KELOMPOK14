@@ -49,7 +49,7 @@
         <div class="card card-outline card-dark">
             <div class="card-header text-center">
                 <a href="{{ route('home') }}" class="h1">
-                    <img src="{{ asset('assets/img/logo.jpg') }}" alt="Logo" width="100px"><br>
+                    <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" width="100px"><br>
                     <b>Quality Time</b>
                 </a>
             </div>

@@ -178,14 +178,13 @@
                                     <form action="{{ route('cart.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <input type="hidden" name="quantity" value="{{1}}">
                                         <button type="submit" class="order-button">Tambah ke Keranjang</button>
                                     </form>
                                     <form action="{{ route('orders.store') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
                                         <input type="hidden" name="price" value="{{ $menu->harga }}">
-                                        <input type="hidden" name="quantity" value="{{1}}">
+                                       
                                         <button type="submit" class="order-button">Pesan</button>
                                     </form>
                                 </div>
@@ -222,14 +221,13 @@
                                     <form action="{{ route('cart.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <input type="hidden" name="quantity" value="{{1}}">
                                         <button type="submit" class="order-button">Tambah ke Keranjang</button>
                                     </form>
                                     <form action="{{ route('orders.store') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
                                         <input type="hidden" name="price" value="{{ $menu->harga }}">
-                                        <input type="hidden" name="quantity" value="{{1}}">
+
                                         <button type="submit" class="order-button">Pesan</button>
                                     </form>
                                 </div>
@@ -264,17 +262,25 @@
                                         id="snack_{{ $menu->id }}" name="quantity">
                                 </div>
                                 <div class="button-group">
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
                                     <form action="{{ route('cart.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <input type="hidden" name="quantity" value="{{1}}">
                                         <button type="submit" class="order-button">Tambah ke Keranjang</button>
                                     </form>
                                     <form action="{{ route('orders.store') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
                                         <input type="hidden" name="price" value="{{ $menu->harga }}">
-                                        <input type="hidden" name="quantity" value="{{1}}">
+
                                         <button type="submit" class="order-button">Pesan</button>
                                     </form>
                                 </div>
@@ -311,14 +317,13 @@
                                     <form action="{{ route('cart.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                         <input type="hidden" name="quantity" value="{{1}}">
                                         <button type="submit" class="order-button">Tambah ke Keranjang</button>
                                     </form>
                                     <form action="{{ route('orders.store') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
                                         <input type="hidden" name="price" value="{{ $menu->harga }}">
-                                         <input type="hidden" name="quantity" value="{{1}}">
+
                                         <button type="submit" class="order-button">Pesan</button>
                                     </form>
                                 </div>
@@ -401,27 +406,40 @@
 
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
-                        // Get all menu items
-                        const menuItems = document.querySelectorAll('.menu-item');
+                        const forms = document.querySelectorAll('form[action="{{ route('orders.store') }}"]');
 
-                        menuItems.forEach(menuItem => {
-                            const menuId = menuItem.dataset.menuId;
+                        forms.forEach(form => {
+                            form.addEventListener('submit', function(event) {
+                                event.preventDefault(); // Prevent the default form submission
 
-                            // Get the quantity input and hidden inputs for cart and order
-                            const quantityInput = document.getElementById(`food_${menuId}`);
-                            const cartQuantityInput = document.getElementById(`cart_quantity_${menuId}`);
-                            const orderQuantityInput = document.getElementById(`order_quantity_${menuId}`);
+                                // Find the quantity input within this form
+                                const menuId = this.querySelector('input[name="menu_id"]').value;
+                                let quantityInput;
+                                if (this.closest('.tab-pane').id === 'menu-starters') {
+                                    quantityInput = document.querySelector(`#food_${menuId}`);
+                                } else if (this.closest('.tab-pane').id === 'menu-breakfast') {
+                                    quantityInput = document.querySelector(`#dimsum_${menuId}`);
+                                } else if (this.closest('.tab-pane').id === 'menu-lunch') {
+                                    quantityInput = document.querySelector(`#snack_${menuId}`);
+                                } else if (this.closest('.tab-pane').id === 'menu-dinner') {
+                                    quantityInput = document.querySelector(`#drinks_${menuId}`);
+                                }
 
-                            // Add event listener to quantity input
-                            quantityInput.addEventListener('change', function() {
-                                const quantity = quantityInput.value;
-                                cartQuantityInput.value = quantity;
-                                orderQuantityInput.value = quantity;
+                                const quantity = quantityInput ? quantityInput.value : 1; // Default to 1 if not found
+
+                                // Create a hidden input field to store the quantity
+                                const quantityInputHidden = document.createElement('input');
+                                quantityInputHidden.type = 'hidden';
+                                quantityInputHidden.name = 'quantity';
+                                quantityInputHidden.value = quantity;
+
+                                // Append the hidden input to the form
+                                this.appendChild(quantityInputHidden);
+                                this.submit();
                             });
                         });
                     });
                 </script>
-
 </body>
 
 </html>

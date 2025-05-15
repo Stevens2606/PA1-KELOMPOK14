@@ -294,7 +294,7 @@
                                             </td>
                                             <td class="align-middle">
                                                 <div class="ms-auto text-end pe-3">
-                                                    <a href="{{ route('admin.reservations.show', $reservation->id) }}" class="btn btn-link text-dark px-3 mb-0"><i class="material-icons text-sm me-2">visibility</i>Lihat</a>
+                                                    <a href="{{ route('admin.reservations.show', $reservation->id) }}" class="btn btn-link text-dark px-3 mb-0"><i class="material-icons text-sm me-2"></i>Lihat</a>
 
                                                     @if ($reservation->status == 'pending')
                                                     <form action="{{ route('admin.reservations.confirm', $reservation->id) }}" method="POST" style="display: inline-block;">
@@ -312,7 +312,7 @@
                                                     <form action="{{ route('admin.reservations.destroy', $reservation->id) }}" method="POST" style="display: inline-block;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-link text-danger text-sm me-0" onclick="return confirm('Apakah Anda yakin ingin menghapus reservasi ini?')"><i class="material-icons text-sm me-2">delete</i>Hapus</button>
+                                                        <button type="submit" class="btn btn-link text-danger text-sm me-0" onclick="return confirm('Apakah Anda yakin ingin menghapus reservasi ini?')"><i class="material-icons text-sm me-2"></i>Hapus</button>
                                                     </form>
                                                 </div>
                                             </td>

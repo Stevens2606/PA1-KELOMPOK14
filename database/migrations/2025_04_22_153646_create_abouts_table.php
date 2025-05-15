@@ -15,14 +15,17 @@ class CreateAboutsTable extends Migration
     {
         Schema::create('abouts', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id'); // Foreign Key ke tabel users
             $table->string('title');
             $table->text('description')->nullable();
             $table->text('mission')->nullable();
             $table->text('vision')->nullable();
-            $table->text('team_string')->nullable(); 
-            $table->text('values_string')->nullable(); 
+            $table->text('team_string')->nullable();
+            $table->text('values_string')->nullable();
             $table->string('video_url')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

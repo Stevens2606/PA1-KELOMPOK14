@@ -14,7 +14,12 @@ class Testimoni extends Model
         'nama',
         'isi',
         'rating',
-        'jenis_kelamin',
-        'status', // Atau kolom-kolom lain yang Anda punya
+        'user_id',
+        'jenis_kelamin', // Tambahkan ini
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

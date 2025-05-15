@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Testimoni;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class TestimoniController extends Controller
 {
@@ -26,13 +27,6 @@ class TestimoniController extends Controller
         return view('testimoni.index', compact('testimonis')); // Kirim ke view public
     }
 
-    public function public()
-    {
-        dd('Rute Testimoni Dipanggil'); // Tambahkan ini
-        $testimonis = Testimoni::where('status', 'approved')->get(); // Ambil hanya testimoni yang disetujui
-        return view('testimoni.index', compact('testimonis')); // Kirim ke view public
-    }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -50,7 +44,6 @@ class TestimoniController extends Controller
             'nama' => 'required|string|max:255',
             'isi' => 'required|string',
             'rating' => 'required|integer|min:1|max:5',
-            'status' => 'in:pending,approved,rejected' //Tambahkan validasi status
         ]);
 
         if ($validator->fails()) {
@@ -59,7 +52,7 @@ class TestimoniController extends Controller
 
         Testimoni::create($request->all());
 
-        return redirect()->route('testimoni.public')->with('success', 'Testimoni berhasil ditambahkan.'); // Redirect ke index admin
+        return redirect()->route('admin.testimoni.index')->with('success', 'Testimoni berhasil ditambahkan.'); // Redirect ke index admin
     }
 
     /**
@@ -119,26 +112,23 @@ class TestimoniController extends Controller
             'nama' => 'required|string|max:255',
             'isi' => 'required|string',
             'rating' => 'required|integer|min:1|max:5',
+            'jenis_kelamin' => 'nullable|in:pria,wanita,lainnya', // Validasi jenis_kelamin (ENUM)
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Simpan testimoni (tapi jangan langsung tampilkan!)
-        $testimoni = Testimoni::create([
-            'nama' => $request->nama,
-            'isi' => $request->isi,
-            'rating' => $request->rating,
-            'status' => 'pending', // Atau nilai default lain untuk menandai belum disetujui
-        ]);
+        // Simpan testimoni
+        $testimoni = new Testimoni();
+        $testimoni->nama = $request->nama;
+        $testimoni->isi = $request->isi;
+        $testimoni->rating = $request->rating;
+        $testimoni->jenis_kelamin = $request->jenis_kelamin;  // Assign jenis_kelamin
+        // $testimoni->user_id = Auth::id();  // Hapus baris ini atau gunakan Opsi 1 (autentikasi)
+        $testimoni->save();
 
         // Redirect kembali dengan pesan sukses
-    
-        return redirect('/testimoni')->with('success', 'Testimoni Anda berhasil dikirim dan akan kami tinjau.');
-
-        $user = Auth::user();
-return view('nama.view', ['user' => $user]); // Ganti 'nama.view' dengan nama tampilan yang benar
+        return redirect()->route('testimoni.public')->with('success', 'Testimoni Anda berhasil dikirim.'); // Redirect ke route yang benar
     }
-
 }

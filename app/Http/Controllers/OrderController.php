@@ -8,6 +8,7 @@ use App\Models\OrderItem; // Tambahkan ini
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log; // Tambahkan ini untuk logging
 
 class OrderController extends Controller
 {
@@ -42,34 +43,38 @@ class OrderController extends Controller
 
     public function store(Request $request)
 {
-    $validatedData = $request->validate([
-        'menu_id' => 'required|exists:menus,id', // Pastikan menu_id ada
-        // 'quantity' => 'required|integer|min:1', // Hapus validasi ini karena quantity diambil dari form
-    ]);
+    try {
+        $validatedData = $request->validate([
+            'menu_id' => 'required|exists:menus,id',
+            'quantity' => 'required|integer|min:1',
+        ]);
 
-    $menuId = $request->input('menu_id');
-    $quantity = $request->input('quantity_' . $menuId, 1);
+        $menu = Menu::findOrFail($validatedData['menu_id']);
+        $order = new Order();
+        $order->user_id = Auth::id();
+        $order->status = self::STATUS_PENDING;
+        $order->total_price = 0; // Inisialisasi total_price
+        $order->save();
 
-    $menu = Menu::findOrFail($menuId);
-    $order = new Order();
-    $order->user_id = Auth::id();
-    $order->status = self::STATUS_PENDING;
-    $order->save();
+        // Buat OrderItem
+        $orderItem = new OrderItem();
+        $orderItem->order_id = $order->id;
+        $orderItem->menu_id = $menu->id;
+        $orderItem->quantity = $validatedData['quantity'];
+        $orderItem->price = $menu->harga;
+        $orderItem->save();
 
-    // Buat OrderItem
-    $orderItem = new OrderItem();
-    $orderItem->order_id = $order->id;
-    $orderItem->menu_id = $menu->id;
-    $orderItem->quantity = $quantity;
-    $orderItem->price = $menu->harga;
-    $orderItem->save();
+        // Hitung Total Harga
+        $totalPrice = $menu->harga * $validatedData['quantity'];
+        $order->total_price = $totalPrice;
+        $order->save();
 
-    // Hitung Total Harga
-    $totalPrice = $menu->harga * $quantity;
-    $order->total_price = $totalPrice;
-    $order->save();
+        return redirect()->route('orders.index')->with('success', 'Order berhasil dibuat!');
 
-    return redirect()->route('orders.index')->with('success', 'Order berhasil dibuat!');
+    } catch (\Exception $e) {
+        Log::error("Error creating order: " . $e->getMessage() . "\n" . $e->getTraceAsString());
+        return back()->with('error', 'Terjadi kesalahan saat membuat order. Silakan coba lagi.');
+    }
 }
 
     public function show(Order $order)
@@ -86,8 +91,6 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         $validatedData = $request->validate([
-        //     'menu_id' => 'required|exists:menus,id',
-        //     'quantity' => 'required|integer|min:1',
             'status' => ['required', Rule::in([
                 self::STATUS_PENDING,
                 self::STATUS_PROCESSING,
@@ -97,13 +100,7 @@ class OrderController extends Controller
             ])],
         ]);
 
-        // $menu = Menu::findOrFail($validatedData['menu_id']);
-        // $totalPrice = $menu->harga * $validatedData['quantity'];
-
-        // $order->menu_id = $validatedData['menu_id'];
-        // $order->quantity = $validatedData['quantity'];
-        // $order->price = $menu->harga;
-        // $order->total_price = $totalPrice;
+        // Ambil total_price yang sudah ada
         $order->status = $validatedData['status'];
         $order->save();
 
