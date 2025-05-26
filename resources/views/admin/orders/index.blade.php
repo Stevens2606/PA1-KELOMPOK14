@@ -28,49 +28,21 @@
     <style>
         /* Custom CSS untuk tampilan lebih sejuk */
         :root {
-            --primary-color: #3498db;
-            /* Contoh warna biru */
-            --primary-color-darker: #2980b9;
+            --primary-color: #667eea;
+            --secondary-color: #43cea2;
+            --light-gray: #f8f9fa;
+            --text-color: #343a40;
+            --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         }
 
-        html,
         body {
-            height: 100%;
-            /* Memastikan html dan body mengisi tinggi viewport */
-            margin: 0;
-            /* Menghilangkan margin default */
-            padding: 0;
-        }
-
-        body.g-sidenav-show {
             font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa;
-            color: #495057;
-            min-height: 100vh;
-            /* Memastikan body setidaknya setinggi viewport */
-        }
-
-        .g-sidenav-show .sidenav {
-            min-height: 100vh;
-            /* Membuat sidebar selalu setinggi viewport */
-            height: auto;
-            /* Mengizinkan sidebar untuk tumbuh sesuai konten */
-            position: fixed;
-            /* Memastikan sidebar tetap di tempatnya saat di-scroll */
-            top: 0;
-            /* Menempel ke bagian atas viewport */
-            bottom: 0;
-            /* Menempel ke bagian bawah viewport */
-            z-index: 10;
-            /* Menentukan lapisan sidebar */
-        }
-
-        .g-sidenav-show .main-content {
-            min-height: 100vh;
+            background-color: var(--light-gray);
+            color: var(--text-color);
         }
 
         .bg-gradient-primary {
-            background-image: linear-gradient(195deg, var(--primary-color) 0%, var(--primary-color-darker) 100%) !important;
+            background-image: linear-gradient(195deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
         }
 
         .btn-primary {
@@ -79,8 +51,8 @@
         }
 
         .btn-primary:hover {
-            background-color: var(--primary-color-darker) !important;
-            border-color: var(--primary-color-darker) !important;
+            background-color: var(--secondary-color) !important;
+            border-color: var(--secondary-color) !important;
         }
 
         .btn-outline-primary {
@@ -93,32 +65,8 @@
             color: #fff !important;
         }
 
-        /* Tambahkan ini untuk tombol-tombol link */
-        .btn-link {
-            color: var(--primary-color) !important;
-            /* Warna default tombol link */
-        }
-
-        .btn-link:hover {
-            color: var(--primary-color-darker) !important;
-            /* Warna hover tombol link */
-        }
-
-        /* Style untuk tombol Update */
-        .btn-info {
-            background-color: var(--primary-color) !important;
-            border-color: var(--primary-color) !important;
-            color: #fff !important;
-            /* Warna teks putih untuk kontras */
-        }
-
-        .btn-info:hover {
-            background-color: var(--primary-color-darker) !important;
-            border-color: var(--primary-color-darker) !important;
-        }
-
         .card {
-            box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);
+            box-shadow: var(--box-shadow);
             border: 0;
             border-radius: 0.75rem;
         }
@@ -129,28 +77,31 @@
             color: #155724;
         }
 
-        /* CSS tambahan untuk membuat tampilan full height */
-        .main-content {
-            min-height: calc(100vh - 60px - 50px);
-            /* Hitung tinggi main content */
-            display: flex;
-            flex-direction: column;
+        .table th,
+        .table td {
+            vertical-align: middle;
         }
 
-        .container-fluid {
-            flex: 1;
-            /* Memungkinkan container fluid memenuhi sisa ruang */
+        /* Style tombol update */
+        .btn-info {
+            background-color: var(--secondary-color) !important;
+            border-color: var(--secondary-color) !important;
+            color: #fff !important;
+            padding: 0.5rem 0.8rem;
         }
 
-        .footer {
-            margin-top: auto;
-            /* Mendorong footer ke bagian bawah */
+        .btn-info:hover {
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
         }
 
-        /* Style untuk Notification */
-        .notification-item {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
+        /* Style untuk tombol Hapus */
+        .btn-link.text-danger {
+            color: #dc3545 !important;
+        }
+
+        .btn-link.text-danger:hover {
+            color: #c82333 !important;
         }
 
         /* Toast styles */
@@ -159,7 +110,35 @@
             top: 20px;
             right: 20px;
             z-index: 1050;
-            /* Ensure it's on top */
+        }
+
+        /* Custom CSS untuk notifikasi */
+        .notification-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .notification-content {
+            flex-grow: 1;
+        }
+
+        .notification-time {
+            font-size: 0.8em;
+            color: #777;
+        }
+
+        /* Style untuk dropdown status */
+        select.form-control.form-control-sm {
+            appearance: none;
+            /* Hapus panah default */
+            padding-right: 2.5rem;
+            /* Beri ruang untuk ikon */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 12px;
         }
     </style>
 </head>
@@ -179,53 +158,7 @@
                     </ol>
                     <h6 class="font-weight-bolder mb-0">Daftar Pesanan</h6>
                 </nav>
-                <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-                    <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                        <div class="input-group input-group-outline">
-                            <label class="form-label">Type here...</label>
-                            <input type="text" class="form-control">
-                        </div>
-                    </div>
-                    <ul class="navbar-nav d-flex align-items-center  justify-content-end">
-                        <li class="nav-item d-flex align-items-center">
-                            <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank"
-                                href="https://www.creative-tim.com/builder?ref=navbar-material-dashboard">Online
-                                Builder</a>
-                        </li>
-                        <li class="mt-1">
-                            <a class="github-button" href="https://github.com/creativetimofficial/material-dashboard"
-                                data-icon="octicon-star" data-size="large" data-show-count="true"
-                                aria-label="Star creativetimofficial/material-dashboard on GitHub">Star</a>
-                        </li>
-                        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-                            <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
-                                <div class="sidenav-toggler-inner">
-                                    <i class="sidenav-toggler-line"></i>
-                                    <i class="sidenav-toggler-line"></i>
-                                    <i class="sidenav-toggler-line"></i>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item px-3 d-flex align-items-center">
-                            <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
-                                <i class="material-symbols-rounded fixed-plugin-button-nav">settings</i>
-                            </a>
-                        </li>
-                        <!-- Notification Panel -->
-                        <li class="nav-item dropdown pe-3 d-flex align-items-center">
-                            <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="material-symbols-rounded">notifications</i>
-                                <span class="badge bg-danger" id="notification-count">0</span>
-                            </a>
-                            <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
-                                aria-labelledby="dropdownMenuButton" id="notification-list">
-                                <!-- Notifications will be appended here -->
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+                
         </nav>
         <!-- End Navbar -->
         <div class="container-fluid py-2">
@@ -314,21 +247,15 @@
                                                         @method('PUT')
                                                         <select name="status"
                                                             class="form-control form-control-sm">
-                                                            <option value="pending"
-                                                                {{ $order->status == 'pending' ? 'selected' : '' }}>Pending
-                                                            </option>
+
                                                             <option value="processing"
                                                                 {{ $order->status == 'processing' ? 'selected' : '' }}>
                                                                 Processing</option>
-                                                            <option value="shipped"
-                                                                {{ $order->status == 'shipped' ? 'selected' : '' }}>Shipped
-                                                            </option>
-                                                            <option value="delivered"
-                                                                {{ $order->status == 'delivered' ? 'selected' : '' }}>
-                                                                Delivered</option>
-                                                            <option value="cancelled"
-                                                                {{ $order->status == 'cancelled' ? 'selected' : '' }}>
-                                                                Cancelled</option>
+                                                            
+                                                           
+                                                            <option value="finished"
+                                                                {{ $order->status == 'finished' ? 'selected' : '' }}>
+                                                                finished</option>
                                                         </select>
                                                         <button type="submit" class="btn btn-info btn-sm">Update</button>
                                                     </form>
@@ -341,7 +268,7 @@
                                                         <button type="submit"
                                                             class="btn btn-link text-danger text-sm me-0"
                                                             onclick="return confirm('Apakah Anda yakin ingin menghapus order ini?')"><i
-                                                                class="material-icons text-sm me-2">delete</i>Hapus</button>
+                                                                class="material-icons text-sm me-2"></i>Hapus</button>
                                                     </form>
                                                 </div>
                                             </td>
@@ -354,152 +281,14 @@
                     </div>
                 </div>
             </div>
-            <footer class="footer py-4  ">
-                <div class="container-fluid">
-                    <div class="row align-items-center justify-content-lg-between">
-                        <div class="col-lg-6 mb-lg-0 mb-4">
-                            <div class="copyright text-center text-sm text-muted text-lg-start">
-                                ©
-                                <script>
-                                    document.write(new Date().getFullYear())
-                                </script>,
-                                made with <i class="fa fa-heart"></i> by
-                                <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative
-                                    Tim</a>
-                                for a better web.
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                                <li class="nav-item">
-                                    <a href="https://www.creative-tim.com" class="nav-link text-muted"
-                                        target="_blank">Creative Tim</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted"
-                                        target="_blank">About Us</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="https://www.creative-tim.com/blog" class="nav-link text-muted"
-                                        target="_blank">Blog</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted"
-                                        target="_blank">License</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+            
         </div>
     </main>
-    <div class="fixed-plugin">
-        <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
-            <i class="material-symbols-rounded py-2">settings</i>
-        </a>
-        <div class="card shadow-lg">
-            <div class="card-header pb-0 pt-3">
-                <div class="float-start">
-                    <h5 class="mt-3 mb-0">Material UI Configurator</h5>
-                    <p>See our dashboard options.</p>
-                </div>
-                <div class="float-end mt-4">
-                    <button class="btn btn-link text-dark p-0 fixed-plugin-close-button">
-                        <i class="material-symbols-rounded">clear</i>
-                    </button>
-                </div>
-                <!-- End Toggle Button -->
-            </div>
-            <hr class="horizontal dark my-1">
-            <div class="card-body pt-sm-3 pt-0">
-                <!-- Sidebar Backgrounds -->
-                <div>
-                    <h6 class="mb-0">Sidebar Colors</h6>
-                </div>
-                <a href="javascript:void(0)" class="switch-trigger background-color">
-                    <div class="badge-colors my-2 text-start">
-                        <span class="badge filter bg-gradient-primary" data-color="primary"
-                            onclick="sidebarColor(this)"></span>
-                        <span class="badge filter bg-gradient-dark active" data-color="dark"
-                            onclick="sidebarColor(this)"></span>
-                        <span class="badge filter bg-gradient-info" data-color="info"
-                            onclick="sidebarColor(this)"></span>
-                        <span class="badge filter bg-gradient-success" data-color="success"
-                            onclick="sidebarColor(this)"></span>
-                        <span class="badge filter bg-gradient-warning" data-color="warning"
-                            onclick="sidebarColor(this)"></span>
-                        <span class="badge filter bg-gradient-danger" data-color="danger"
-                            onclick="sidebarColor(this)"></span>
-                    </div>
-                </a>
-                <!-- Sidenav Type -->
-                <div class="mt-3">
-                    <h6 class="mb-0">Sidenav Type</h6>
-                    <p class="text-sm">Choose between different sidenav types.</p>
-                </div>
-                <div class="d-flex">
-                    <button class="btn bg-gradient-dark px-3 mb-2" data-class="bg-gradient-dark"
-                        onclick="sidebarType(this)">Dark</button>
-                    <button class="btn bg-gradient-dark px-3 mb-2 ms-2" data-class="bg-transparent"
-                        onclick="sidebarType(this)">Transparent</button>
-                    <button class="btn bg-gradient-dark px-3 mb-2  active ms-2" data-class="bg-white"
-                        onclick="sidebarType(this)">White</button>
-                </div>
-                <p class="text-sm d-xl-none d-block mt-2">You can change the sidenav type just on desktop view.</p>
-                <!-- Navbar Fixed -->
-                <div class="mt-3 d-flex">
-                    <h6 class="mb-0">Navbar Fixed</h6>
-                    <div class="form-check form-switch ps-0 ms-auto my-auto">
-                        <input class="form-check-input mt-1 ms-auto" type="checkbox" id="navbarFixed"
-                            onclick="navbarFixed(this)">
-                    </div>
-                </div>
-                <hr class="horizontal dark my-3">
-                <div class="mt-2 d-flex">
-                    <h6 class="mb-0">Light / Dark</h6>
-                    <div class="form-check form-switch ps-0 ms-auto my-auto">
-                        <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version"
-                            onclick="darkMode(this)">
-                    </div>
-                </div>
-                <hr class="horizontal dark my-sm-4">
-                <a class="btn bg-gradient-info w-100"
-                    href="https://www.creative-tim.com/product/material-dashboard-pro">Free Download</a>
-                <a class="btn btn-outline-dark w-100"
-                    href="https://www.creative-tim.com/learning-lab/bootstrap/overview/material-dashboard">View
-                    documentation</a>
-                <div class="w-100 text-center">
-                    <a class="github-button" href="https://github.com/creativetimofficial/material-dashboard"
-                        data-icon="octicon-star" data-size="large" data-show-count="true"
-                        aria-label="Star creativetimofficial/material-dashboard on GitHub">Star</a>
-                    <h6 class="mt-3">Thank you for sharing!</h6>
-                    <a href="https://twitter.com/intent/tweet?text=Check%20Material%20UI%20Dashboard%20made%20by%20%40CreativeTim%20%23webdesign%20%23dashboard%20%23bootstrap5&url=https%3A%2F%2Fwww.creative-tim.com%2Fproduct%2Fsoft-ui-dashboard"
-                        class="btn btn-dark mb-0 me-2" target="_blank">
-                        <i class="fab fa-twitter me-1" aria-hidden="true"></i> Tweet
-                    </a>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.creative-tim.com/product/material-dashboard"
-                        class="btn btn-dark mb-0 me-2" target="_blank">
-                        <i class="fab fa-facebook-square me-1" aria-hidden="true"></i> Share
-                    </a>
-                </div>
-            </div>
-        </div>
+
+    
     </div>
 
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-        <div id="notificationToast" class="toast" role="alert" aria-live="polite" aria-atomic="true"
-            data-bs-delay="5000">
-            <div class="toast-header">
-                <strong class="me-auto">Notifikasi</strong>
-                <small class="text-muted">Baru saja</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                <!-- Notification message will be displayed here -->
-            </div>
-        </div>
-    </div>
+    
 
     <!--   Core JS Files   -->
     <script src="{{ asset('admin/admintemplate/js/core/popper.min.js') }}"></script>

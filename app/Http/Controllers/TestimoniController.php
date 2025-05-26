@@ -68,7 +68,7 @@ class TestimoniController extends Controller
      */
     public function edit(Testimoni $testimoni)
     {
-        return view('admin.testimonis.edit', compact('testimoni')); // Kirim ke view admin
+        return view('testimoni.edit', compact('testimoni')); // Kirim ke view admin
     }
 
     /**
@@ -89,7 +89,7 @@ class TestimoniController extends Controller
 
         $testimoni->update($request->all());
 
-        return redirect()->route('admin.testimoni.index')->with('success', 'Testimoni berhasil diperbarui.'); // Redirect ke index admin
+        return redirect()->route('testimoni.public')->with('success', 'Testimoni berhasil diperbarui.'); // Redirect ke index admin
     }
 
     /**

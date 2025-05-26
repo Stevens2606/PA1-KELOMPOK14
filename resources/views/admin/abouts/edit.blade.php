@@ -2,138 +2,188 @@
 <html lang="en">
 
 <head>
-    @include('admin.head')
-    <title>Edit About Us</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('admin/admintemplate/img/apple-icon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('admin/admintemplate/img/favicon.png') }}">
+    <title>
+        Edit About Us
+    </title>
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css"
+        href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" />
+    <!-- Nucleo Icons -->
+    <link href="{{ asset('admin/admintemplate/css/nucleo-icons.css') }}" rel="stylesheet" />
+    <link href="{{ asset('admin/admintemplate/css/nucleo-svg.css') }}" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <!-- Material Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <!-- CSS Files -->
+    <link id="pagestyle" href="{{ asset('admin/admintemplate/css/material-dashboard.css?v=3.2.0') }}" rel="stylesheet" />
+    <style>
+        /* Custom CSS untuk tampilan lebih sejuk */
+        :root {
+            --primary-color: #3498db;
+            /* Contoh warna biru */
+            --primary-color-darker: #2980b9;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #495057;
+        }
+
+        .bg-gradient-primary {
+            background-image: linear-gradient(195deg, var(--primary-color) 0%, var(--primary-color-darker) 100%);
+            /* Menggunakan warna biru */
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-color-darker);
+            border-color: var(--primary-color-darker);
+        }
+
+
+        .card {
+            box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);
+            border: 0;
+            border-radius: 0.75rem;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem; /* Tambahkan margin bawah untuk spacing */
+        }
+    </style>
 </head>
 
-<body class="sb-nav-fixed">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
-        <!-- Sidebar Toggle-->
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
-                class="fas fa-bars"></i></button>
-        <!-- Navbar Search-->
-        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-            <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
-                    aria-describedby="btnNavbarSearch" />
-                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-            </div>
-        </form>
-        <!-- Navbar-->
-        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                    data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">Settings</a></li>
-                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
-                    <li>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="dropdown-item">Logout</button>
-                        </form>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
-    <div id="layoutSidenav">
-        @include('admin.sidebar')
-        <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid px-4">
-                    <h1 class="mt-4">Edit About Us</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('admin.abouts.index') }}">Daftar About Us</a></li>
-                        <li class="breadcrumb-item active">Edit About Us</li>
+<body class="g-sidenav-show  bg-gray-100">
+    @include('admin.sidebar')
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+        <!-- Navbar -->
+        <nav class="navbar navbar-main navbar-expand-lg px-0 mx-3 shadow-none border-radius-xl" id="navbarBlur"
+            data-scroll="true">
+            <div class="container-fluid py-1 px-3">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark"
+                                href="javascript:;">Pages</a></li>
+                        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Edit About Us</li>
                     </ol>
-
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-edit me-1"></i>
-                            Edit About Us
+                    <h6 class="font-weight-bolder mb-0">Edit About Us</h6>
+                </nav>
+                <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+                    <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                        <div class="input-group input-group-outline">
+                            <label class="form-label">Type here...</label>
+                            <input type="text" class="form-control">
                         </div>
-                        <div class="card-body">
-                            @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
+                    </div>
+                    <ul class="navbar-nav d-flex align-items-center  justify-content-end">
+                         {{-- Kode Navbar --}}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- End Navbar -->
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card my-4">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                                <h6 class="text-white text-capitalize ps-3">Edit About Us</h6>
                             </div>
-                            @endif
+                        </div>
+                        <div class="card-body px-0 pb-2">
+                            <div class="p-3">
+                                <form action="{{ route('admin.abouts.update', $about->id) }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PUT')
 
-                            <form action="{{ route('admin.abouts.update', $about->id) }}" method="POST">
-                                @csrf
-                                @method('PUT')
+                                    <div class="form-group">
+                                        <label for="user_id">User ID</label>
+                                        <input type="number" name="user_id" id="user_id" class="form-control"
+                                            value="{{ $about->user_id }}" required>
+                                    </div>
 
-                                <div class="mb-3">
-                                    <label for="title" class="form-label">Judul</label>
-                                    <input type="text" class="form-control" id="title" name="title"
-                                        value="{{ $about->title }}" required>
-                                </div>
+                                    <div class="form-group">
+                                        <label for="video_url">Video URL</label>
+                                        <input type="url" name="video_url" id="video_url" class="form-control"
+                                            value="{{ $about->video_url }}">
+                                    </div>
 
-                                <div class="mb-3">
-                                    <label for="description" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="description" name="description"
-                                        rows="3">{{ $about->description }}</textarea>
-                                </div>
+                                    <div class="form-group">
+                                        <label for="content">Content</label>
+                                        <textarea name="content" id="content" class="form-control" rows="4">{{ $about->content }}</textarea>
+                                    </div>
 
-                                <div class="mb-3">
-                                    <label for="mission" class="form-label">Misi</label>
-                                    <textarea class="form-control" id="mission" name="mission"
-                                        rows="3">{{ $about->mission }}</textarea>
-                                </div>
+                                    <div class="form-group">
+                                        <label for="image_path">Current Image</label><br>
+                                        @if($about->image_path)
+                                            <img src="{{ asset('storage/' . $about->image_path) }}" alt="Current Image" style="max-width: 200px;"><br><br>
+                                        @else
+                                            No Image Available
+                                        @endif
+                                    </div>
 
-                                <div class="mb-3">
-                                    <label for="vision" class="form-label">Visi</label>
-                                    <textarea class="form-control" id="vision" name="vision"
-                                        rows="3">{{ $about->vision }}</textarea>
-                                </div>
+                                    <div class="form-group">
+                                        <label for="image_path">Image Path</label>
+                                        <input type="file" name="image_path" id="image_path" class="form-control">
+                                    </div>
 
-                                <div class="mb-3">
-                                    <label for="video_url" class="form-label">Video URL</label>
-                                    <input type="text" class="form-control" id="video_url" name="video_url"
-                                        value="{{ $about->video_url }}">
-                                </div>
-
-                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                                <a href="{{ route('admin.abouts.index') }}" class="btn btn-secondary">Batal</a>
-                            </form>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <a href="{{ route('admin.abouts.index') }}" class="btn btn-secondary">Cancel</a>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </main>
-            <footer class="py-4 bg-light mt-auto">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright © Your Website 2023</div>
-                        <div>
-                            <a href="#">Privacy Policy</a>
-                            ·
-                            <a href="#">Terms & Conditions</a>
+            </div>
+            <footer class="footer py-4  ">
+                <div class="container-fluid">
+                    <div class="row align-items-center justify-content-lg-between">
+                        <div class="col-lg-6 mb-lg-0 mb-4">
+                             {{-- Footer --}}
                         </div>
                     </div>
                 </div>
             </footer>
         </div>
+    </main>
+    <div class="fixed-plugin">
+         {{-- Plugin --}}
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-    <script src="{{ asset('js/scripts.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-        crossorigin="anonymous"></script>
-    <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
+    <!--   Core JS Files   -->
+    <script src="{{ asset('admin/admintemplate/js/core/popper.min.js') }}"></script>
+    <script src="{{ asset('admin/admintemplate/js/core/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('admin/admintemplate/js/plugins/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('admin/admintemplate/js/plugins/smooth-scrollbar.min.js') }}"></script>
+    <script>
+        var win = navigator.platform.indexOf('Win') > -1;
+        if (win && document.querySelector('#sidenav-scrollbar')) {
+            var options = {
+                damping: '0.5'
+            }
+            Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+        }
+    </script>
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="{{ asset('admin/admintemplate/js/material-dashboard.min.js?v=3.2.0') }}"></script>
 </body>
 
 </html>

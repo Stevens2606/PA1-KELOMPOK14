@@ -2,24 +2,159 @@
 <html lang="en">
 
 <head>
-    @include('admin.head')
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
     <title>Edit Reservasi</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- Favicons -->
+    <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
+    <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #43cea2;
+            --light-gray: #f8f9fa;
+            --text-color: #343a40;
+            --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        #layoutSidenav_content {
+            padding: 30px;
+        }
+
+        .card {
+            box-shadow: var(--box-shadow);
+            border: none;
+            border-radius: 15px;
+        }
+
+        .card-header {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: #fff;
+            font-weight: 600;
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-control {
+            border-radius: 8px;
+            transition: border-color 0.2s ease-in-out;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(var(--primary-color-rgb), .25);
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-weight: 600;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .btn-primary:hover,
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #5567ca;
+            border-color: #5567ca;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #5a6268;
+        }
+
+        .mt-4 {
+            color: var(--text-color);
+        }
+
+        .mb-4 {
+            width: 100%;
+        }
+
+        .me-1 {
+            color: var(--text-color);
+        }
+
+        .sb-sidenav-dark .sb-sidenav-menu .nav-link {
+            color: white;
+        }
+        .sb-sidenav-menu .nav-link{
+            color:black;
+        }
+        
+
+    </style>
+
 </head>
+
 
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+        <a class="navbar-brand ps-3" href="index.html">Quality Time</a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                 class="fas fa-bars"></i></button>
         <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-            <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
-                    aria-describedby="btnNavbarSearch" />
-                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-            </div>
+            
         </form>
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
@@ -48,11 +183,8 @@
             <main>
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Edit Reservasi</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('reservations.index') }}">Daftar Reservasi</a></li>
-                        <li class="breadcrumb-item active">Edit Reservasi</li>
-                    </ol>
+                    
+                    
 
                     <div class="card mb-4">
                         <div class="card-header">
@@ -111,12 +243,14 @@
                                         rows="3">{{ $reservation->notes }}</textarea>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary">Update</button>
-                                <a href="{{ route('reservations.index') }}" class="btn btn-secondary">Batal</a>
+                                <div class="d-flex justify-content-between">
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                    <a href="{{ route('reservations.index') }}" class="btn btn-secondary">Batal</a>
+                                </div>
                             </form>
                         </div>
                     </div>
-                  </div>
+                </div>
             </main>
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">

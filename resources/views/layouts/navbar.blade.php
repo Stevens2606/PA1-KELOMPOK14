@@ -8,7 +8,7 @@
 <li><a href="{{ route('contact.index') }}">Contact</a></li>
 <li><a href="{{ route('reservations.index') }}">Reservasi</a></li>
 <li><a href="{{ route('orders.index') }}">Order</a></li>
-<li><a href="{{ route('cart.index') }}">Cart</a></li>
+<li><a href="{{ route('cart.index') }}" >Cart</a></li>
 
         @auth
             @if (Auth::user()->isAdmin())

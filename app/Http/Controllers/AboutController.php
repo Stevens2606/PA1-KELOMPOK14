@@ -4,22 +4,37 @@ namespace App\Http\Controllers;
 
 use App\Models\About;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; // Import Auth facade
-use Illuminate\Support\Facades\Validator; // Import Validator facade
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AboutController extends Controller
 {
+
+    public function showPublic()
+    {
+        $about = About::first(); // Ambil entri pertama About Us dari database
+
+        // Atau, jika Anda ingin mengambil entri terbaru:
+        // $about = About::latest()->first();
+
+        return view('about.index    ', ['about' => $about]);
+    }
     /**
-     * Display a listing of the resource. (Untuk Admin - Daftar About Us)
+     * Menampilkan daftar "About Us" (halaman index).
+     *
+     * @return \Illuminate\View\View
      */
     public function index()
     {
         $abouts = About::all();
-        return view('admin.abouts.index', compact('abouts'));
+
+        return view('admin.abouts.index', ['abouts' => $abouts]);
     }
 
     /**
-     * Show the form for creating a new resource. (Untuk Admin - Form Tambah About Us)
+     * Menampilkan form untuk membuat entri "About Us" yang baru.
+     *
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -27,53 +42,46 @@ class AboutController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage. (Untuk Admin - Simpan About Us Baru)
+     * Menyimpan entri "About Us" yang baru dibuat ke database.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'mission' => 'nullable|string',
-            'vision' => 'nullable|string',
-            'team' => 'nullable|array', // Ubah validasi menjadi array
-            'values' => 'nullable|array', // Ubah validasi menjadi array
-            'video_url' => 'nullable|url|max:255',
+        // Validasi input
+        $request->validate([
+            'content' => 'required|string',
+            'video_url' => 'nullable|url',
+            'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+        $data = [
+            'content' => $request->input('content'),
+            'video_url' => $request->input('video_url'),
+            'user_id' => Auth::id(),  // Dapatkan ID user yang sedang login
+        ];
+
+        // Handle upload gambar
+        if ($request->hasFile('image_path')) {
+            $image = $request->file('image_path');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $path = $image->storeAs('public/abouts', $filename);
+            $data['image_path'] = 'abouts/' . $filename;
         }
 
-        try {
-            About::create([
-                'user_id' => Auth::id(), // Set user_id saat membuat About baru
-                'title' => $request->title,
-                'description' => $request->description,
-                'mission' => $request->mission,
-                'vision' => $request->vision,
-                'team' => $request->team, // Tidak perlu json_encode lagi
-                'values' => $request->values, // Tidak perlu json_encode lagi
-                'video_url' => $request->video_url,
-            ]);
+        // Membuat entri "About Us" yang baru
+        About::create($data);
 
-            return redirect()->route('admin.abouts.index')
-                ->with('success', 'About section created successfully.');
-        } catch (\Exception $e) {
-            return back()->withErrors(['message' => 'Failed to create About section. ' . $e->getMessage()])->withInput();
-        }
+        // Redirect
+        return redirect()->route('admin.abouts.index')->with('success', 'Entri "About Us" berhasil ditambahkan.');
     }
 
     /**
-     * Display the specified resource. (Untuk Admin - Detail About Us)
-     */
-    public function show(About $about)
-    {
-        return view('admin.abouts.show', compact('about'));
-    }
-
-    /**
-     * Show the form for editing the specified resource. (Untuk Admin - Form Edit About Us)
+     * Menampilkan form untuk mengedit entri "About Us" yang ada.
+     *
+     * @param  \App\Models\About  $about
+     * @return \Illuminate\View\View
      */
     public function edit(About $about)
     {
@@ -81,61 +89,61 @@ class AboutController extends Controller
     }
 
     /**
-     * Update the specified resource in storage. (Untuk Admin - Update About Us)
+     * Memperbarui entri "About Us" yang ada di database.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\About  $about
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, About $about)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'mission' => 'nullable|string',
-            'vision' => 'nullable|string',
-            'team' => 'nullable|array', // Ubah validasi menjadi array
-            'values' => 'nullable|array', // Ubah validasi menjadi array
-            'video_url' => 'nullable|url|max:255',
+        // Validasi input
+        $request->validate([
+            'content' => 'required|string',
+            'video_url' => 'nullable|url',
+            'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+        $data = [
+            'content' => $request->input('content'),
+            'video_url' => $request->input('video_url'),
+        ];
+
+        // Handle upload gambar
+        if ($request->hasFile('image_path')) {
+            // Hapus gambar lama jika ada
+            if ($about->image_path) {
+                Storage::delete('public/' . $about->image_path);
+            }
+
+            $image = $request->file('image_path');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $path = $image->storeAs('public/abouts', $filename);
+            $data['image_path'] = 'abouts/' . $filename;
         }
 
-        try {
-            $about->update([
-                'title' => $request->title,
-                'description' => $request->description,
-                'mission' => $request->mission,
-                'vision' => $request->vision,
-                'team' => $request->team, // Tidak perlu json_encode lagi
-                'values' => $request->values, // Tidak perlu json_encode lagi
-                'video_url' => $request->video_url,
-            ]);
-            return redirect()->route('admin.abouts.index')
-                ->with('success', 'About section updated successfully.');
-        } catch (\Exception $e) {
-            return back()->withErrors(['message' => 'Failed to update About section. ' . $e->getMessage()])->withInput();
-        }
+        // Memperbarui entri "About Us"
+        $about->update($data);
+
+        // Redirect
+        return redirect()->route('admin.abouts.index')->with('success', 'Entri "About Us" berhasil diperbarui.');
     }
 
     /**
-     * Remove the specified resource from storage. (Untuk Admin - Hapus About Us)
+     * Menghapus entri "About Us" dari database.
+     *
+     * @param  \App\Models\About  $about
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(About $about)
     {
-        try {
-            $about->delete();
-            return redirect()->route('admin.abouts.index')
-                ->with('success', 'About section deleted successfully.');
-        } catch (\Exception $e) {
-            return back()->withErrors(['message' => 'Failed to delete About section. ' . $e->getMessage()]);
+        // Hapus gambar jika ada
+        if ($about->image_path) {
+            Storage::delete('public/' . $about->image_path);
         }
-    }
 
-    /**
-     * Display the About Us section on the public website. (Untuk Tampilan Publik)
-     */
-    public function showAboutPage()
-    {
-        $about = About::first(); // Ambil entri About Us pertama (atau gunakan pagination jika ada banyak)
-        return view('about.index', compact('about'));
+        $about->delete();
+
+        return redirect()->route('admin.abouts.index')->with('success', 'Entri "About Us" berhasil dihapus.');
     }
 }

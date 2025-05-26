@@ -4,30 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\About; // Import class Abouts
+
 
 class About extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id', // Tambahkan user_id ke fillable
-        'title',
-        'description',
-        'mission',
-        'vision',
-        'team',
-        'values',
+        'content',
         'video_url',
+        'image_path',
+        'user_id',
     ];
-
-    protected $casts = [
-        'team' => 'array',
-        'values' => 'array',
-    ];
-
-    // Definisikan relasi dengan model User
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

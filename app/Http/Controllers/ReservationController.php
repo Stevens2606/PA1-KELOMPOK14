@@ -13,7 +13,8 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        $reservations = Reservation::all(); // Mengambil semua data reservasi
+        // Ambil reservasi hanya untuk user yang login
+        $reservations = Reservation::where('user_id', Auth::id())->get();
         return view('reservations.index', compact('reservations'));
     }
 
@@ -38,8 +39,9 @@ class ReservationController extends Controller
             'number_of_guests' => 'required|integer|min:1',
         ]);
 
+        // Membuat reservasi dengan data dari request dan user_id
         $reservation = new Reservation($request->all());
-        $reservation->user_id = Auth::id(); // Set user_id
+        $reservation->user_id = Auth::id();
         $reservation->save();
 
         return redirect()->route('reservations.index')->with('success', 'Reservasi berhasil dibuat.');
@@ -50,6 +52,10 @@ class ReservationController extends Controller
      */
     public function show(Reservation $reservation)
     {
+        // Pastikan user yang mencoba melihat reservasi adalah pemiliknya
+        if ($reservation->user_id != Auth::id()) {
+            abort(403, 'Unauthorized action.'); // Atau redirect ke halaman lain
+        }
         return view('reservations.show', compact('reservation'));
     }
 
@@ -58,6 +64,10 @@ class ReservationController extends Controller
      */
     public function edit(Reservation $reservation)
     {
+        // Pastikan user yang mencoba mengedit reservasi adalah pemiliknya
+        if ($reservation->user_id != Auth::id()) {
+            abort(403, 'Unauthorized action.'); // Atau redirect ke halaman lain
+        }
         return view('reservations.edit', compact('reservation'));
     }
 
@@ -66,6 +76,11 @@ class ReservationController extends Controller
      */
     public function update(Request $request, Reservation $reservation)
     {
+        // Pastikan user yang mencoba mengupdate reservasi adalah pemiliknya
+        if ($reservation->user_id != Auth::id()) {
+            abort(403, 'Unauthorized action.'); // Atau redirect ke halaman lain
+        }
+
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
@@ -84,10 +99,30 @@ class ReservationController extends Controller
      */
     public function destroy(Reservation $reservation)
     {
+        // Pastikan user yang mencoba menghapus reservasi adalah pemiliknya
+        if ($reservation->user_id != Auth::id()) {
+            abort(403, 'Unauthorized action.'); // Atau redirect ke halaman lain
+        }
+
         $reservation->delete();
 
-        return redirect()->route('admin.reservations.index')->with('success', 'Reservasi berhasil dihapus.');
+        return redirect()->route('reservations.index')->with('success', 'Reservasi berhasil dihapus.');
     }
+
+    public function cancel(Reservation $reservation)
+    {
+        // Pastikan user yang mencoba membatalkan reservasi adalah pemiliknya
+        if ($reservation->user_id != Auth::id()) {
+            abort(403, 'Unauthorized action.'); // Atau redirect ke halaman lain
+        }
+
+        $reservation->status = 'cancelled';
+        $reservation->save();
+
+        return redirect()->route('reservations.index')->with('success', 'Reservasi berhasil dibatalkan.');
+    }
+
+    // **ADMIN CONTROLLERS**
 
     public function indexAdmin()
     {
@@ -102,26 +137,14 @@ class ReservationController extends Controller
 
     public function confirm(Reservation $reservation)
     {
-    
         $reservation->status = 'confirmed';
         $reservation->save();
 
         return redirect()->route('admin.reservations.index')->with('success', 'Reservasi berhasil dikonfirmasi.');
     }
 
-    public function cancel(Reservation $reservation)
-    {
-        
-        $reservation->status = 'cancelled';
-        $reservation->save();
-
-        return redirect()->route('admin.reservations.index')->with('success', 'Reservasi berhasil dibatalkan.');
-    }
-
     public function destroyAdmin(Reservation $reservation)
     {
-        
-
         $reservation->delete();
 
         return redirect()->route('admin.reservations.index')->with('success', 'Reservasi berhasil dihapus.');

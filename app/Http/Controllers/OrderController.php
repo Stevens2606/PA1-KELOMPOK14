@@ -42,44 +42,52 @@ class OrderController extends Controller
     }
 
     public function store(Request $request)
-{
-    try {
-        $validatedData = $request->validate([
-            'menu_id' => 'required|exists:menus,id',
-            'quantity' => 'required|integer|min:1',
-        ]);
+    {
+        try {
+            $validatedData = $request->validate([
+                'menu_id' => 'required|exists:menus,id',
+                'quantity' => 'required|integer|min:1',
+            ]);
 
-        $menu = Menu::findOrFail($validatedData['menu_id']);
-        $order = new Order();
-        $order->user_id = Auth::id();
-        $order->status = self::STATUS_PENDING;
-        $order->total_price = 0; // Inisialisasi total_price
-        $order->save();
+            $menu = Menu::findOrFail($validatedData['menu_id']);
+            $order = new Order();
+            $order->user_id = Auth::id();
+            $order->status = self::STATUS_PENDING;
+            $order->total_price = 0; // Inisialisasi total_price
+            $order->save();
 
-        // Buat OrderItem
-        $orderItem = new OrderItem();
-        $orderItem->order_id = $order->id;
-        $orderItem->menu_id = $menu->id;
-        $orderItem->quantity = $validatedData['quantity'];
-        $orderItem->price = $menu->harga;
-        $orderItem->save();
+            // Buat OrderItem
+            $orderItem = new OrderItem();
+            $orderItem->order_id = $order->id;
+            $orderItem->menu_id = $menu->id;
+            $orderItem->quantity = $validatedData['quantity'];
+            $orderItem->price = $menu->harga;
+            $orderItem->save();
 
-        // Hitung Total Harga
-        $totalPrice = $menu->harga * $validatedData['quantity'];
-        $order->total_price = $totalPrice;
-        $order->save();
+            // Hitung Total Harga
+            $totalPrice = $menu->harga * $validatedData['quantity'];
+            $order->total_price = $totalPrice;
+            $order->save();
 
-        return redirect()->route('orders.index')->with('success', 'Order berhasil dibuat!');
+            return redirect()->route('orders.index')->with('success', 'Order berhasil dibuat!');
 
-    } catch (\Exception $e) {
-        Log::error("Error creating order: " . $e->getMessage() . "\n" . $e->getTraceAsString());
-        return back()->with('error', 'Terjadi kesalahan saat membuat order. Silakan coba lagi.');
+        } catch (\Exception $e) {
+            Log::error("Error creating order: " . $e->getMessage() . "\n" . $e->getTraceAsString());
+            return back()->with('error', 'Terjadi kesalahan saat membuat order. Silakan coba lagi.');
+        }
     }
-}
 
     public function show(Order $order)
     {
-        return view('admin.orders.show', compact('order'));
+        // Pastikan hanya user yang memiliki order yang bisa melihat detail
+        if (auth()->user()->id !== $order->user_id) {
+            abort(403, 'Unauthorized action.'); // Return 403 - Access Denied
+        }
+
+        //Load orderItems relationship
+        $order->load('orderItems.menu');
+
+        return view('order.show', compact('order'));
     }
 
     public function edit(Order $order)
@@ -160,9 +168,27 @@ class OrderController extends Controller
         return $this->updateOrderStatus($order, self::STATUS_DELIVERED);
     }
 
-    public function cancel(Order $order)
+    public function cancel(Request $request, Order $order)
     {
-        return $this->updateOrderStatus($order, self::STATUS_CANCELLED);
+        // Pastikan hanya user yang memiliki order yang bisa membatalkan
+        if (auth()->user()->id !== $order->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Hanya bisa dibatalkan jika statusnya pending
+        if ($order->status !== self::STATUS_PENDING) {
+            return back()->with('error', 'Order tidak dapat dibatalkan karena statusnya sudah ' . $order->status);
+        }
+
+        try {
+            $order->status = self::STATUS_CANCELLED;
+            $order->save();
+
+            return redirect()->route('orders.index')->with('success', 'Order berhasil dibatalkan.');
+        } catch (\Exception $e) {
+            Log::error("Error cancelling order: " . $e->getMessage() . "\n" . $e->getTraceAsString());
+            return back()->with('error', 'Terjadi kesalahan saat membatalkan order. Silakan coba lagi.');
+        }
     }
 
       // Method ADMIN di hapus karena sama dengan yang di atas

@@ -295,9 +295,6 @@
                                                         <a class="btn btn-link text-dark px-3 mb-0"
                                                             href="{{ route('admin.testimoni.show', $testimoni->id) }}"><i
                                                                 class="material-icons text-sm me-2"></i>Lihat</a>
-                                                        <a class="btn btn-link text-warning px-3 mb-0"
-                                                            href="{{ route('admin.testimoni.edit', $testimoni->id) }}"><i
-                                                                
                                                         <form
                                                             action="{{ route('admin.testimoni.destroy', $testimoni->id) }}"
                                                             method="POST" style="display: inline;">

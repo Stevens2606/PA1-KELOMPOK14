@@ -23,7 +23,7 @@
     <!-- Vendor CSS Files -->
     <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/aos/aos.js') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
 
@@ -31,11 +31,60 @@
     <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
 
     <style>
-        .menu-item .order-button {
-            background-color: #4CAF50;
-            /* Warna hijau */
+        /* Variabel Warna (Konsisten dengan Halaman Order) */
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #43cea2;
+            --light-gray: #f8f9fa;
+            --text-color: #343a40;
+            --box-shadow: 0 0.5rem 1rem rgba(232, 223, 223, 0.15);
+            --white-color: #fff;
+            --table-row-color: #f2f2f2;
+            /* Very Light Gray */
+        }
+
+        #menu {
+            padding: 50px 0;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: var(--white-color);
+        }
+
+        .menu-item {
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .menu-item:hover {
+            transform: scale(1.03);
+        }
+
+        .menu-img-container {
+            width: 100%;
+            /* Lebar 100% dari container */
+            height: 200px;
+            /* Tinggi tetap */
+            overflow: hidden;
+            /* Memastikan gambar tidak keluar dari container */
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .menu-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Memastikan gambar memenuhi area dan dipotong jika perlu */
+            transition: transform 0.3s ease;
+        }
+
+        .menu-item:hover .menu-img {
+            transform: scale(1.1);
+        }
+
+        /* Tombol Order */
+        .order-button {
+            background-color: var(--primary-color);
             border: none;
-            color: white;
+            color: var(--white-color);
             padding: 8px 16px;
             text-align: center;
             text-decoration: none;
@@ -44,51 +93,76 @@
             margin-top: 10px;
             cursor: pointer;
             border-radius: 5px;
+            transition: background-color 0.3s ease;
         }
 
-        .menu-item .order-button:hover {
-            background-color: #3e8e41;
-            /* Warna hijau lebih gelap saat dihover */
+        .order-button:hover {
+            background-color: var(--secondary-color);
+            color: var(--white-color);
         }
 
         .quantity-input {
             width: 50px;
             padding: 5px;
             text-align: center;
+            margin-left: 5px;
         }
 
-        /* Style untuk container jumlah pesanan */
-        .quantity-container {
-            display: flex;
-            align-items: center;
-            /* Vertikal tengah */
-            justify-content: center;
-            /* Horisontal tengah */
-            margin-bottom: 10px;
-            /* Spasi di bawah */
-        }
-
-        /* Style untuk label "Jumlah" */
-        .quantity-label {
-            margin-right: 5px;
-            /* Spasi di kanan */
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        /* Style untuk button group */
         .button-group {
             display: flex;
-            /* Menggunakan Flexbox */
-            justify-content: center;
-            /* Mengatur tombol agar berada di tengah horizontal */
+            justify-content: space-around;
             margin-top: 10px;
-            /* Memberi jarak dari elemen di atasnya */
         }
 
-        .button-group .order-button {
+        .section-header h2,
+        .section-header p {
+            color: var(--white-color);
+            text-align: center;
+        }
+
+        .nav-tabs .nav-link {
+            color: var(--white-color);
+            border: none;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: var(--light-gray);
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-button {
+            background-color: var(--light-gray);
+            /* Atau warna lain yang sesuai */
+            border: none;
+            color: var(--text-color);
+            /* Atau warna lain yang sesuai */
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
             margin: 0 5px;
-            /* Memberi jarak antar tombol */
+        }
+
+        .quantity-button:hover {
+            background-color: #ddd;
+            /* Efek hover */
+        }
+
+        .quantity-input {
+            width: 40px;
+            /* Lebar input */
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
     </style>
 
@@ -111,7 +185,7 @@
 
     <main id="main">
         <!-- ======= Menu Section ======= -->
-        <section id="menu" class="menu dark-background">
+        <section id="menu">
             <div class="container">
 
                 {{-- Alert jika sukses --}}
@@ -129,221 +203,266 @@
 
                 <ul class="nav nav-tabs d-flex justify-content-center" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#menu-starters">
+                        <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#menu-food">
                             <h4>FOOD</h4>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-breakfast">
+                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-dimsum">
                             <h4>DIMSUM</h4>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-lunch">
+                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-snack">
                             <h4>SNACK</h4>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-dinner">
+                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-drinks">
                             <h4>DRINKS</h4>
                         </a>
                     </li>
                 </ul>
 
                 <div class="tab-content">
-                    <div class="tab-pane fade show active" id="menu-starters">
+                    <div class="tab-pane fade show active" id="menu-food">
                         <div class="tab-header text-center">
                             <p>Menu</p>
                             <h3>FOOD</h3>
                         </div>
-
-                        <div class="row gy-5">
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                             @foreach($menus as $menu)
                             @if($menu->kategori == 'FOOD')
-                            <!-- Menu Item -->
-                            <div class="col-lg-4 menu-item">
-                                <a href="{{ asset('storage/menus/' . $menu->gambar) }}" class="glightbox">
-                                    <img src="{{ asset('storage/menus/' . $menu->gambar) }}"
-                                        class="menu-img img-fluid" alt="{{ $menu->nama }}">
-                                </a>
-                                <h4>{{ $menu->nama }}</h4>
-                                <p class="ingredients">{{ $menu->deskripsi }} </p>
-                                <p class="price">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
-                                <div class="quantity-container">
-                                    <label for="food_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
-                                    <input type="number" class="quantity-input" value="1" min="1"
-                                        id="food_{{ $menu->id }}" name="quantity">
-                                </div>
-                                <div class="button-group">
-                                    <form action="{{ route('cart.add') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <button type="submit" class="order-button">Tambah ke Keranjang</button>
-                                    </form>
-                                    <form action="{{ route('orders.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <input type="hidden" name="price" value="{{ $menu->harga }}">
-                                       
-                                        <button type="submit" class="order-button">Pesan</button>
-                                    </form>
+                            <div class="col">
+                                <div class="card h-100 menu-item">
+                                    <a href="{{ asset('storage/menus/' . $menu->gambar) }}">
+                                        <div class="menu-img-container">
+                                            <img src="{{ asset('storage/menus/' . $menu->gambar) }}"
+                                                class="card-img-top menu-img" alt="{{ $menu->nama }}">
+                                        </div>
+                                    </a>
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ $menu->nama }}</h5>
+                                        <p class="card-text">{{ $menu->deskripsi }}</p>
+                                        <p class="card-text">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="quantity-control">
+                                                <button type="button" class="quantity-button" data-action="decrease"
+                                                    data-menu-id="{{ $menu->id }}"
+                                                    data-category="{{ $menu->kategori }}">-</button>
+                                                <input type="text" class="quantity-input form-control" value="1"
+                                                    min="1" id="{{ strtolower($menu->kategori) }}_{{ $menu->id }}"
+                                                    name="quantity" readonly>
+                                                <button type="button" class="quantity-button" data-action="increase"
+                                                    data-menu-id="{{ $menu->id }}"
+                                                    data-category="{{ $menu->kategori }}">+</button>
+                                            </div>
+                                            <div class="button-group">
+                                                <form action="{{ route('cart.add') }}" method="POST" style="margin-right: 5px;">
+                                                    @csrf
+                                                    <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                                    <button type="submit" class="order-button">Tambah ke
+                                                        Keranjang</button>
+                                                </form>
+                                                <form action="{{ route('orders.store') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                                    <input type="hidden" name="price" value="{{ $menu->harga }}">
+                                                    <input type="hidden" name="quantity"
+                                                        id="quantity_{{ $menu->id }}" value="1">
+                                                    <button type="submit" class="order-button">Pesan</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             @endif
                             @endforeach
                         </div>
-                    </div><!-- End Starter Menu Content -->
+                    </div>
 
-                    <div class="tab-pane fade" id="menu-breakfast">
+                    <div class="tab-pane fade" id="menu-dimsum">
                         <div class="tab-header text-center">
                             <p>Menu</p>
                             <h3>DIMSUM</h3>
                         </div>
-
-                        <div class="row gy-5">
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                             @foreach($menus as $menu)
                             @if($menu->kategori == 'DIMSUM')
-                            <!-- Menu Item -->
-                            <div class="col-lg-4 menu-item">
-                                <a href="{{ asset('storage/menus/' . $menu->gambar) }}" class="glightbox">
-                                    <img src="{{ asset('storage/menus/' . $menu->gambar) }}"
-                                        class="menu-img img-fluid" alt="{{ $menu->nama }}">
-                                </a>
-                                <h4>{{ $menu->nama }}</h4>
-                                <p class="ingredients">{{ $menu->deskripsi }}</p>
-                                <p class="price">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
-                                <div class="quantity-container">
-                                    <label for="dimsum_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
-                                    <input type="number" class="quantity-input" value="1" min="1"
-                                        id="dimsum_{{ $menu->id }}" name="quantity">
+                            <div class="col">
+                                <div class="card h-100 menu-item">
+                                    <a href="{{ asset('storage/menus/' . $menu->gambar) }}">
+                                        <div class="menu-img-container">
+                                            <img src="{{ asset('storage/menus/' . $menu->gambar) }}"
+                                                class="card-img-top menu-img" alt="{{ $menu->nama }}">
+                                        </div>
+                                    </a>
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ $menu->nama }}</h5>
+                                        <p class="card-text">{{ $menu->deskripsi }}</p>
+                                        <p class="card-text">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="quantity-control">
+                                                <button type="button" class="quantity-button" data-action="decrease"
+                                                    data-menu-id="{{ $menu->id }}"
+                                                    data-category="{{ $menu->kategori }}">-</button>
+                                                <input type="text" class="quantity-input form-control" value="1"
+                                                    min="1" id="{{ strtolower($menu->kategori) }}_{{ $menu->id }}"
+                                                    name="quantity" readonly>
+                                                <button type="button" class="quantity-button" data-action="increase"
+                                                    data-menu-id="{{ $menu->id }}"
+                                                    data-category="{{ $menu->kategori }}">+</button>
+                                            </div>
+                                            <div class="button-group">
+                                                <form action="{{ route('cart.add') }}" method="POST" style="margin-right: 5px;">
+                                                    @csrf
+                                                    <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                                    <button type="submit" class="order-button">Tambah ke
+                                                        Keranjang</button>
+                                                </form>
+                                                <form action="{{ route('orders.store') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                                    <input type="hidden" name="price" value="{{ $menu->harga }}">
+                                                    <input type="hidden" name="quantity"
+                                                        id="quantity_{{ $menu->id }}" value="1">
+                                                    <button type="submit" class="order-button">Pesan</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="button-group">
-                                    <form action="{{ route('cart.add') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <button type="submit" class="order-button">Tambah ke Keranjang</button>
-                                    </form>
-                                    <form action="{{ route('orders.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <input type="hidden" name="price" value="{{ $menu->harga }}">
-
-                                        <button type="submit" class="order-button">Pesan</button>
-                                    </form>
-                                </div>
-                            </div><!-- End Menu Item -->
+                            </div>
                             @endif
                             @endforeach
-
                         </div>
-                    </div><!-- End Breakfast Menu Content -->
+                    </div>
 
-                    <div class="tab-pane fade" id="menu-lunch">
+                    <div class="tab-pane fade" id="menu-snack">
                         <div class="tab-header text-center">
                             <p>Menu</p>
                             <h3>SNACK</h3>
                         </div>
-
-                        <div class="row gy-5">
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                             @foreach($menus as $menu)
                             @if($menu->kategori == 'SNACK')
-                            <!-- Menu Item -->
-                            <div class="col-lg-4 menu-item">
-                                <a href="{{ asset('storage/menus/' . $menu->gambar) }}" class="glightbox">
-                                    <img src="{{ asset('storage/menus/' . $menu->gambar) }}"
-                                        class="menu-img img-fluid" alt="{{ $menu->nama }}">
-                                </a>
-                                <h4>{{ $menu->nama }}</h4>
-                                <p class="ingredients">{{ $menu->deskripsi }}</p>
-                                <p class="price">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
-                                <div class="quantity-container">
-                                    <label for="snack_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
-                                    <input type="number" class="quantity-input" value="1" min="1"
-                                        id="snack_{{ $menu->id }}" name="quantity">
-                                </div>
-                                <div class="button-group">
-                                    @if ($errors->any())
-                                        <div class="alert alert-danger">
-                                            <ul>
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
+                            <div class="col">
+                                <div class="card h-100 menu-item">
+                                    <a href="{{ asset('storage/menus/' . $menu->gambar) }}">
+                                        <div class="menu-img-container">
+                                            <img src="{{ asset('storage/menus/' . $menu->gambar) }}"
+                                                class="card-img-top menu-img" alt="{{ $menu->nama }}">
                                         </div>
-                                    @endif
-                                    <form action="{{ route('cart.add') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <button type="submit" class="order-button">Tambah ke Keranjang</button>
-                                    </form>
-                                    <form action="{{ route('orders.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <input type="hidden" name="price" value="{{ $menu->harga }}">
-
-                                        <button type="submit" class="order-button">Pesan</button>
-                                    </form>
+                                    </a>
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ $menu->nama }}</h5>
+                                        <p class="card-text">{{ $menu->deskripsi }}</p>
+                                        <p class="card-text">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="quantity-control">
+                                                <button type="button" class="quantity-button" data-action="decrease"
+                                                    data-menu-id="{{ $menu->id }}"
+                                                    data-category="{{ $menu->kategori }}">-</button>
+                                                <input type="text" class="quantity-input form-control" value="1"
+                                                    min="1" id="{{ strtolower($menu->kategori) }}_{{ $menu->id }}"
+                                                    name="quantity" readonly>
+                                                <button type="button" class="quantity-button" data-action="increase"
+                                                    data-menu-id="{{ $menu->id }}"
+                                                    data-category="{{ $menu->kategori }}">+</button>
+                                            </div>
+                                            <div class="button-group">
+                                                <form action="{{ route('cart.add') }}" method="POST" style="margin-right: 5px;">
+                                                    @csrf
+                                                    <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                                    <button type="submit" class="order-button">Tambah ke
+                                                        Keranjang</button>
+                                                </form>
+                                                <form action="{{ route('orders.store') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                                    <input type="hidden" name="price" value="{{ $menu->harga }}">
+                                                    <input type="hidden" name="quantity"
+                                                        id="quantity_{{ $menu->id }}" value="1">
+                                                    <button type="submit" class="order-button">Pesan</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div><!-- End Menu Item -->
+                            </div>
                             @endif
                             @endforeach
                         </div>
-                    </div><!-- End Lunch Menu Content -->
+                    </div>
 
-                    <div class="tab-pane fade" id="menu-dinner">
+                    <div class="tab-pane fade" id="menu-drinks">
                         <div class="tab-header text-center">
                             <p>Menu</p>
                             <h3>DRINKS</h3>
                         </div>
-
-                        <div class="row gy-5">
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                             @foreach($menus as $menu)
                             @if($menu->kategori == 'DRINKS')
-                            <!-- Menu Item -->
-                            <div class="col-lg-4 menu-item">
-                                <a href="{{ asset('storage/menus/' . $menu->gambar) }}" class="glightbox">
-                                    <img src="{{ asset('storage/menus/' . $menu->gambar) }}"
-                                        class="menu-img img-fluid" alt="{{ $menu->nama }}">
-                                </a>
-                                <h4>{{ $menu->nama }}</h4>
-                                <p class="ingredients">{{ $menu->deskripsi }}</p>
-                                <p class="price">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
-                                <div class="quantity-container">
-                                    <label for="drinks_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
-                                    <input type="number" class="quantity-input" value="1" min="1"
-                                        id="drinks_{{ $menu->id }}" name="quantity">
+                            <div class="col">
+                                <div class="card h-100 menu-item">
+                                    <a href="{{ asset('storage/menus/' . $menu->gambar) }}">
+                                        <div class="menu-img-container">
+                                            <img src="{{ asset('storage/menus/' . $menu->gambar) }}"
+                                                class="card-img-top menu-img" alt="{{ $menu->nama }}">
+                                        </div>
+                                    </a>
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ $menu->nama }}</h5>
+                                        <p class="card-text">{{ $menu->deskripsi }}</p>
+                                        <p class="card-text">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="quantity-control">
+                                                <button type="button" class="quantity-button" data-action="decrease"
+                                                    data-menu-id="{{ $menu->id }}"
+                                                    data-category="{{ $menu->kategori }}">-</button>
+                                                <input type="text" class="quantity-input form-control" value="1"
+                                                    min="1" id="{{ strtolower($menu->kategori) }}_{{ $menu->id }}"
+                                                    name="quantity" readonly>
+                                                <button type="button" class="quantity-button" data-action="increase"
+                                                    data-menu-id="{{ $menu->id }}"
+                                                    data-category="{{ $menu->kategori }}">+</button>
+                                            </div>
+                                            <div class="button-group">
+                                                <form action="{{ route('cart.add') }}" method="POST" style="margin-right: 5px;">
+                                                    @csrf
+                                                    <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                                    <button type="submit" class="order-button">Tambah ke
+                                                        Keranjang</button>
+                                                </form>
+                                                <form action="{{ route('orders.store') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                                    <input type="hidden" name="price" value="{{ $menu->harga }}">
+                                                    <input type="hidden" name="quantity"
+                                                        id="quantity_{{ $menu->id }}" value="1">
+                                                    <button type="submit" class="order-button">Pesan</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="button-group">
-                                    <form action="{{ route('cart.add') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <button type="submit" class="order-button">Tambah ke Keranjang</button>
-                                    </form>
-                                    <form action="{{ route('orders.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <input type="hidden" name="price" value="{{ $menu->harga }}">
-
-                                        <button type="submit" class="order-button">Pesan</button>
-                                    </form>
-                                </div>
-                            </div><!-- End Menu Item -->
+                            </div>
                             @endif
                             @endforeach
                         </div>
-                    </div><!-- End Dinner Menu Content -->
+                    </div>
                 </div>
             </div>
         </section><!-- End Menu Section -->
     </main>
-
     <!-- ======= Footer ======= -->
-    <footer id="footer" class="footer dark-background">
+    <footer id="footer" class="footer" style="background-color: var(--white-color); color: var(--text-color);">
 
         <div class="container">
             <div class="row gy-3">
                 <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-geo-alt icon"></i>
+                    <i class="bi bi-geo-alt icon" style="color: var(--primary-color);"></i>
                     <div class="address">
                         <h4>Address</h4>
                         <p>Jl. Patuan Nagari No.49, Ps. Porsea, Kec. Porsea, Toba, Sumatera Utara 22384</p>
@@ -353,7 +472,7 @@
                 </div>
 
                 <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-telephone icon"></i>
+                    <i class="bi bi-telephone icon" style="color: var(--primary-color);"></i>
                     <div>
                         <h4>Contact</h4>
                         <p>
@@ -365,7 +484,7 @@
                 </div>
 
                 <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-clock icon"></i>
+                    <i class="bi bi-clock icon" style="color: var(--primary-color);"></i>
                     <div>
                         <h4>Opening Hours</h4>
                         <p>
@@ -378,10 +497,14 @@
                 <div class="col-lg-3 col-md-6">
                     <h4>Follow Us</h4>
                     <div class="social-links d-flex">
-                        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="twitter" style="color: var(--primary-color);"><i
+                                class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="facebook" style="color: var(--primary-color);"><i
+                                class="bi bi-facebook"></i></a>
+                        <a href="#" class="instagram" style="color: var(--primary-color);"><i
+                                class="bi bi-instagram"></i></a>
+                        <a href="#" class="linkedin" style="color: var(--primary-color);"><i
+                                class="bi bi-linkedin"></i></a>
                     </div>
                 </div>
 
@@ -405,36 +528,59 @@
                 <script src="{{ asset('assets/js/main.js') }}"></script>
 
                 <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const forms = document.querySelectorAll('form[action="{{ route('orders.store') }}"]');
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const quantityButtons = document.querySelectorAll('.quantity-button');
 
-                        forms.forEach(form => {
-                            form.addEventListener('submit', function(event) {
-                                event.preventDefault(); // Prevent the default form submission
+                        quantityButtons.forEach(button => {
+                            button.addEventListener('click', function () {
+                                const action = this.dataset.action;
+                                const menuId = this.dataset.menuId;
+                                const category = this.dataset.category;
+                                const quantityInputId = `${category.toLowerCase()}_${menuId}`;
+                                const quantityInput = document.getElementById(quantityInputId);
+                                let quantity = parseInt(quantityInput.value);
 
-                                // Find the quantity input within this form
-                                const menuId = this.querySelector('input[name="menu_id"]').value;
-                                let quantityInput;
-                                if (this.closest('.tab-pane').id === 'menu-starters') {
-                                    quantityInput = document.querySelector(`#food_${menuId}`);
-                                } else if (this.closest('.tab-pane').id === 'menu-breakfast') {
-                                    quantityInput = document.querySelector(`#dimsum_${menuId}`);
-                                } else if (this.closest('.tab-pane').id === 'menu-lunch') {
-                                    quantityInput = document.querySelector(`#snack_${menuId}`);
-                                } else if (this.closest('.tab-pane').id === 'menu-dinner') {
-                                    quantityInput = document.querySelector(`#drinks_${menuId}`);
+                                if (action === 'increase') {
+                                    quantity++;
+                                } else if (action === 'decrease' && quantity > 1) {
+                                    quantity--;
                                 }
 
-                                const quantity = quantityInput ? quantityInput.value : 1; // Default to 1 if not found
+                                quantityInput.value = quantity;
 
-                                // Create a hidden input field to store the quantity
-                                const quantityInputHidden = document.createElement('input');
-                                quantityInputHidden.type = 'hidden';
-                                quantityInputHidden.name = 'quantity';
-                                quantityInputHidden.value = quantity;
+                                // Update the hidden quantity input in the form
+                                const quantityHiddenInput = document.getElementById(`quantity_${menuId}`);
+                                if (quantityHiddenInput) {
+                                    quantityHiddenInput.value = quantity;
+                                }
+                            });
+                        });
 
-                                // Append the hidden input to the form
-                                this.appendChild(quantityInputHidden);
+                        // Intercept form submission to ensure the quantity is updated
+                        const orderForms = document.querySelectorAll('form[action="{{ route('orders.store') }}"]');
+                        orderForms.forEach(form => {
+                            form.addEventListener('submit', function (event) {
+                                event.preventDefault(); // Prevent the default form submission
+
+                                const menuId = this.querySelector('input[name="menu_id"]').value;
+                                const category = this.closest('.card').querySelector('.quantity-button').dataset.category;
+                                const quantityInputId = `${category.toLowerCase()}_${menuId}`;
+                                const quantityInput = document.getElementById(quantityInputId);
+                                const quantity = quantityInput.value;
+
+                                // Find the hidden quantity input inside the form and update its value
+                                const hiddenQuantityInput = this.querySelector('input[name="quantity"]');
+                                if (hiddenQuantityInput) {
+                                    hiddenQuantityInput.value = quantity;
+                                } else {
+                                    // If it doesn't exist, create and append it (for the first time)
+                                    const newHiddenQuantityInput = document.createElement('input');
+                                    newHiddenQuantityInput.type = 'hidden';
+                                    newHiddenQuantityInput.name = 'quantity';
+                                    newHiddenQuantityInput.value = quantity;
+                                    this.appendChild(newHiddenQuantityInput);
+                                }
+
                                 this.submit();
                             });
                         });

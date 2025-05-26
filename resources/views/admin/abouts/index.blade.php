@@ -1,4 +1,3 @@
-<!-- resources/views/admin/abouts/index.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +9,7 @@
     <title>
         Daftar About Us
     </title>
-    <!-- Fonts and icons -->
+    <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css"
         href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" />
     <!-- Nucleo Icons -->
@@ -19,11 +18,9 @@
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <!-- Material Icons -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
     <!-- CSS Files -->
-    <link id="pagestyle" href="{{ asset('admin/admintemplate/css/material-dashboard.css?v=3.2.0') }}"
-        rel="stylesheet" />
+    <link id="pagestyle" href="{{ asset('admin/admintemplate/css/material-dashboard.css?v=3.2.0') }}" rel="stylesheet" />
     <style>
         /* Custom CSS untuk tampilan lebih sejuk */
         :root {
@@ -39,27 +36,18 @@
         }
 
         .bg-gradient-primary {
-            background-image: linear-gradient(195deg, var(--primary-color) 0%, var(--primary-color-darker) 100%) !important;
+            background-image: linear-gradient(195deg, var(--primary-color) 0%, var(--primary-color-darker) 100%);
+            /* Menggunakan warna biru */
         }
 
         .btn-primary {
-            background-color: var(--primary-color) !important;
-            border-color: var(--primary-color) !important;
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
         }
 
         .btn-primary:hover {
-            background-color: var(--primary-color-darker) !important;
-            border-color: var(--primary-color-darker) !important;
-        }
-
-        .btn-outline-primary {
-            color: var(--primary-color) !important;
-            border-color: var(--primary-color) !important;
-        }
-
-        .btn-outline-primary:hover {
-            background-color: var(--primary-color) !important;
-            color: #fff !important;
+            background-color: var(--primary-color-darker);
+            border-color: var(--primary-color-darker);
         }
 
 
@@ -120,11 +108,10 @@
                             </a>
                         </li>
                         <li class="nav-item px-3 d-flex align-items-center">
-                            <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                            <a href="javascript:;" class="nav-link text-body p-0">
                                 <i class="material-symbols-rounded fixed-plugin-button-nav">settings</i>
                             </a>
                         </li>
-                        <!-- Notification Panel -->
                         <li class="nav-item dropdown pe-3 d-flex align-items-center">
                             <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -178,8 +165,7 @@
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     xmlns:xlink="http://www.w3.org/1999/xlink">
                                                     <title>credit-card</title>
-                                                    <g stroke="none" stroke-width="1" fill="none"
-                                                        fill-rule="evenodd">
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                         <g transform="translate(-2169.000000, -745.000000)"
                                                             fill="#FFFFFF" fill-rule="nonzero">
                                                             <g transform="translate(1716.000000, 291.000000)">
@@ -210,6 +196,7 @@
                                 </li>
                             </ul>
                         </li>
+
                     </ul>
                 </div>
             </div>
@@ -221,6 +208,7 @@
                 {{ session('success') }}
             </div>
             @endif
+            <!-- Daftar About Us -->
             <div class="row">
                 <div class="col-12">
                     <div class="card my-4">
@@ -235,53 +223,59 @@
                                     About Us Baru</a>
                             </div>
                             <div class="table-responsive p-0">
-                                <table class="table align-items-center mb-0">
+                                <table class="table align-items-center mb-0 table-striped table-hover table-bordered">
                                     <thead>
                                         <tr>
-                                            <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                                                style="width: 5%;">
+                                                ID</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                                                style="width: 15%;">
                                                 Judul</th>
-                                            <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                Deskripsi</th>
-                                            <th class="text-secondary opacity-7"></th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                                                style="width: 40%;">
+                                                Konten</th>
+                                            <th class="text-secondary opacity-7" style="width: 20%;">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($abouts as $about)
+                                        @forelse($abouts as $about)
                                         <tr>
-                                            <td>
+                                            <td class="align-middle text-center">
+                                                <p class="text-xs font-weight-bold mb-0">{{ $about->id }}</p>
+                                            </td>
+                                            <td style="padding: 0.75rem;">
                                                 <div class="d-flex px-2 py-1">
                                                     <div class="d-flex flex-column justify-content-center">
                                                         <h6 class="mb-0 text-sm">{{ $about->title }}</h6>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>
-                                                <p class="text-xs font-weight-bold mb-0">{{ $about->description }}</p>
+                                            <td style="padding: 0.75rem; text-align: left;">
+                                                <p class="text-xs font-weight-bold mb-0"
+                                                    style="word-break: break-word;">{{ $about->content }}</p>
                                             </td>
-                                            <td class="align-middle">
+                                            <td class="align-middle" style="padding: 0.75rem;">
                                                 <div class="ms-auto text-end pe-3">
-                                                    <a href="{{ route('admin.abouts.show', $about->id) }}"
-                                                        class="btn btn-link text-dark px-3 mb-0"><i
-                                                            class="material-icons text-sm me-2">visibility</i>Lihat</a>
-                                                    <a href="{{ route('admin.abouts.edit', $about->id) }}"
-                                                        class="btn btn-link text-warning px-3 mb-0"><i
-                                                            class="material-icons text-sm me-2">edit</i>Edit</a>
-
+                                                    <a class="btn btn-link text-dark px-3 mb-0"
+                                                        href="{{ route('admin.abouts.edit', $about->id) }}"><i
+                                                            class="material-icons text-sm me-2"></i>Edit</a>
                                                     <form action="{{ route('admin.abouts.destroy', $about->id) }}"
-                                                        method="POST" style="display: inline-block;">
+                                                        method="POST" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit"
-                                                            class="btn btn-link text-danger text-sm me-0"
-                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus About Us ini?')"><i
-                                                                class="material-icons text-sm me-2">delete</i>Hapus</button>
+                                                        <button type="submit" class="btn btn-link text-danger text-sm me-0"
+                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"><i
+                                                                class="material-icons text-sm me-2"></i>Hapus</button>
                                                     </form>
                                                 </div>
                                             </td>
                                         </tr>
-                                        @endforeach
+                                        @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center">Tidak ada data About Us.</td>
+                                        </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>

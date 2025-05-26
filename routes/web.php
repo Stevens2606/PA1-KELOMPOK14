@@ -11,6 +11,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController; // Pastikan nama controllernya benar
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,8 +19,10 @@ use App\Http\Controllers\WelcomeController;
 |--------------------------------------------------------------------------
 */
 
+
+
 // **Halaman Statis**
-Route::get('/', [WelcomeController::class, 'index'])->name('home');
+Route::get('/', [TestimoniController::class, 'showPublic'])->name('home');
 
 Route::get('/about', [AboutController::class, 'showAboutPage'])->name('about');
 
@@ -34,6 +37,9 @@ Route::get('/menu/{menu}', [MenuController::class, 'showDetailPublic'])->name('m
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {  // Contoh: hanya bisa diakses oleh user yang login
     Route::resource('home-content', HomeContentController::class);
+
+    Route::resource('reservations', ReservationController::class);
+Route::post('reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');
 }); 
 
 // routes/web.php
@@ -69,8 +75,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
 
 
+
     // **Menu Testimoni (Memerlukan Autentikasi)**
     Route::post('/testimoni', [TestimoniController::class, 'submit'])->name('testimoni.submit');
+        Route::get('/testimoni/{testimoni}/edit', [TestimoniController::class, 'edit'])->name('testimoni.edit');
+        Route::put('/testimoni/{testimoni}', [TestimoniController::class, 'update'])->name('testimoni.update');
 
     // **Reservasi Route (Memerlukan Autentikasi)**
     Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
@@ -79,10 +88,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reservations/{reservation}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
     Route::put('/reservations/{reservation}', [ReservationController::class, 'update'])->name('reservations.update');
     Route::delete('/reservations/{reservation}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+    Route::post('reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');
 
     // **Orders Route (Memerlukan Autentikasi)**
-    Route::get('/orders', [OrderController::class, 'indexPublic'])->name('orders.index');
+    Route::get('/orderspublic', [OrderController::class, 'indexPublic'])->name('orders.index');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+
 
     // **Cart Routes (Memerlukan Autentikasi)**
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -93,16 +106,21 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
+
+
 Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
 
 // **Testimoni Routes (Public)**
 Route::get('/testimoniPublic', [TestimoniController::class, 'showPublic'])->name('testimoni.public');
+Route::get('/about', [AboutController::class, 'showAboutPage'])->name('about');
+Route::resource('admin/about_us', AboutUsController::class)->middleware(['auth', 'admin']);
+
+Route::get('/about', [AboutController::class, 'showPublic'])->name('about');
+
 
 // **Rute untuk Admin**
 Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+   Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
 
     // **CRUD Menu Routes**
     Route::get('/menus', [MenuController::class, 'index'])->name('admin.menus.index');
@@ -121,6 +139,7 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::get('/testimoni/{testimoni}/edit', [TestimoniController::class, 'edit'])->name('admin.testimoni.edit');
     Route::put('/testimoni/{testimoni}', [TestimoniController::class, 'update'])->name('admin.testimoni.update');
     Route::delete('/testimoni/{testimoni}', [TestimoniController::class, 'destroy'])->name('admin.testimoni.destroy');
+   
 
     // **CRUD Contact Messages**
     Route::get('/contact-messages', [ContactController::class, 'index'])->name('admin.contact_messages.index');
@@ -162,8 +181,8 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('admin.orders.edit');
     Route::put('/orders/{order}', [OrderController::class, 'update'])->name('admin.orders.update');
     Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('admin.orders.destroy');
-    Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
-
+    Route::put('/admin/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
+    
     // **Reservasi Route (Admin)**
     Route::get('/reservations', [ReservationController::class, 'indexAdmin'])->name('admin.reservations.index');
     Route::get('/reservations/create', [ReservationController::class, 'create'])->name('admin.reservations.create');

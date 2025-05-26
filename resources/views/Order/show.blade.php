@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Daftar Order Saya</title>
+    <title>Detail Order #{{ $order->id }}</title>
 
     <!-- Favicons -->
     <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
@@ -48,91 +48,53 @@
             min-height: 100vh;
         }
 
-        #orders {
+        #order-detail {
             padding: 50px 0;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            color: #fff;
-            /* Teks putih */
+            background-color: var(--light-gray);
+            /* atau sesuaikan */
         }
 
-        #orders .section-header h2,
-        #orders .section-header p {
-            color: #fff;
-        }
-
-        .order-list {
-            margin-top: 30px;
-        }
-
-        .reservation-item {
+        .order-details-container {
             background-color: rgba(255, 255, 255, 0.9);
-            /* Latar belakang putih transparan */
             border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 30px;
             box-shadow: var(--box-shadow);
-            transition: transform 0.2s ease-in-out;
-            color: var(--text-color);
-        }
-
-        .reservation-item:hover {
-            transform: scale(1.03);
+            margin-bottom: 20px;
         }
 
         .order-header {
-            margin-top: 0;
-            font-size: 1.5rem;
-            font-weight: 600;
+            font-size: 2rem;
+            font-weight: 700;
             color: var(--primary-color);
+            margin-bottom: 20px;
         }
 
-        .order-body {
+        .order-info p {
+            font-size: 1.1rem;
             margin-bottom: 10px;
-            font-size: 1rem;
         }
 
-        .action-buttons {
-            display: flex;
-            justify-content: flex-start;
-            /* Align buttons to the start */
-            gap: 10px;
-            /* Add a gap between the buttons */
+        .order-items-list {
+            list-style: none;
+            padding: 0;
         }
 
-        .action-buttons .btn {
-            border-radius: 8px;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        .order-items-list li {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
         }
 
-        .action-buttons .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--box-shadow);
+        .order-items-list li:last-child {
+            border-bottom: none;
         }
 
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            color: #fff;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            border-color: #dc3545;
-            color: #fff;
-        }
-
-        .btn-danger:hover {
-            background-color: #c82333;
-            border-color: #c82333;
-        }
-
-        .text-center {
-            color: var(--text-color);
+        .total-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -153,61 +115,33 @@
 
     <main id="main">
 
-        <!-- ======= Order Section ======= -->
-        <section id="orders">
+        <!-- ======= Order Detail Section ======= -->
+        <section id="order-detail">
             <div class="container">
-                <div class="section-header text-center">
-                    <h2>Daftar Order Saya</h2>
-                    <p>Order yang telah <span>Saya Buat</span></p>
-                </div>
+                <div class="order-details-container">
+                    <h2 class="order-header">Detail Order #{{ $order->id }}</h2>
 
-                @if(session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-                @endif
-
-                <div class="order-list">
-                    @if(count($orders) > 0)
-                    <div class="row">
-                        @foreach($orders as $order)
-                        <div class="col-md-6">
-                            <div class="reservation-item">
-                                <h4 class="order-header">Order #{{ $order->id }}</h4>
-
-                                <div class="order-body">
-                                    @foreach($order->orderItems as $orderItem)
-                                    <p><i class="bi bi-menu-app"></i> Menu: {{ $orderItem->menu->nama ?? 'Tidak Ada' }}
-                                    </p>
-                                    <p><i class="bi bi-hash"></i> Quantity: {{ $orderItem->quantity }}</p>
-                                    <p><i class="bi bi-cash-coin"></i> Harga per Item: Rp
-                                        {{ number_format($orderItem->price, 0, ',', '.') }}</p>
-                                    @endforeach
-                                    <p class="order-total"><i class="bi bi-cart-check-fill"></i> Total Harga: Rp
-                                        {{ number_format($order->total_price, 0, ',', '.') }}</p>
-                                    <p><i class="bi bi-clock-history"></i> Tanggal Order:
-                                        {{ $order->created_at->format('d-m-Y H:i') }}</p>
-                                    <p><i class="bi bi-check-circle-fill"></i> Status:
-                                        {{ $order->status }}</p>
-
-                                    <div class="action-buttons">
-                                      
-                                        <form action="{{ route('orders.cancel', $order->id) }}" method="POST" style="display: inline-block;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin membatalkan order ini?')">Batalkan</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
+                    <div class="order-info">
+                        <p><strong>Status:</strong> {{ $order->status }}</p>
+                        <p><strong>Tanggal Order:</strong> {{ $order->created_at->format('d-m-Y H:i') }}</p>
                     </div>
-                    @else
-                    <p class="text-center">Anda belum melakukan order apapun.</p>
-                    @endif
+
+                    <h3>Item Order:</h3>
+                    <ul class="order-items-list">
+                        @foreach($order->orderItems as $orderItem)
+                        <li>
+                            {{ $orderItem->menu->nama ?? 'Tidak Ada' }} - Quantity: {{ $orderItem->quantity }} - Harga per Item: Rp
+                            {{ number_format($orderItem->price, 0, ',', '.') }}
+                        </li>
+                        @endforeach
+                    </ul>
+
+                    <p class="total-price">Total Harga: Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
+
+                    <a href="{{ route('orders.index') }}" class="btn btn-primary">Kembali ke Daftar Order</a>
                 </div>
             </div>
-        </section><!-- End Order Section -->
+        </section><!-- End Order Detail Section -->
 
     </main>
 

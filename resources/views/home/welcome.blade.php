@@ -2,18 +2,12 @@
 <html lang="en">
 
 <head>
-    <!-- open -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- close -->
-
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Quality Time Cafe</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+    <title>Quality Time Cafe & Resto</title>
+    <meta name="description"
+        content="Temukan momen istimewa di Quality Time Cafe & Resto. Hidangan lezat, kopi nikmat, dan suasana yang tak terlupakan.">
+    <meta name="keywords" content="cafe, resto, kopi, makanan, minuman, suasana, quality time">
 
     <!-- Favicons -->
     <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
@@ -23,7 +17,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Amatic+SC:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap"
         rel="stylesheet">
 
     <!-- Vendor CSS Files -->
@@ -35,199 +29,430 @@
 
     <!-- Main CSS File -->
     <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
+
     <style>
+        /* Variabel Warna (Konsisten dengan Halaman Gallery) */
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #43cea2;
+            --light-gray: #f8f9fa;
+            --text-color: #343a40;
+            --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            --white-color: #fff;
+        }
+
+        /* Gaya Umum */
         body {
+            font-family: 'Poppins', sans-serif;
             min-height: 100vh;
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        /* Style untuk pemisah section */
-        .section-separator {
-            padding: 30px 0;
+        a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Header */
+        #header {
+            background-color: var(--white-color);
+            /* White */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            transition: all 0.5s ease;
+        }
+
+        #header.header-scrolled {
+            background-color: var(--white-color);
+            /* White */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo img {
+            max-height: 40px;
+            /* Sesuaikan ukuran logo */
+        }
+
+        .sitename {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--text-color);
+            /* Dark Gray */
+            margin-left: 10px;
+        }
+
+        /* Navbar */
+        .navbar a {
+            font-size: 1.1em;
+            color: var(--text-color);
+            /* Dark Gray */
+            padding: 10px 15px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover,
+        .navbar .active {
+            color: var(--primary-color);
+        }
+
+       /* Hero Section */
+        #hero {
+            background: url("{{ asset('assets/img/cafe.jpg') }}") center/cover no-repeat;
+            color: var(--white-color);
+            padding: 150px 0;
             text-align: center;
-            /* Pusatkan konten */
             position: relative;
-            /* Untuk positioning elemen pseudo */
             overflow: hidden;
-            /* Hide overflow untuk efek border */
         }
 
-        .section-separator h2 {
-            font-size: 2.5em;
-            color: #333;
-            margin-bottom: 0.5em;
-            /* Space di bawah judul */
-        }
-
-        .section-separator p {
-            font-size: 1.2em;
-            color: #666;
-            margin-bottom: 1em;
-            /* Space di bawah deskripsi */
-        }
-
-        /* Tambahkan efek garis dengan pseudo-element */
-        .section-separator::before,
-        .section-separator::after {
+        #hero::before {
             content: '';
             position: absolute;
-            top: 50%;
-            /* Tengah vertikal */
-            width: 30%;
-            border-bottom: 2px dashed #ccc;
-            /* Ubah warna dan style border sesuai kebutuhan */
-        }
-
-        /* Posisikan pseudo-element di kiri dan kanan */
-        .section-separator::before {
-            left: 0;
-        }
-
-        .section-separator::after {
-            right: 0;
-        }
-
-        /* Style untuk menghilangkan garis di tengah (opsional) */
-        .section-separator span {
-            background-color: #fff;
-            /* Warna latar belakang yang sama dengan body */
-            padding: 0 20px;
-            /* Spasi di sekitar teks */
-            position: relative;
-            z-index: 1;
-            /* Pastikan teks berada di atas garis */
-        }
-
-        /* Style untuk mempercantik peta */
-        .map-responsive {
-            overflow: hidden;
-            padding-bottom: 56.25%;
-            /* Proporsi aspek 16:9, sesuaikan jika perlu */
-            position: relative;
-            height: 0;
-        }
-
-        .map-responsive iframe {
-            left: 0;
             top: 0;
-            height: 100%;
+            left: 0;
             width: 100%;
-            position: absolute;
-            border: 0;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Warna hitam semi-transparan */
+            z-index: 1;
         }
 
-        /* Style untuk pesan error */
-        .error-message {
-            color: red;
-            font-size: 0.8em;
-            margin-top: 5px;
+        #hero .container {
+            position: relative;
+            z-index: 2;
         }
 
-        /* Style untuk container jumlah pesanan */
-        .quantity-container {
-            display: flex;
-            align-items: center;
-            /* Vertikal tengah */
-            justify-content: center;
-            /* Horisontal tengah */
-            margin-bottom: 10px;
-            /* Spasi di bawah */
+        #hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            letter-spacing: 1px;
         }
 
-        /* Style untuk label "Jumlah" */
-        .quantity-label {
-            margin-right: 5px;
-            /* Spasi di kanan */
-            font-size: 14px;
-            font-weight: bold;
+        #hero p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            line-height: 1.6;
         }
 
-        /* Style untuk button group */
-        .button-group {
-            display: flex;
-            /* Menggunakan Flexbox */
-            justify-content: center;
-            /* Mengatur tombol agar berada di tengah horizontal */
-            margin-top: 10px;
-            /* Memberi jarak dari elemen di atasnya */
-        }
-
-        .button-group .order-button {
-            margin: 0 5px;
-            /* Memberi jarak antar tombol */
-        }
-
-        .menu-item .order-button {
-            background-color: #4CAF50;
-            /* Warna hijau */
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white-color);
             border: none;
-            color: white;
-            padding: 8px 16px;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            color: var(--white-color);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+
+        /* Section Separator (About Section) */
+        #about {
+            padding: 80px 0;
             text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            margin-top: 10px;
-            cursor: pointer;
-            border-radius: 5px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            /* Gradien */
+            color: var(--white-color);
+            /* White */
         }
 
-        .menu-item .order-button:hover {
-            background-color: #3e8e41;
-            /* Warna hijau lebih gelap saat dihover */
+        #about .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            color: var(--text-color);
         }
 
-        .quantity-input {
-            width: 50px;
-            padding: 5px;
+        #about h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3em;
+            color: var(--white-color);
+            /* White */
+            margin-bottom: 25px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        #about p {
+            font-size: 1.1em;
+            color: var(--text-color);
+            /* Navy Blue */
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Menu Section */
+        #menu {
+            background-color: var(--light-gray);
+            /* Light Gray */
+            padding: 80px 0;
+        }
+
+        #menu h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3em;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-weight: 700;
+            letter-spacing: 1px;
             text-align: center;
         }
 
-        /* Tambahan CSS untuk Testimoni */
+        #menu p {
+            font-size: 1.1em;
+            color: var(--text-color);
+            max-width: 900px;
+            margin: 0 auto 35px;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .menu-item {
+            margin-bottom: 40px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            background-color: var(--white-color);
+            /* White background */
+        }
+
+        .menu-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: 250px;
+            /* Sesuaikan tinggi gambar */
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .menu-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .menu-item-details {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .menu-item-details h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            /* Ukuran lebih kecil untuk responsivitas */
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .menu-item-details p {
+            font-size: 1em;
+            /* Ukuran lebih kecil untuk responsivitas */
+            color: var(--text-color);
+            line-height: 1.5;
+        }
+
+        /* Testimonial Section */
+        #testimonials {
+            background-color: var(--light-gray);
+            /* Cream */
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        #testimonials h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3em;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        #testimonials p {
+            font-size: 1.1em;
+            color: var(--text-color);
+            max-width: 900px;
+            margin: 0 auto 35px;
+            line-height: 1.6;
+        }
+
         .testimonial-card {
-            border: 1px solid #eee;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            background-color: #fff;
+            border: none;
+            padding: 40px;
+            margin-bottom: 40px;
+            border-radius: 25px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
+            background-color: var(--white-color);
+            /* White */
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-8px);
         }
 
         .testimonial-card .stars {
-            color: #ffc107;
-            margin-bottom: 10px;
+            color: #f39c12;
+            margin-bottom: 20px;
+            font-size: 1.1em;
         }
 
         .testimonial-card p {
             font-style: italic;
             color: #555;
-        }
-
-        .testimonial-card .profile {
-            display: flex;
-            align-items: center;
-            margin-top: 20px;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            line-height: 1.6;
         }
 
         .testimonial-card .profile img {
-            width: 50px;
-            height: 50px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            margin-right: 10px;
             object-fit: cover;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
         .testimonial-card .profile h3 {
-            font-size: 16px;
-            margin-bottom: 0;
+            font-size: 1.3em;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--text-color);
         }
 
         .testimonial-card .profile h4 {
-            font-size: 14px;
+            font-size: 0.9em;
             color: #777;
-            margin-bottom: 0;
+        }
+
+        /* Contact Section */
+        #contact {
+            background-color: var(--light-gray);
+            /* Cream */
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        #contact h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3em;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        #contact p {
+            font-size: 1.1em;
+            color: var(--text-color);
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        #footer {
+            background-color: var(--secondary-color);
+            /* Dark Blue */
+            color: var(--white-color);
+            /* White */
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        #footer h4 {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: var(--white-color);
+            /* White */
+        }
+
+        #footer p {
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        #footer .social-links a {
+            font-size: 1.2em;
+            color: var(--white-color);
+            margin: 0 8px;
+            transition: color 0.3s ease;
+        }
+
+        #footer .social-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Media Queries untuk Responsivitas */
+        @media (max-width: 768px) {
+            #hero h1 {
+                font-size: 3.5em;
+            }
+
+            #hero p {
+                font-size: 1.1em;
+            }
+
+            #about h2 {
+                font-size: 2.5em;
+            }
+
+            .section-separator h2 {
+                font-size: 2.5em;
+            }
+
+            .menu-item img {
+                height: 200px;
+            }
+
+            .testimonial-card {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            #hero h1 {
+                font-size: 3em;
+            }
+
+            #hero p {
+                font-size: 1em;
+            }
+
+            .menu-item img {
+                height: 180px;
+            }
         }
     </style>
-
 
 </head>
 
@@ -238,7 +463,7 @@
         <div class="container position-relative d-flex align-items-center justify-content-between">
 
             <a href="{{ route('welcome') }}" class="logo d-flex align-items-center me-auto me-xl-0">
-                <img src="{{ asset('assets/img/logo.png') }}" alt="">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="Quality Time Cafe Logo">
                 <h1 class="sitename">Quality Time</h1>
                 <span>.</span>
             </a>
@@ -250,587 +475,141 @@
     <main id="main">
 
         <!-- ======= Hero Section ======= -->
-        <section id="hero" class="hero section dark-background">
-
+        <section id="hero">
             <div class="container">
-                <div class="row gy-4 justify-content-center justify-content-lg-between">
-                    <div class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center">
-                        <h1 data-aos="fade-up">Selamat Datang Di <br>Quality Time</h1>
-                        <p data-aos="fade-up" data-aos-delay="100">Mari kita ciptakan waktu yang berkualitas dengan
-                            keluarga, teman, pasangan di cafe&resto Quality Time</p>
-                        <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-                            <a href="https://www.youtube.com/watch?v=Atr97iC4HFc"
-                                class="glightbox btn-watch-video d-flex align-items-center"><i
-                                    class="bi bi-play-circle"></i><span>Watch Video</span></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-5 order-1 order-lg-2 hero-img" data-aos="zoom-out">
-                        <img src="{{ asset('assets/img/cofe1.png') }}" class="hero-img.jpg-fluid animated" alt="">
-                    </div>
-
-                </div>
-            </div>
-
-        </section><!-- /Hero Section -->
-
-        <!-- Section Separator -->
-        <div class="section-separator">
-            <span>
-                <h2>About Us</h2>
-                <p>Discover the story behind Quality Time and our commitment to quality.</p>
-            </span>
-        </div>
-
-        <!-- ======= About Section ======= -->
-        <section id="about" class="about section">
-
-            <div class="container">
-                <div class="row gy-4 align-items-center">
-
-                    <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-                        <img src="{{ asset('assets/img/about.jpg') }}" class="img-fluid rounded shadow-lg"
-                            alt="About Our Restaurant">
-                    </div>
-
-                    <div class="col-lg-6" data-aos="fade-up" data-aos-delay="250">
-                        <div class="content ps-0 ps-lg-5">
-                            <h3>Welcome to Quality Time Resto!</h3>
-                            <p class="fst-italic lead">
-                                Quality Time Resto is the perfect place to enjoy delicious dishes and create
-                                precious moments
-                                with your loved ones. We prioritize quality ingredients, friendly service, and a
-                                comfortable
-                                atmosphere.
-                            </p>
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><i class="bi bi-check-circle-fill me-2 text-primary"></i> Guaranteed
-                                    quality of ingredients.</li>
-                                <li class="mb-2"><i class="bi bi-check-circle-fill me-2 text-primary"></i> Diverse
-                                    menu with mouthwatering flavors.</li>
-                                <li class="mb-2"><i class="bi bi-check-circle-fill me-2 text-primary"></i> Friendly
-                                    and professional service.</li>
-                                <li class="mb-2"><i class="bi bi-check-circle-fill me-2 text-primary"></i> Comfortable
-                                    atmosphere suitable for various events.</li>
-                            </ul>
-
-                            <p>
-                                We believe that every dish is an experience. At Quality Time Resto, we strive to
-                                provide an unforgettable experience for every customer.
-                            </p>
-                        </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 text-center">
+                        <h1 class="text-white">Selamat Datang di Quality Time</h1>
+                        <p>Nikmati hidangan lezat dan kopi berkualitas tinggi dalam suasana yang nyaman dan penuh kehangatan. Jadikan setiap momen berharga di Quality Time.</p>
+                        <a href="#menu" class="btn btn-primary">Jelajahi Menu Kami</a>
                     </div>
                 </div>
             </div>
-        </section>
-
-                <!-- Section Separator -->
-        <div class="section-separator">
-            <span>
-                <h2>Our Menu</h2>
-                <p>Explore the wide range of delicious options we offer.</p>
-            </span>
-        </div>
+        </section><!-- End Hero Section -->
 
         <!-- ======= Menu Section ======= -->
-        <section id="menu" class="menu dark-background">
+        <section id="menu" class="section">
             <div class="container">
+                <h2>Menu Unggulan Kami</h2>
+                <p>Sempurnakan momen bersantap Anda dengan pilihan menu unggulan yang kami racik dengan penuh dedikasi dan bahan-bahan terbaik.</p>
 
-                {{-- Alert jika sukses --}}
-                @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                @endif
-
-                <div class="section-header text-center">
-                    <h2>Our Menu</h2>
-                    <p>Check Our <span> Menu</span></p>
-                </div>
-
-                <ul class="nav nav-tabs d-flex justify-content-center" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#menu-starters">
-                            <h4>FOOD</h4>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-breakfast">
-                            <h4>DIMSUM</h4>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-lunch">
-                            <h4>SNACK</h4>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-dinner">
-                            <h4>DRINKS</h4>
-                        </a>
-                    </li>
-                </ul>
-
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="menu-starters">
-                        <div class="tab-header text-center">
-                            <p>Menu</p>
-                            <h3>FOOD</h3>
-                        </div>
-
-                        <div class="row gy-5">
-                            @foreach($menus as $menu)
-                            @if($menu->kategori == 'FOOD')
-                            <!-- Menu Item -->
-                            <div class="col-lg-4 menu-item">
-                                <a href="{{ asset('storage/menus/' . $menu->gambar) }}" class="glightbox">
-                                    <img src="{{ asset('storage/menus/' . $menu->gambar) }}"
-                                        class="menu-img img-fluid" alt="{{ $menu->nama }}">
-                                </a>
-                                <h4>{{ $menu->nama }}</h4>
-                                <p class="ingredients">{{ $menu->deskripsi }} </p>
-                                <p class="price">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
-                                <div class="quantity-container">
-                                    <label for="food_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
-                                    <input type="number" class="quantity-input" value="1" min="1"
-                                        id="food_{{ $menu->id }}" name="quantity">
-                                </div>
-                                <div class="button-group">
-                                    <form action="{{ route('cart.add') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <button type="submit" class="order-button">Tambah ke Keranjang</button>
-                                    </form>
-                                    <form action="{{ route('orders.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <input type="hidden" name="price" value="{{ $menu->harga }}">
-
-                                        <button type="submit" class="order-button">Pesan</button>
-                                    </form>
-                                </div>
+                <div class="row">
+                    <!-- Contoh Menu Item -->
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up">
+                        <div class="menu-item">
+                            <img src="{{ asset('assets/img/menu/Cappucino .jpg') }}" alt="Cappucino">
+                            <div class="menu-item-details">
+                                <h3>Cappucino</h3>
+                                <p>Kopi klasik Italia yang kaya dengan espresso, susu hangat, dan lapisan busa yang lembut. Nikmati kehangatan dan kelezatan dalam setiap tegukan.</p>
                             </div>
-                            @endif
-                            @endforeach
                         </div>
-                    </div><!-- End Starter Menu Content -->
-
-                    <div class="tab-pane fade" id="menu-breakfast">
-                        <div class="tab-header text-center">
-                            <p>Menu</p>
-                            <h3>DIMSUM</h3>
+                    </div>
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                        <div class="menu-item">
+                            <img src="{{ asset('assets/img/menu/nasi ayambakar.jpg') }}" alt="Nasi Ayam Bakar">
+                            <div class="menu-item-details">
+                                <h3>Nasi Ayam Bakar</h3>
+                                <p>Nasi Ayam Bakar dengan cita rasa yang khas, diperkaya dengan bumbu rahasia Quality Time.</p>
+                            </div>
                         </div>
-
-                        <div class="row gy-5">
-                            @foreach($menus as $menu)
-                            @if($menu->kategori == 'DIMSUM')
-                            <!-- Menu Item -->
-                            <div class="col-lg-4 menu-item">
-                                <a href="{{ asset('storage/menus/' . $menu->gambar) }}" class="glightbox">
-                                    <img src="{{ asset('storage/menus/' . $menu->gambar) }}"
-                                        class="menu-img img-fluid" alt="{{ $menu->nama }}">
-                                </a>
-                                <h4>{{ $menu->nama }}</h4>
-                                <p class="ingredients">{{ $menu->deskripsi }}</p>
-                                <p class="price">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
-                                <div class="quantity-container">
-                                    <label for="dimsum_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
-                                    <input type="number" class="quantity-input" value="1" min="1"
-                                        id="dimsum_{{ $menu->id }}" name="quantity">
+                    </div>
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                        <div class="menu-item">
+                            <a href="#">
+                                <img src="{{ asset('assets/img/menu/CaramelCoffeeJellyFrappucino.jpg') }}" alt="Caramel Coffee">
+                                <div class="menu-item-details">
+                                    <h3>Caramel Coffee</h3>
+                                    <p>Nikmati Caramel Coffee Jelly Frappucino yang segar dan lezat. Kombinasi sempurna antara kopi, karamel, dan jelly yang menyegarkan.</p>
                                 </div>
-                                <div class="button-group">
-                                    <form action="{{ route('cart.add') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <button type="submit" class="order-button">Tambah ke Keranjang</button>
-                                    </form>
-                                    <form action="{{ route('orders.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <input type="hidden" name="price" value="{{ $menu->harga }}">
-
-                                        <button type="submit" class="order-button">Pesan</button>
-                                    </form>
-                                </div>
-                            </div><!-- End Menu Item -->
-                            @endif
-                            @endforeach
-
+                            </a>
                         </div>
-                    </div><!-- End Breakfast Menu Content -->
-
-                    <div class="tab-pane fade" id="menu-lunch">
-                        <div class="tab-header text-center">
-                            <p>Menu</p>
-                            <h3>SNACK</h3>
-                        </div>
-
-                        <div class="row gy-5">
-                            @foreach($menus as $menu)
-                            @if($menu->kategori == 'SNACK')
-                            <!-- Menu Item -->
-                            <div class="col-lg-4 menu-item">
-                                <a href="{{ asset('storage/menus/' . $menu->gambar) }}" class="glightbox">
-                                    <img src="{{ asset('storage/menus/' . $menu->gambar) }}"
-                                        class="menu-img img-fluid" alt="{{ $menu->nama }}">
-                                </a>
-                                <h4>{{ $menu->nama }}</h4>
-                                <p class="ingredients">{{ $menu->deskripsi }}</p>
-                                <p class="price">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
-                                <div class="quantity-container">
-                                    <label for="snack_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
-                                    <input type="number" class="quantity-input" value="1" min="1"
-                                        id="snack_{{ $menu->id }}" name="quantity">
-                                </div>
-                                <div class="button-group">
-                                    @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                    @endif
-                                    <form action="{{ route('cart.add') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <button type="submit" class="order-button">Tambah ke Keranjang</button>
-                                    </form>
-                                    <form action="{{ route('orders.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <input type="hidden" name="price" value="{{ $menu->harga }}">
-                                        <button type="submit" class="order-button">Pesan</button>
-                                    </form>
-                                </div>
-                            </div><!-- End Menu Item -->
-                            @endif
-                            @endforeach
-                        </div>
-                    </div><!-- End Lunch Menu Content -->
-
-                    <div class="tab-pane fade" id="menu-dinner">
-                        <div class="tab-header text-center">
-                            <p>Menu</p>
-                            <h3>DRINKS</h3>
-                        </div>
-
-                        <div class="row gy-5">
-                            @foreach($menus as $menu)
-                            @if($menu->kategori == 'DRINKS')
-                            <!-- Menu Item -->
-                            <div class="col-lg-4 menu-item">
-                                <a href="{{ asset('storage/menus/' . $menu->gambar) }}" class="glightbox">
-                                    <img src="{{ asset('storage/menus/' . $menu->gambar) }}"
-                                        class="menu-img img-fluid" alt="{{ $menu->nama }}">
-                                </a>
-                                <h4>{{ $menu->nama }}</h4>
-                                <p class="ingredients">{{ $menu->deskripsi }}</p>
-                                <p class="price">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
-                                <div class="quantity-container">
-                                    <label for="drinks_{{ $menu->id }}" class="quantity-label">Jumlah:</label>
-                                    <input type="number" class="quantity-input" value="1" min="1"
-                                        id="drinks_{{ $menu->id }}" name="quantity">
-                                </div>
-                                <div class="button-group">
-                                    <form action="{{ route('cart.add') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <button type="submit" class="order-button">Tambah ke Keranjang</button>
-                                    </form>
-                                    <form action="{{ route('orders.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                        <input type="hidden" name="price" value="{{ $menu->harga }}">
-                                        <button type="submit" class="order-button">Pesan</button>
-                                    </form>
-                                </div>
-                            </div><!-- End Menu Item -->
-                            @endif
-                            @endforeach
-                        </div>
-                    </div><!-- End Dinner Menu Content -->
+                    </div>
                 </div>
             </div>
         </section><!-- End Menu Section -->
-        
-        <!-- Section Separator -->
-        <div class="section-separator">
-            <span>
-                <h2>Testimonials</h2>
-                <p>See what our satisfied customers have to say about Quality Time.</p>
-            </span>
-        </div>
 
         <!-- ======= Testimonials Section ======= -->
-        <section id="testimonials" class="testimonials section dark-background">
-            <div class="container" data-aos="fade-up">
-
-                <div class="section-header">
-                    <h2>Testimoni Pelanggan</h2>
-                    <p>Apa Kata Mereka Tentang <span>Quality Time</span></p>
-                </div>
+        <section id="testimonials" class="section">
+            <div class="container">
+                <h2>Kata Mereka Tentang Kami</h2>
+                <p>Simak pengalaman berkesan dari para pelanggan yang telah menikmati momen berharga di Quality Time Cafe & Resto.</p>
 
                 <div class="row">
-                    @foreach($feedbacks as $testimoni)
-                    <div class="col-lg-6">
+                    <!-- Contoh Testimonial Card -->
+                    <div class="col-lg-4" data-aos="fade-up">
                         <div class="testimonial-card">
                             <div class="stars">
-                                @for($i = 0; $i < $testimoni->rating; $i++) <i class="bi bi-star-fill"></i>
-                                    @endfor
-                                    @for($i = $testimoni->rating; $i < 5; $i++) <i class="bi bi-star"></i>
-                                        @endfor
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
                             </div>
-                            <p>{{ $testimoni->isi }}</p>
+                            <p>"Tempatnya nyaman, makanannya enak, dan pelayanannya ramah. Sangat recommended untuk quality time bersama keluarga!"</p>
                             <div class="profile">
-                                @if($testimoni->jenis_kelamin == 'pria')
-                                <img src="{{ asset('assets/img/pria.png') }}" alt="Foto {{ $testimoni->nama }}">
-                                @elseif($testimoni->jenis_kelamin == 'wanita')
-                                <img src="{{ asset('assets/img/wanita.png') }}" alt="Foto {{ $testimoni->nama }}">
-                                @else
-                                <img src="{{ asset('assets/img/testimonials/default_avatar.png') }}"
-                                    alt="Foto {{ $testimoni->nama }}">
-                                @endif
-                                <h3 style="color: black;">{{ $testimoni->nama }}</h3>
+                                <img src="https://via.placeholder.com/100" alt="Foto Profil Sarah">
+                                <div>
+                                    <h3>Sarah J</h3>
+                                    <h4>Ibu Rumah Tangga</h4>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    @endforeach
-                </div>
-
-                <!-- Formulir Tambah Testimoni (Statis) -->
-                <div class="row justify-content-center mt-5">
-                    <div class="col-lg-8">
-                        
+                    <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                        <div class="testimonial-card">
+                            <div class="stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                            </div>
+                            <p>"Kopi di Quality Time Cafe selalu jadi andalan saya. Tempatnya juga asik banget buat kerja atau sekadar nongkrong santai."</p>
+                            <div class="profile">
+                                <img src="https://via.placeholder.com/100" alt="Foto Profil Michael">
+                                <div>
+                                    <h3>Michael L</h3>
+                                    <h4>Freelancer</h4>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <div class="col-lg-4" data-aos="fade-up" data-aos-delay="400">
+                        <div class="testimonial-card">
+                            <div class="stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </div>
+                            <p>"Saya dan teman-teman sering banget ke sini. Makanannya enak, harganya terjangkau, dan suasananya bikin betah!"</p>
+                            <div class="profile">
+                                <img src="https://via.placeholder.com/100" alt="Foto Profil Emily">
+                                <div>
+                                    <h3>Emily K</h3>
+                                    <h4>Mahasiswa</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tambahkan testimonial card lainnya di sini -->
                 </div>
-
             </div>
         </section><!-- End Testimonials Section -->
 
-        <!-- Section Separator -->
-        <div class="section-separator">
-            <span>
-                <h2>Contact Us</h2>
-                <p>Get in touch with us for inquiries and reservations.</p>
-            </span>
-        </div>
-
         <!-- ======= Contact Section ======= -->
-        <section id="contact" class="contact section dark-background">
+        <section id="contact" class="contact section">
             <div class="container">
-                <div class="section-header">
-                    <h2>Contact Us</h2>
-                    <p>Need help? <span>Contact Us!</span></p>
-                </div>
-
-                <div class="row gy-4">
-                    <!-- Google Maps -->
-                    <div class="col-lg-6">
-                        <div class="map-responsive">
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3986.1855594823637!2d99.15456507478052!3d2.445188997533752!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3031ff2d0e29dcfb%3A0xa06b380d9db2cf6c!2sQuality%20Time%20Cafe!5e0!3m2!1sid!2sid!4v1742575756925!5m2!1sid!2sid"
-                                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                                referrerpolicy="no-referrer-when-downgrade"></iframe>
-                        </div>
-                    </div><!-- End Google Maps -->
-
-                    <div class="col-lg-6">
-                        @if(count($contacts) > 0)
-                        @foreach($contacts as $contact)
-                        <div class="row gy-4">
-                            <div class="col-md-6">
-                                <div class="info-item d-flex align-items-center">
-                                    <i class="icon bi bi-geo-alt flex-shrink-0"></i>
-                                    <div>
-                                        <h3>Address</h3>
-                                        <p>{{ $contact->address }}</p>
-                                    </div>
-                                </div>
-                            </div><!-- End Info Item -->
-
-                            <div class="col-md-6">
-                                <div class="info-item d-flex align-items-center">
-                                    <i class="icon bi bi-telephone flex-shrink-0"></i>
-                                    <div>
-                                        <h3>Call Us</h3>
-                                        <p>{{ $contact->phone_number }}</p>
-                                    </div>
-                                </div>
-                            </div><!-- End Info Item -->
-
-                            <div class="col-md-6">
-                                <div class="info-item d-flex align-items-center">
-                                    <i class="icon bi bi-envelope flex-shrink-0"></i>
-                                    <div>
-                                        <h3>Email Us</h3>
-                                        <p>{{ $contact->email }}</p>
-                                    </div>
-                                </div>
-                            </div><!-- End Info Item -->
-
-                            <div class="col-md-6">
-                                <div class="info-item d-flex align-items-center">
-                                    <i class="icon bi bi-clock flex-shrink-0"></i>
-                                    <div>
-                                        <h3>Opening Hours</h3>
-                                        <p><strong>Mon-Sun:</strong> {{ $contact->opening_hours }}</p>
-                                    </div>
-                                </div>
-                            </div><!-- End Info Item -->
-                        </div>
-                        @endforeach
-
-                        <form id="contactForm" action="{{ route('contact.storePublic') }}" method="post"
-                            class="php-email-form">
-                            @csrf
-                            <div class="row gy-3">
-                                @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                                @endif
-
-                                @if (session('success'))
-                                <div class="alert alert-success">
-                                    {{ session('success') }}
-                                </div>
-                                @endif
-                                <div class="col-md-6">
-                                    <input type="text" name="name" class="form-control" placeholder="Your Name"
-                                        value="{{ old('name') }}" required>
-                                    @error('name')
-                                    <div class="error-message">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="email" class="form-control" name="email" placeholder="Your Email"
-                                        value="{{ old('email') }}" required>
-                                    @error('email')
-                                    <div class="error-message">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="col-12">
-                                    <input type="text" class="form-control" name="subject" placeholder="Subject"
-                                        value="{{ old('subject') }}" required>
-                                    @error('subject')
-                                    <div class="error-message">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="col-12">
-                                    <textarea class="form-control" name="message" rows="5" placeholder="Message"
-                                        required>{{ old('message') }}</textarea>
-                                    @error('message')
-                                    <div class="error-message">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="col-12 text-center">
-                                    <div class="loading">Loading</div>
-                                    <div class="error-message"></div>
-                                    <div class="sent-message">Your message has been sent. Thank you!</div>
-                                    <button type="submit">Send Message</button>
-                                </div>
-                            </div>
-                        </form><!-- End Contact Form -->
-                        @else
-                        <div class="col-lg-6">
-                            <p>No contact information available.</p>
-                        </div>
-                        @endif
-                    </div>
-                </div>
+                <h2>Hubungi Kami</h2>
+                <p>Kami selalu senang mendengar dari Anda. Jangan ragu untuk menghubungi kami melalui formulir di bawah ini atau melalui informasi kontak yang tertera.</p>
+                <!-- Form kontak dan informasi kontak lainnya -->
             </div>
         </section><!-- End Contact Section -->
-
-        <!-- Section Separator -->
-        <div class="section-separator">
-            <span>
-                <h2>Our Gallery</h2>
-                <p>Check out some of the memorable moments at Quality Time.</p>
-            </span>
-        </div>
-
-        <!-- Gallery Section -->
-        <section id="gallery" class="gallery section dark-background">
-
-            <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-                <div class="swiper init-swiper">
-                    <script type="application/json" class="swiper-config">
-                    {
-                        "loop": true,
-                        "speed": 600,
-                        "autoplay": {
-                            "delay": 5000
-                        },
-                        "slidesPerView": "auto",
-                        "centeredSlides": true,
-                        "pagination": {
-                            "el": ".swiper-pagination",
-                            "type": "bullets",
-                            "clickable": true
-                        },
-                        "breakpoints": {
-                            "320": {
-                                "slidesPerView": 1,
-                                "spaceBetween": 0
-                            },
-                            "768": {
-                                "slidesPerView": 3,
-                                "spaceBetween": 20
-                            },
-                            "1200": {
-                                "slidesPerView": 5,
-                                "spaceBetween": 20
-                            }
-                        }
-                    }
-                    </script>
-                    <div class="swiper-wrapper align-items-center">
-                        @foreach($galeris as $galeri)
-                        <div class="swiper-slide">
-                            <a class="glightbox gallery-link" data-gallery="images-gallery"
-                                href="{{ asset('storage/' . $galeri->gambar) }}"
-                                data-description="{{ $galeri->judul }}">
-                                <img src="{{ asset('storage/' . $galeri->gambar) }}" class="img-fluid"
-                                    alt="{{ $galeri->judul }}">
-                            </a>
-                        </div>
-                        @endforeach
-                    </div>
-                    <div class="swiper-pagination"></div>
-                </div>
-
-            </div>
-
-        </section><!-- /Gallery Section -->
-
-        <!-- Modal untuk Foto Ulang Tahun -->
-        <div class="modal fade" id="birthdayModal" tabindex="-1" aria-labelledby="birthdayModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="birthdayModalLabel">Foto Ulang Tahun</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <img src="{{ asset('assets/img/gallery/birthday.jpg') }}" class="img-fluid"
-                            alt="Foto Ulang Tahun"> <!-- Ganti dengan path gambar ulang tahun Anda -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </main>
 
-    <footer id="footer" class="footer dark-background">
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
         <div class="container">
             <div class="row gy-3">
                 <div class="col-lg-3 col-md-6 d-flex">
@@ -873,7 +652,7 @@
                 </div>
             </div>
         </div>
-    </footer>
+    </footer><!-- End Footer -->
 
     <!-- Scroll Top -->
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
@@ -893,49 +672,26 @@
     <!-- Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
 
+    <!-- Script tambahan  -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const testimoniForm = document.getElementById('testimoniForm');
-
-            testimoniForm.addEventListener('submit', function(event) {
-                @guest
-                // Jika user belum login, alihkan ke halaman login
-                event.preventDefault(); // Mencegah form dikirim
-                window.location.href = "{{ route('login') }}";
-                @else
-                // Jika user sudah login, biarkan form dikirim seperti biasa
-                @endguest
+            AOS.init({
+                duration: 1000,
+                easing: 'ease-in-out',
+                once: true
             });
 
-            const galleryLinks = document.querySelectorAll('.gallery-link');
-            const birthdayModal = new bootstrap.Modal(document.getElementById('birthdayModal'));
-
-            galleryLinks.forEach(link => {
-                link.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    const description = this.dataset.description;
-
-                    if (description && description.includes("Gambar 3")) {
-                        birthdayModal.show();
-                    } else {
-                        // Buka dengan GLightbox
-                        // Pastikan GLightbox telah diinisialisasi di sini, jika belum
-                        if (typeof GLightbox !== 'undefined') { // Cek apakah GLightbox sudah ada
-                            const lightbox = GLightbox({
-                                href: this.href,
-                                type: 'image',
-                                gallery: 'images-gallery',
-                            });
-                            lightbox.open();
-                        } else {
-                            console.error("GLightbox belum diinisialisasi.");
-                        }
-                    }
-                });
+            // Fungsi untuk menangani scrolling header
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    header.classList.add('header-scrolled');
+                } else {
+                    header.classList.remove('header-scrolled');
+                }
             });
         });
     </script>
-
 </body>
 
 </html>
