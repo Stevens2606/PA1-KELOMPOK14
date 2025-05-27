@@ -175,16 +175,42 @@
                                     value="{{ old('phone') }}" required>
                             </div>
 
+                            <!-- resources/views/reservations/create.blade.php -->
                             <div class="form-group">
-                                <label for="reservation_time" class="form-label">Waktu Reservasi:</label>
-                                <input type="datetime-local" class="form-control" id="reservation_time"
-                                    name="reservation_time" value="{{ old('reservation_time') }}" required>
+                                <label for="start_time" class="form-label">Waktu Mulai Reservasi:</label>
+                                <input type="datetime-local" class="form-control" id="start_time" name="start_time"
+                                    value="{{ old('start_time') }}" required>
+                                @error('start_time')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="end_time" class="form-label">Waktu Selesai Reservasi:</label>
+                                <input type="datetime-local" class="form-control" id="end_time" name="end_time"
+                                    value="{{ old('end_time') }}" required>
+                                @error('end_time')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="form-group">
                                 <label for="number_of_guests" class="form-label">Jumlah Tamu:</label>
                                 <input type="number" class="form-control" id="number_of_guests"
                                     name="number_of_guests" value="{{ old('number_of_guests') }}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="meja_id" class="form-label">Pilih Meja:</label>
+                                <select class="form-control" id="meja_id" name="meja_id" required>
+                                    <option value="" disabled selected>Pilih Meja</option>
+                                    @foreach($mejas as $meja)
+                                    <option value="{{ $meja->id }}">{{ $meja->nomor_meja }} (Kapasitas: {{ $meja->kapasitas }})</option>
+                                    @endforeach
+                                </select>
+                                @error('meja_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="form-group">
@@ -195,7 +221,7 @@
 
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-primary">Simpan</button>
-                                <a href="{{ route('home') }}" class="btn btn-secondary">Batal</a>
+                                <a href="{{ route('reservations.index') }}" class="btn btn-secondary">Batal</a>
                             </div>
                         </form>
                     </div>

@@ -12,6 +12,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController; // Pastikan nama controllernya benar
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MejaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,7 +48,8 @@ Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('car
 
 
 
-Route::get('/contact', [ContactController::class, 'showPublic'])->name('contact.index');
+
+Route::get('/contactpublic', [ContactController::class, 'showPublic'])->name('contact.index');
 Route::post('/contact', [ContactController::class, 'storePublic'])->name('contact.storePublic');
 
 // **Galeri Route (Public)**
@@ -80,6 +82,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/testimoni', [TestimoniController::class, 'submit'])->name('testimoni.submit');
         Route::get('/testimoni/{testimoni}/edit', [TestimoniController::class, 'edit'])->name('testimoni.edit');
         Route::put('/testimoni/{testimoni}', [TestimoniController::class, 'update'])->name('testimoni.update');
+        Route::delete('/testimoni/{testimoni}', [TestimoniController::class, 'destroyByUser'])->name('testimoni.destroy');
 
     // **Reservasi Route (Memerlukan Autentikasi)**
     Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
@@ -92,9 +95,12 @@ Route::middleware(['auth'])->group(function () {
 
     // **Orders Route (Memerlukan Autentikasi)**
     Route::get('/orderspublic', [OrderController::class, 'indexPublic'])->name('orders.index');
-    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
-    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
-    Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+Route::put('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel'); // Perhatikan ini diubah menjadi PUT
+Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy'); // Rute DELETE untuk menghapus
+Route::put('/admin/orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
+
 
 
     // **Cart Routes (Memerlukan Autentikasi)**
@@ -138,7 +144,7 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::get('/testimoni/{testimoni}', [TestimoniController::class, 'show'])->name('admin.testimoni.show');
     Route::get('/testimoni/{testimoni}/edit', [TestimoniController::class, 'edit'])->name('admin.testimoni.edit');
     Route::put('/testimoni/{testimoni}', [TestimoniController::class, 'update'])->name('admin.testimoni.update');
-    Route::delete('/testimoni/{testimoni}', [TestimoniController::class, 'destroy'])->name('admin.testimoni.destroy');
+    Route::delete('/testimoni/{testimoni}', [TestimoniController::class, 'destroyByAdmin'])->name('admin.testimoni.destroy');
    
 
     // **CRUD Contact Messages**
@@ -193,4 +199,13 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::delete('/reservations/{reservation}', [ReservationController::class, 'destroy'])->name('admin.reservations.destroy');
     Route::post('reservations/{reservation}/confirm', [ReservationController::class, 'confirm'])->name('admin.reservations.confirm');
     Route::post('reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('admin.reservations.cancel');
+
+    Route::get('/mejas', [MejaController::class, 'index'])->name('admin.mejas.index');
+    Route::get('/mejas/create', [MejaController::class, 'create'])->name('admin.mejas.create');
+    Route::post('/mejas', [MejaController::class, 'store'])->name('admin.mejas.store');
+    Route::get('/mejas/{meja}', [MejaController::class, 'show'])->name('admin.mejas.show');
+    Route::get('/mejas/{meja}/edit', [MejaController::class, 'edit'])->name('admin.mejas.edit');
+    Route::put('/mejas/{meja}', [MejaController::class, 'update'])->name('admin.mejas.update');
+    Route::patch('/mejas/{meja}', [MejaController::class, 'update']); // Tambahkan jika Anda menggunakan patch
+    Route::delete('/mejas/{meja}', [MejaController::class, 'destroy'])->name('admin.mejas.destroy');
 });

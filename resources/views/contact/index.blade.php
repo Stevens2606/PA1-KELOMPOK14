@@ -286,9 +286,9 @@
                                 </div>
                             </div>
                         </div>
-
+<br>
                         <!-- Contact Form -->
-                        <form id="contactForm" action="{{ route('contact.storePublic') }}" method="post" class="php-email-form">
+                        <form id="contactForm" action="{{ route('contact.storePublic') }}" method="post">
                             @csrf
                             <div class="row gy-3">
                                 @if ($errors->any())
@@ -336,7 +336,7 @@
                                 </div>
 
                                 <div class="col-12 text-center">
-                                    <div class="loading">Loading</div>
+                                  
                                     <div class="error-message"></div>
                                     <!-- Pesan Keberhasilan (Awalnya Tersembunyi) -->
                                     <div class="sent-message" style="display:none;">Pesan Anda telah dikirim. Terima kasih!</div>

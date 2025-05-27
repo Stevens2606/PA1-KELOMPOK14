@@ -23,7 +23,8 @@
     <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
+    <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}" rel="stylesheet">
 
     <!-- Main CSS File -->
     <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
@@ -32,7 +33,7 @@
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 
     <style>
-        /* Gaya tambahan yang diperlukan untuk keranjang, disesuaikan agar serasi */
+        /* === Variabel CSS (Lebih Terstruktur) === */
         :root {
             --primary-color: #667eea;
             --secondary-color: #43cea2;
@@ -43,6 +44,7 @@
             --transition-duration: 0.2s;
         }
 
+        /* === Gaya Umum === */
         body {
             font-family: 'Nunito', sans-serif;
             background-color: var(--light-gray);
@@ -50,11 +52,11 @@
             min-height: 100vh;
         }
 
+        /* === Section Cart === */
         #cart {
             padding: 50px 0;
             background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
             color: #fff;
-            /* Teks putih */
         }
 
         #cart .section-header h2,
@@ -62,6 +64,7 @@
             color: #fff;
         }
 
+        /* === Cart List & Table === */
         .cart-list {
             margin-top: 30px;
         }
@@ -83,6 +86,7 @@
             font-weight: bold;
         }
 
+        /* === Cart Item === */
         .cart-item:hover {
             transform: scale(1.03);
         }
@@ -90,30 +94,25 @@
         .cart-header {
             margin-top: 0;
             font-size: 1.25rem;
-            /* Ukuran lebih kecil untuk kerapian */
             font-weight: 600;
             color: var(--primary-color);
             margin-bottom: 0.5rem;
-            /* Spasi lebih kecil */
         }
 
         .cart-body {
             font-size: 1rem;
             flex-grow: 1;
-            /* Memenuhi ruang yang tersedia */
         }
 
         .cart-body p {
             margin-bottom: 0.5rem;
-            /* Spasi antar paragraf */
         }
 
+        /* === Action Buttons (Update/Delete) === */
         .action-buttons {
             display: flex;
             align-items: center;
-            /* Vertikal center */
             gap: 5px;
-            /* Spasi antara input dan button */
         }
 
         .action-buttons .btn {
@@ -121,9 +120,7 @@
             transition: transform var(--transition-duration) ease-in-out, box-shadow var(--transition-duration)
                 ease-in-out;
             padding: 0.3rem 0.7rem;
-            /* Padding tombol */
             font-size: 0.8rem;
-            /* Ukuran font tombol */
         }
 
         .action-buttons .btn:hover {
@@ -153,6 +150,7 @@
             border-color: #c82333;
         }
 
+        /* === Cart Totals & Checkout === */
         .text-center {
             color: var(--text-color);
         }
@@ -160,7 +158,6 @@
         .cart-totals {
             margin-top: 2rem;
             text-align: center;
-            /* Pusatkan total belanja */
         }
 
         .cart-totals-text {
@@ -188,6 +185,7 @@
             background-color: darken(var(--secondary-color), 10%);
         }
 
+        /* === Back to Menu Link === */
         .back-to-menu {
             display: inline-block;
             margin-top: 1rem;
@@ -206,6 +204,7 @@
             color: #fff;
         }
 
+        /* === Quantity Control (Increment/Decrement) === */
         .quantity-control {
             display: flex;
             align-items: center;
@@ -213,38 +212,28 @@
 
         .quantity-input {
             width: 40px;
-            /* Lebar input quantity */
             padding: 3px;
-            /* Padding di dalam input */
             text-align: center;
-            /* Teks di tengah */
             border-radius: var(--border-radius);
             border: 1px solid #ccc;
-            /* Border lebih jelas */
             font-size: 0.8rem;
-            /* Ukuran font input */
         }
 
-        /* Gaya tambahan untuk tombol + dan - */
         .quantity-button {
             background-color: #eee;
             border: none;
             padding: 2px 5px;
-            /* Ukuran padding yang lebih kecil */
             margin: 0 2px;
-            /* Spasi horizontal antara tombol */
             border-radius: 3px;
-            /* Radius sudut lebih kecil */
             cursor: pointer;
             font-size: 0.7rem;
-            /* Ukuran font lebih kecil */
             line-height: 1;
-            /* Mengurangi tinggi baris */
         }
 
         .quantity-button:hover {
             background-color: #ddd;
         }
+
     </style>
 </head>
 
@@ -272,6 +261,7 @@
                     <p>Item yang ada di <span>Keranjang Saya</span></p>
                 </div>
 
+                <!-- Pesan Notifikasi (Success/Error) -->
                 @if(session('success'))
                 <div class="alert alert-success">
                     {{ session('success') }}
@@ -316,7 +306,7 @@
                                                 onclick="incrementQuantity(this.parentNode.querySelector('input[name=\'quantity\']'))"
                                                 class="quantity-button">+</button>
                                             <button type="submit" class="btn btn-primary"
-                                                style="background-color: #667eea; border-color: #667eea; margin-left: 5px">Update</button>
+                                                style="margin-left: 5px">Update</button>
                                         </div>
                                     </form>
                                 </td>
@@ -362,17 +352,19 @@
         <div class="container">
             <div class="row gy-3">
                 <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-geo-alt icon"></i>
+                    <i class="bi bi-geo-alt icon" style="color: var(--primary-color);"></i>
                     <div class="address">
-                        <h4>Address</h4>
+                        <h4 style="color: var(--text-color);">Address</h4>
+                        <!-- Menggunakan variabel warna -->
                         <p>Jl. Patuan Nagari No.49, Ps. Porsea, Kec. Porsea, Toba, Sumatera Utara 22384</p>
                     </div>
                 </div>
 
                 <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-telephone icon"></i>
+                    <i class="bi bi-telephone icon" style="color: var(--primary-color);"></i>
                     <div>
-                        <h4>Contact</h4>
+                        <h4 style="color: var(--text-color);">Contact</h4>
+                        <!-- Menggunakan variabel warna -->
                         <p>
                             <strong>Phone:</strong> <span>+62 822-7378-2156</span><br>
                             <strong>Email:</strong> <span>qualitytimecafe45@gmail.com</span><br>
@@ -381,9 +373,10 @@
                 </div>
 
                 <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-clock icon"></i>
+                    <i class="bi bi-clock icon" style="color: var(--primary-color);"></i>
                     <div>
-                        <h4>Opening Hours</h4>
+                        <h4 style="color: var(--text-color);">Opening Hours</h4>
+                        <!-- Menggunakan variabel warna -->
                         <p>
                             <strong>Mon-Sun:</strong> <span>10 AM - 11 PM</span><br>
                         </p>
@@ -391,12 +384,17 @@
                 </div>
 
                 <div class="col-lg-3 col-md-6">
-                    <h4>Follow Us</h4>
+                    <h4 style="color: var(--text-color);">Follow Us</h4>
+                    <!-- Menggunakan variabel warna -->
                     <div class="social-links d-flex">
-                        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="twitter" style="color: var(--primary-color);"><i
+                                class="bi bi-twitter"></i></a>
+                        <a href="#" class="facebook" style="color: var(--primary-color);"><i
+                                class="bi bi-facebook"></i></a>
+                        <a href="#" class="instagram" style="color: var(--primary-color);"><i
+                                class="bi bi-instagram"></i></a>
+                        <a href="#" class="linkedin" style="color: var(--primary-color);"><i
+                                class="bi bi-linkedin"></i></a>
                     </div>
                 </div>
             </div>
@@ -432,6 +430,7 @@
                 input.value = value;
             }
         }
+
     </script>
 
 </body>

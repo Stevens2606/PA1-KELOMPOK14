@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\ContactMessage;
 use App\Models\Contact;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;  // Tambahkan ini
+use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
     public function showPublic()
     {
-        $contacts = Contact::all(); // Ambil semua data kontak
-        return view('contact.index', compact('contacts')); // Kirim data ke view
+        $contacts = Contact::all();
+        return view('contact.index', compact('contacts'));
     }
 
     /**
@@ -20,8 +20,8 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $contacts = Contact::all(); // Ambil semua data kontak
-        return view('admin.contacts.index', compact('contacts')); // Kirim data ke view
+        $contacts = Contact::all();
+        return view('admin.contacts.index', compact('contacts'));
     }
 
     /**
@@ -33,7 +33,7 @@ class ContactController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource.
      */
     public function store(Request $request)
     {
@@ -44,7 +44,7 @@ class ContactController extends Controller
         ]);
 
         // Dapatkan ID pengguna yang sedang login
-        $userId = Auth::id(); // Menggunakan Auth facade
+        $userId = Auth::id();
 
         // Gabungkan data dari request dengan user_id
         $data = $request->all();
@@ -59,6 +59,7 @@ class ContactController extends Controller
     public function storePublic(Request $request)
     {
         try {
+            // Validasi data
             $validatedData = $request->validate([
                 'name' => 'required|max:255',
                 'email' => 'required|email|max:255',
@@ -66,20 +67,18 @@ class ContactController extends Controller
                 'message' => 'required',
             ]);
 
-            // Simpan data ke database (jika diperlukan)
-            // atau
-            // Kirim email
+            // Simpan data ke database
+            ContactMessage::create($validatedData);
 
-            // Misalnya, menyimpan ke database:
-            \App\Models\ContactMessage::create($validatedData); // Ganti Message dengan ContactMessage
-
-            return redirect()->route('contact')->with('success', 'Your message has been sent. Thank you!');
+            // Redirect dengan pesan sukses
+            return redirect()->route('contact.index')->with('success', 'Your message has been sent. Thank you!');
 
         } catch (\Exception $e) {
-            \Log::error($e); // Catat error ke log Laravel
-            // Atau, tampilkan pesan error (hanya untuk debugging, jangan di produksi!)
-            // dd($e);
-            return redirect()->back()->with('error', 'An error occurred. Please try again.');
+            // Log kesalahan
+            \Log::error('Gagal menyimpan pesan kontak: ' . $e->getMessage());
+
+            // Redirect dengan pesan kesalahan
+            return redirect()->back()->with('error', 'Terjadi kesalahan. Silakan coba lagi.');
         }
     }
 
@@ -100,7 +99,7 @@ class ContactController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource.
      */
     public function update(Request $request, Contact $contact)
     {
@@ -117,7 +116,7 @@ class ContactController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource.
      */
     public function destroy(Contact $contact)
     {

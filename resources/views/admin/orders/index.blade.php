@@ -189,12 +189,7 @@
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Menu</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Kuantitas</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Harga</th>
+                                           
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Total Harga</th>
@@ -219,17 +214,13 @@
                                                     {{ $order->user->name ?? 'Guest' }}</p>
                                             </td>
                                             <td class="align-middle text-center">
-                                                <span class="text-secondary text-xs font-weight-bold">
-                                                    {{ $order->menu->nama ?? 'Tidak Ada' }}</span>
+                                                 @foreach($order->orderItems as $orderItem)
+                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                        {{ $orderItem->menu->nama ?? 'Tidak Ada' }} ({{ $orderItem->quantity }})
+                                                    </span><br>
+                                                @endforeach
                                             </td>
-                                            <td class="align-middle text-center">
-                                                <span
-                                                    class="text-secondary text-xs font-weight-bold">{{ $order->quantity }}</span>
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                <span class="text-secondary text-xs font-weight-bold">Rp
-                                                    {{ number_format($order->price, 0, ',', '.') }}</span>
-                                            </td>
+                                          
                                             <td class="align-middle text-center">
                                                 <span class="text-secondary text-xs font-weight-bold">Rp
                                                     {{ number_format($order->total_price, 0, ',', '.') }}</span>
@@ -251,7 +242,13 @@
                                                             <option value="processing"
                                                                 {{ $order->status == 'processing' ? 'selected' : '' }}>
                                                                 Processing</option>
-                                                            
+                                                            <option value="shipped"
+                                                                {{ $order->status == 'shipped' ? 'selected' : '' }}>
+                                                                Shipped</option>
+
+                                                            <option value="delivered"
+                                                                {{ $order->status == 'delivered' ? 'selected' : '' }}>
+                                                                delivered</option>
                                                            
                                                             <option value="finished"
                                                                 {{ $order->status == 'finished' ? 'selected' : '' }}>

@@ -9,23 +9,31 @@ class Reservation extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+     protected $fillable = [
         'name',
         'email',
         'phone',
-        'reservation_time',
         'number_of_guests',
         'notes',
         'status',
-        'user_id',  // Tambahkan ini
+        'user_id',
+        'meja_id',
+        'start_time',
+        'end_time'
     ];
 
-    protected $casts = [
-        'reservation_time' => 'datetime',
+     protected $casts = [
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function meja()
+    {
+        return $this->belongsTo(Meja::class);
     }
 }

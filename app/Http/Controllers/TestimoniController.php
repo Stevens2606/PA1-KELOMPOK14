@@ -9,13 +9,19 @@ use Illuminate\Support\Facades\Auth;
 
 class TestimoniController extends Controller
 {
+    public function __construct()
+    {
+        // Semua method butuh otentikasi, kecuali showPublic dan submit
+        $this->middleware('auth')->except(['showPublic', 'submit']);
+    }
+
     /**
      * Display a listing of the resource for admin.
      */
     public function index()
     {
-        $testimonis = Testimoni::all(); // Ambil semua testimoni (termasuk yang pending)
-        return view('admin.testimonis.index', compact('testimonis')); // Kirim ke view admin
+        $testimonis = Testimoni::all();
+        return view('admin.testimonis.index', compact('testimonis'));
     }
 
     /**
@@ -23,8 +29,8 @@ class TestimoniController extends Controller
      */
     public function showPublic()
     {
-        $testimonis = Testimoni::all(); // Ambil hanya testimoni yang disetujui
-        return view('testimoni.index', compact('testimonis')); // Kirim ke view public
+        $testimonis = Testimoni::all(); // Hanya tampilkan yang disetujui
+        return view('testimoni.index', compact('testimonis'));
     }
 
     /**
@@ -32,7 +38,7 @@ class TestimoniController extends Controller
      */
     public function create()
     {
-        return view('admin.testimonis.create'); // Tampilkan form create untuk admin
+        return view('admin.testimonis.create');
     }
 
     /**
@@ -40,19 +46,17 @@ class TestimoniController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
             'isi' => 'required|string',
             'rating' => 'required|integer|min:1|max:5',
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        $testimoni = new Testimoni($validatedData);
+        $testimoni->status = 'approved';
+        $testimoni->save();
 
-        Testimoni::create($request->all());
-
-        return redirect()->route('admin.testimoni.index')->with('success', 'Testimoni berhasil ditambahkan.'); // Redirect ke index admin
+        return redirect()->route('admin.testimoni.index')->with('success', 'Testimoni berhasil ditambahkan.');
     }
 
     /**
@@ -60,46 +64,69 @@ class TestimoniController extends Controller
      */
     public function show(Testimoni $testimoni)
     {
-        return view('admin.testimonis.show', compact('testimoni')); // Kirim ke view admin
+        return view('admin.testimonis.show', compact('testimoni'));
     }
 
     /**
-     * Show the form for editing the specified resource (Admin).
+     * Show the form for editing the specified resource (User and Admin).
      */
     public function edit(Testimoni $testimoni)
     {
-        return view('testimoni.edit', compact('testimoni')); // Kirim ke view admin
+        if (!Auth::user()->isAdmin() && Auth::id() !== $testimoni->user_id) {
+            abort(403, 'Anda tidak memiliki izin untuk mengedit testimoni ini.');
+        }
+
+        return view('testimoni.edit', compact('testimoni'));
     }
 
     /**
-     * Update the specified resource in storage (Admin).
+     * Update the specified resource in storage (User and Admin).
      */
     public function update(Request $request, Testimoni $testimoni)
     {
-        $validator = Validator::make($request->all(), [
+        if (!Auth::user()->isAdmin() && Auth::id() !== $testimoni->user_id) {
+            abort(403, 'Anda tidak memiliki izin untuk mengedit testimoni ini.');
+        }
+
+        $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
             'isi' => 'required|string',
             'rating' => 'required|integer|min:1|max:5',
-            'status' => 'in:pending,approved,rejected' //Tambahkan validasi status
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+        $testimoni->update($validatedData);
+
+        if (Auth::user()->isAdmin()) {
+            return redirect()->route('admin.testimoni.index')->with('success', 'Testimoni berhasil diperbarui.');
+        } else {
+            return redirect()->route('testimoni.public')->with('success', 'Testimoni berhasil diperbarui.');
         }
-
-        $testimoni->update($request->all());
-
-        return redirect()->route('testimoni.public')->with('success', 'Testimoni berhasil diperbarui.'); // Redirect ke index admin
     }
 
     /**
      * Remove the specified resource from storage (Admin).
      */
-    public function destroy(Testimoni $testimoni)
+    public function destroyByAdmin(Testimoni $testimoni)
     {
-        $testimoni->delete();
+        if (!Auth::user()->isAdmin()) {
+            abort(403, 'Anda tidak memiliki izin untuk menghapus testimoni ini.');
+        }
 
-        return redirect()->route('admin.testimoni.index')->with('success', 'Testimoni berhasil dihapus.'); // Redirect ke index admin
+        $testimoni->delete();
+        return redirect()->route('admin.testimoni.index')->with('success', 'Testimoni berhasil dihapus (Admin).');
+    }
+
+    /**
+     * Remove the specified resource from storage (User).
+     */
+    public function destroyByUser(Testimoni $testimoni)
+    {
+        if (Auth::id() !== $testimoni->user_id) {
+            abort(403, 'Anda tidak memiliki izin untuk menghapus testimoni ini.');
+        }
+
+        $testimoni->delete();
+        return redirect()->route('testimoni.public')->with('success', 'Testimoni berhasil dihapus.');
     }
 
     /**
@@ -107,28 +134,46 @@ class TestimoniController extends Controller
      */
     public function submit(Request $request)
     {
-        // Validasi data (SANGAT PENTING)
-        $validator = Validator::make($request->all(), [
+        $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
             'isi' => 'required|string',
             'rating' => 'required|integer|min:1|max:5',
-            'jenis_kelamin' => 'nullable|in:pria,wanita,lainnya', // Validasi jenis_kelamin (ENUM)
+            'jenis_kelamin' => 'nullable|in:pria,wanita,lainnya',
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        // Simpan testimoni
         $testimoni = new Testimoni();
         $testimoni->nama = $request->nama;
         $testimoni->isi = $request->isi;
         $testimoni->rating = $request->rating;
-        $testimoni->jenis_kelamin = $request->jenis_kelamin;  // Assign jenis_kelamin
-        // $testimoni->user_id = Auth::id();  // Hapus baris ini atau gunakan Opsi 1 (autentikasi)
+        $testimoni->jenis_kelamin = $request->jenis_kelamin;
+        $testimoni->user_id = Auth::id(); // Pastikan ini ada dan benar
         $testimoni->save();
 
-        // Redirect kembali dengan pesan sukses
-        return redirect()->route('testimoni.public')->with('success', 'Testimoni Anda berhasil dikirim.'); // Redirect ke route yang benar
+        return redirect()->route('testimoni.public')->with('success', 'Testimoni Anda berhasil dikirim. Menunggu persetujuan admin.');
+    }
+
+    // Tambahkan method untuk admin menyetujui/menolak testimoni
+    public function approve(Testimoni $testimoni)
+    {
+        if (!Auth::user()->isAdmin()) {
+            abort(403, 'Anda tidak memiliki izin untuk menyetujui testimoni.');
+        }
+
+        $testimoni->status = 'approved';
+        $testimoni->save();
+
+        return redirect()->route('admin.testimoni.index')->with('success', 'Testimoni berhasil disetujui.');
+    }
+
+    public function reject(Testimoni $testimoni)
+    {
+        if (!Auth::user()->isAdmin()) {
+            abort(403, 'Anda tidak memiliki izin untuk menolak testimoni.');
+        }
+
+        $testimoni->status = 'rejected';
+        $testimoni->save();
+
+        return redirect()->route('admin.testimoni.index')->with('success', 'Testimoni berhasil ditolak.');
     }
 }

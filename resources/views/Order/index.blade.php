@@ -21,7 +21,7 @@
     <!-- Vendor CSS Files -->
     <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/aos/aos.js') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
 
@@ -39,6 +39,8 @@
             --light-gray: #f8f9fa;
             --text-color: #343a40;
             --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            --footer-text-color: #6c757d;
+            /* Warna teks footer (abu-abu) */
         }
 
         body {
@@ -134,6 +136,71 @@
         .text-center {
             color: var(--text-color);
         }
+
+        /* === Gaya Footer === */
+        #footer {
+            background-color: #fff;
+            /* Putih */
+            color: var(--footer-text-color);
+            /* Warna teks abu-abu */
+            padding: 30px 0;
+            /* Tambahkan padding */
+        }
+
+        #footer h4 {
+            color: var(--text-color);
+            /* Warna heading footer lebih gelap */
+            font-size: 1.2rem;
+            /* Ukuran font heading */
+            margin-bottom: 15px;
+            /* Spasi bawah heading */
+        }
+
+        #footer p {
+            font-size: 0.9rem;
+            /* Ukuran font paragraf */
+            line-height: 1.6;
+            /* Tinggi baris paragraf */
+        }
+
+        #footer .icon {
+            color: var(--primary-color);
+            /* Warna ikon */
+            margin-right: 10px;
+            /* Jarak antara ikon dan teks */
+        }
+
+        #footer .social-links a {
+            display: inline-flex;
+            /* Flex container untuk center ikon */
+            align-items: center;
+            /* Vertikal center ikon */
+            justify-content: center;
+            /* Horizontal center ikon */
+            width: 40px;
+            /* Lebar lingkaran */
+            height: 40px;
+            /* Tinggi lingkaran */
+            border-radius: 50%;
+            /* Membuat lingkaran */
+            border: 1px solid var(--light-gray);
+            /* Warna border */
+            margin-right: 5px;
+            /* Spasi antar lingkaran */
+            transition: all 0.3s ease;
+            /* Transisi hover */
+            color: var(--primary-color);
+            /* Warna ikon */
+        }
+
+        #footer .social-links a:hover {
+            background-color: var(--primary-color);
+            /* Warna latar belakang hover */
+            color: #fff;
+            /* Warna ikon hover */
+            border-color: var(--primary-color);
+            /* Warna border hover */
+        }
     </style>
 </head>
 
@@ -166,6 +233,11 @@
                     {{ session('success') }}
                 </div>
                 @endif
+                  @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+                @endif
 
                 <div class="order-list">
                     @if(count($orders) > 0)
@@ -182,8 +254,8 @@
                                     <p><i class="bi bi-hash"></i> Quantity: {{ $orderItem->quantity }}</p>
                                     <p><i class="bi bi-cash-coin"></i> Harga per Item: Rp
                                         {{ number_format($orderItem->price, 0, ',', '.') }}</p>
-                                    @endforeach
-                                    <p class="order-total"><i class="bi bi-cart-check-fill"></i> Total Harga: Rp
+                                        @endforeach
+                                     <p class="order-total"><i class="bi bi-cart-check-fill"></i> Total Harga: Rp
                                         {{ number_format($order->total_price, 0, ',', '.') }}</p>
                                     <p><i class="bi bi-clock-history"></i> Tanggal Order:
                                         {{ $order->created_at->format('d-m-Y H:i') }}</p>
@@ -191,10 +263,23 @@
                                         {{ $order->status }}</p>
 
                                     <div class="action-buttons">
-                                      
-                                        <form action="{{ route('orders.cancel', $order->id) }}" method="POST" style="display: inline-block;">
+                                    @if($order->status !== 'cancelled')
+                                        <form action="{{ route('orders.cancel', $order->id) }}" method="POST"
+                                            style="display: inline-block;">
                                             @csrf
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin membatalkan order ini?')">Batalkan</button>
+                                            @method('PUT')
+                                            <button type="submit" class="btn btn-danger"
+                                                onclick="return confirm('Apakah Anda yakin ingin membatalkan order ini?')">Batalkan</button>
+
+                                                    
+                                        </form>
+                                        @endif
+                                          <form action="{{ route('orders.destroy', $order->id) }}" method="POST"
+                                            style="display: inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger"
+                                                onclick="return confirm('Apakah Anda yakin ingin menghapus order ini?')">Hapus</button>
                                         </form>
                                     </div>
                                 </div>
@@ -247,7 +332,7 @@
                 <div class="col-lg-3 col-md-6">
                     <h4>Follow Us</h4>
                     <div class="social-links d-flex">
-                        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                         <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
                         <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
                         <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>

@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Menu;
-use App\Models\OrderItem; // Tambahkan ini
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Log; // Tambahkan ini untuk logging
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -17,13 +19,13 @@ class OrderController extends Controller
     const STATUS_SHIPPED = 'shipped';
     const STATUS_DELIVERED = 'delivered';
     const STATUS_CANCELLED = 'cancelled';
+    const STATUS_FINISHED = 'finished'; // Definisikan konstanta untuk status finished
 
     public function indexPublic()
     {
-        $userId = Auth::id(); // Dapatkan ID user yang login
-
-        $orders = Order::where('user_id', $userId) // Filter order berdasarkan user_id
-                    ->with(['user', 'orderItems.menu']) // Eager load relasi
+        $userId = Auth::id();
+        $orders = Order::where('user_id', $userId)
+                    ->with(['user', 'orderItems.menu'])
                     ->get();
 
         return view('order.index', compact('orders'));
@@ -31,7 +33,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::with(['user', 'orderItems.menu'])->get(); // Perbarui relasi
+        $orders = Order::with(['user', 'orderItems.menu'])->get();
         return view('admin.orders.index', compact('orders'));
     }
 
@@ -53,10 +55,9 @@ class OrderController extends Controller
             $order = new Order();
             $order->user_id = Auth::id();
             $order->status = self::STATUS_PENDING;
-            $order->total_price = 0; // Inisialisasi total_price
+            $order->total_price = 0;
             $order->save();
 
-            // Buat OrderItem
             $orderItem = new OrderItem();
             $orderItem->order_id = $order->id;
             $orderItem->menu_id = $menu->id;
@@ -64,7 +65,6 @@ class OrderController extends Controller
             $orderItem->price = $menu->harga;
             $orderItem->save();
 
-            // Hitung Total Harga
             $totalPrice = $menu->harga * $validatedData['quantity'];
             $order->total_price = $totalPrice;
             $order->save();
@@ -79,12 +79,10 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        // Pastikan hanya user yang memiliki order yang bisa melihat detail
         if (auth()->user()->id !== $order->user_id) {
-            abort(403, 'Unauthorized action.'); // Return 403 - Access Denied
+            abort(403, 'Unauthorized action.');
         }
 
-        //Load orderItems relationship
         $order->load('orderItems.menu');
 
         return view('order.show', compact('order'));
@@ -105,10 +103,10 @@ class OrderController extends Controller
                 self::STATUS_SHIPPED,
                 self::STATUS_DELIVERED,
                 self::STATUS_CANCELLED,
+                self::STATUS_FINISHED, // Tambahkan finished ke daftar status yang valid
             ])],
         ]);
 
-        // Ambil total_price yang sudah ada
         $order->status = $validatedData['status'];
         $order->save();
 
@@ -117,9 +115,28 @@ class OrderController extends Controller
 
     public function destroy(Order $order)
     {
-        $order->delete();
+        // Pastikan hanya user yang membuat order yang bisa menghapus
+        if (auth()->user()->id !== $order->user_id) {
+            return redirect()->route('orders.index')->with('error', 'Anda tidak berhak menghapus order ini.');
+        }
 
-        return redirect()->route('admin.orders.index')->with('success', 'Order berhasil dihapus.');
+        // Hanya izinkan penghapusan jika statusnya 'delivered' atau 'cancelled'
+        if (!in_array($order->status, [self::STATUS_DELIVERED, self::STATUS_CANCELLED])) {
+            return redirect()->route('orders.index')->with('error', 'Order hanya dapat dihapus jika statusnya sudah Selesai atau Dibatalkan.');
+        }
+
+        try {
+            DB::transaction(function () use ($order) {
+                OrderItem::where('order_id', $order->id)->delete();
+                $order->delete();
+            });
+
+            return redirect()->route('orders.index')->with('success', 'Order berhasil dihapus.');
+
+        } catch (\Exception $e) {
+            Log::error("Error deleting order: " . $e->getMessage() . "\n" . $e->getTraceAsString());
+            return back()->with('error', 'Terjadi kesalahan saat menghapus order. Silakan coba lagi.');
+        }
     }
 
     public function updateStatus(Request $request, Order $order)
@@ -131,6 +148,7 @@ class OrderController extends Controller
                 self::STATUS_SHIPPED,
                 self::STATUS_DELIVERED,
                 self::STATUS_CANCELLED,
+                self::STATUS_FINISHED, // Tambahkan finished ke daftar status yang valid
             ])],
         ]);
 
@@ -140,7 +158,6 @@ class OrderController extends Controller
         return redirect()->route('admin.orders.index')->with('success', 'Status order berhasil diperbarui.');
     }
 
-    // DRY - Don't Repeat Yourself
     private function updateOrderStatus(Order $order, string $status)
     {
         $order->status = $status;
@@ -170,13 +187,11 @@ class OrderController extends Controller
 
     public function cancel(Request $request, Order $order)
     {
-        // Pastikan hanya user yang memiliki order yang bisa membatalkan
         if (auth()->user()->id !== $order->user_id) {
             abort(403, 'Unauthorized action.');
         }
 
-        // Hanya bisa dibatalkan jika statusnya pending
-        if ($order->status !== self::STATUS_PENDING) {
+        if (!in_array($order->status, [self::STATUS_PENDING, self::STATUS_PROCESSING])) {
             return back()->with('error', 'Order tidak dapat dibatalkan karena statusnya sudah ' . $order->status);
         }
 
@@ -190,7 +205,4 @@ class OrderController extends Controller
             return back()->with('error', 'Terjadi kesalahan saat membatalkan order. Silakan coba lagi.');
         }
     }
-
-      // Method ADMIN di hapus karena sama dengan yang di atas
-
 }

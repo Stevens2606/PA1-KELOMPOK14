@@ -25,6 +25,8 @@
     <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
 
     <!-- Main CSS File -->
     <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
@@ -39,7 +41,8 @@
             --text-color: #343a40;
             --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
             --white-color: #fff;
-            --accent-color: #ffc107; /* Warna kuning untuk bintang */
+            --accent-color: #ffc107;
+            /* Warna kuning untuk bintang */
         }
 
         /* General Body Styles */
@@ -90,14 +93,16 @@
             position: relative;
             width: 100%;
             height: 600px;
-            background: url('{{ asset('assets/img/hero-bg.jpg') }}') center/cover no-repeat; /* Pastikan path benar */
+            background: url('{{ asset('assets/img/hero-bg.jpg') }}') center/cover no-repeat;
+            /* Pastikan path benar */
             overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            color: var(--white-color); /* Teks Putih */
+            color: var(--white-color);
+            /* Teks Putih */
             padding: 20px;
         }
 
@@ -108,7 +113,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Overlay Hitam */
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Overlay Hitam */
             z-index: 1;
         }
 
@@ -160,13 +166,15 @@
         #testimonials .section-header h2 {
             font-family: 'Playfair Display', serif;
             font-size: 2.8em;
-            color: var(--white-color); /* Menggunakan warna putih */
+            color: var(--white-color);
+            /* Menggunakan warna putih */
             margin-bottom: 15px;
         }
 
         #testimonials .section-header p {
             font-size: 1.2em;
-            color: var(--white-color); /* Menggunakan warna putih */
+            color: var(--white-color);
+            /* Menggunakan warna putih */
         }
 
         /* Testimonial Card Styles */
@@ -214,7 +222,8 @@
         .testimonial-card .profile div h3 {
             font-size: 1.4em;
             font-weight: 600;
-            color: var(--primary-color); /* Menggunakan warna primary */
+            color: var(--primary-color);
+            /* Menggunakan warna primary */
             margin-bottom: 5px;
         }
 
@@ -241,7 +250,8 @@
         .testimoni-form h3 {
             font-family: 'Playfair Display', serif;
             font-size: 2em;
-            color: var(--primary-color); /* Menggunakan warna primary */
+            color: var(--primary-color);
+            /* Menggunakan warna primary */
             margin-bottom: 25px;
             text-align: center;
         }
@@ -383,6 +393,7 @@
                     @foreach ($testimonis as $testimoni)
                         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                             <div class="testimonial-card">
+                                
                                 <div class="stars">
                                     @for ($i = 0; $i < $testimoni->rating; $i++)
                                         <i class="bi bi-star-fill"></i>
@@ -402,42 +413,20 @@
                                         <h4>{{ $testimoni->jenis_kelamin }}</h4>
                                     </div>
                                 </div>
-                                @auth
-                                    <div class="actions">
-                                        <a href="{{ route('admin.testimoni.edit', $testimoni->id) }}"
-                                            class="btn btn-sm btn-primary">Edit</a>
-                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal{{ $testimoni->id }}">Hapus</button>
-                                    </div>
-                                    <!-- Modal Hapus -->
-                                    <div class="modal fade" id="deleteModal{{ $testimoni->id }}" tabindex="-1"
-                                        aria-labelledby="deleteModalLabel{{ $testimoni->id }}" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title"
-                                                        id="deleteModalLabel{{ $testimoni->id }}">Konfirmasi
-                                                        Hapus</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Apakah Anda yakin ingin menghapus testimoni dari
-                                                    {{ $testimoni->nama }}?
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Batal</button>
-                                                    <form action="{{ route('admin.testimoni.destroy', $testimoni->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">Hapus</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                 @auth
+                                <div class="actions">
+                                    @if (Auth::id() == $testimoni->user_id)
+                                        <a href="{{ route('testimoni.edit', $testimoni->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                        <form id="deleteForm{{ $testimoni->id }}"
+                                            action="{{ route('testimoni.destroy', $testimoni->id) }}"  //Perubahan Disini
+                                            method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-sm btn-danger"
+                                                onclick="confirmDelete('{{ $testimoni->id }}')">Hapus</button>
+                                        </form>
+                                    @endif
+                                </div>
                                 @endauth
                             </div>
                         </div>
@@ -572,6 +561,28 @@
 
         <!-- Main JS File -->
         <script src="{{ asset('assets/js/main.js') }}"></script>
+                 <!-- SweetAlert2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+
+        <script>
+            function confirmDelete(testimoniId) {
+             Swal.fire({
+               title: 'Apakah Anda yakin?',
+               text: "Anda tidak akan dapat mengembalikan ini!",
+               icon: 'warning',
+               showCancelButton: true,
+               confirmButtonColor: '#3085d6',
+               cancelButtonColor: '#d33',
+               confirmButtonText: 'Ya, hapus!',
+               cancelButtonText: 'Batal'
+             }).then((result) => {
+               if (result.isConfirmed) {
+                   var form = document.getElementById('deleteForm' + testimoniId);
+                form.submit();
+               }
+             })
+           }
+        </script>
     </body>
 
-    </html> 
+    </html>

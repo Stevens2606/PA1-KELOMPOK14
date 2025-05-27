@@ -28,6 +28,21 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+
+    <style>
+        .card-hover:hover {
+            transform: translateY(-5px); /* Efek hover sedikit naik */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Efek bayangan lebih jelas */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transisi halus */
+        }
+
+        .card-link {
+            text-decoration: none; /* Hilangkan garis bawah default */
+            color: inherit; /* Gunakan warna teks default dari card */
+            display: block; /* Memastikan link mengisi seluruh card */
+            height: 100%; /* Memastikan link mengisi seluruh card */
+        }
+    </style>
 </head>
 
 <body class="g-sidenav-show bg-gray-100">
@@ -77,8 +92,9 @@
 
         <div class="container-fluid py-4">
             <div class="row">
-                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                 <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                     <div class="card bg-white shadow-sm h-100 card-hover">
+                      <a href="{{ route('admin.menus.index') }}" class="card-link">
                         <div class="card-body p-3">
                             <div class="d-flex align-items-center">
                                 <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
@@ -92,11 +108,13 @@
                                 </div>
                             </div>
                         </div>
+                      </a>
                     </div>
                 </div>
 
                 <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                     <div class="card bg-white shadow-sm h-100 card-hover">
+                       <a href="{{ route('admin.orders.index') }}" class="card-link">
                         <div class="card-body p-3">
                             <div class="d-flex align-items-center">
                                 <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
@@ -110,11 +128,13 @@
                                 </div>
                             </div>
                         </div>
+                      </a>
                     </div>
                 </div>
 
                 <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                     <div class="card bg-white shadow-sm h-100 card-hover">
+                       <a href="{{ route('admin.reservations.index') }}" class="card-link">
                         <div class="card-body p-3">
                             <div class="d-flex align-items-center">
                                 <div class="icon icon-shape bg-gradient-info shadow-info text-center rounded-circle">
@@ -128,11 +148,13 @@
                                 </div>
                             </div>
                         </div>
+                       </a>
                     </div>
                 </div>
 
                 <div class="col-xl-3 col-sm-6">
                     <div class="card bg-white shadow-sm h-100 card-hover">
+                        <a href="{{ route('admin.testimoni.index') }}" class="card-link">
                         <div class="card-body p-3">
                             <div class="d-flex align-items-center">
                                 <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
@@ -146,6 +168,7 @@
                                 </div>
                             </div>
                         </div>
+                       </a>
                     </div>
                 </div>
             </div>

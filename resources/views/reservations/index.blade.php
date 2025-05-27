@@ -172,97 +172,123 @@
 
                 <!-- content container -->
                 <div class="content">
-                    @if(count($reservations) > 0)
-                    <div class="reservation-list">
-                        @foreach($reservations as $reservation)
-                        <div class="reservation-item">
-                            <h4>Reservasi #{{ $reservation->id }}</h4>
-                            <p>Nama: {{ $reservation->name }}</p>
-                            <p>Email: {{ $reservation->email }}</p>
-                            <p>Telepon: {{ $reservation->phone }}</p>
-                            <p>Waktu Reservasi: {{ $reservation->reservation_time->format('d-m-Y H:i') }}</p>
-                            <p>Jumlah Tamu: {{ $reservation->number_of_guests }}</p>
-                            <p>Status: {{ $reservation->status }}</p>
+                @if(count($reservations) > 0)
+                <div class="reservation-list">
+                    @foreach($reservations as $reservation)
+                    <div class="reservation-item">
+                        <h4>Reservasi #{{ $reservation->id }}</h4>
+                        <p>Nama: {{ $reservation->name }}</p>
+                        <p>Email: {{ $reservation->email }}</p>
+                        <p>Telepon: {{ $reservation->phone }}</p>
+                        <p>Waktu Mulai: 
+    @if($reservation->start_time)
+        {{ $reservation->start_time->format('d-m-Y H:i') }}
+    @else
+        Belum Ditentukan
+    @endif
+</p>
+<p>Waktu Selesai:
+    @if($reservation->end_time)
+        {{ $reservation->end_time->format('d-m-Y H:i') }}
+    @else
+        Belum Ditentukan
+    @endif
+</p>
+                        <p>Jumlah Tamu: {{ $reservation->number_of_guests }}</p>
+                        <p>Status: {{ $reservation->status }}</p>
 
-                            <div class="action-buttons">
-                                <a href="{{ route('reservations.edit', $reservation->id) }}"
-                                    class="btn btn-primary btn-sm">Edit</a>
+                        @if($reservation->meja)
+                            <p>Meja: Nomor {{ $reservation->meja->nomor_meja }} (Kapasitas: {{ $reservation->meja->kapasitas }})</p>
+                        @else
+                            <p>Meja: Belum ditetapkan</p>
+                        @endif
 
-                                @if ($reservation->status != 'cancelled')
-                                <form action="{{ route('reservations.cancel', $reservation->id) }}" method="POST"
-                                    style="display: inline-block;">
-                                    @csrf
-                                    <button type="submit" class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Apakah Anda yakin ingin membatalkan reservasi ini?')">Batal</button>
-                                </form>
-                                @endif
+                        <div class="action-buttons">
+                            <a href="{{ route('reservations.edit', $reservation->id) }}"
+                                class="btn btn-primary btn-sm">Edit</a>
 
-                                <form action="{{ route('reservations.destroy', $reservation->id) }}" method="POST"
-                                    style="display: inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Apakah Anda yakin ingin menghapus reservasi ini?')">Hapus</button>
-                                </form>
-                            </div>
+                            @if ($reservation->status != 'cancelled')
+                            <form action="{{ route('reservations.cancel', $reservation->id) }}" method="POST"
+                                style="display: inline-block;">
+                                @csrf
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Apakah Anda yakin ingin membatalkan reservasi ini?')">Batal</button>
+                            </form>
+                            @endif
+
+                            <form action="{{ route('reservations.destroy', $reservation->id) }}" method="POST"
+                                style="display: inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Apakah Anda yakin ingin menghapus reservasi ini?')">Hapus</button>
+                            </form>
                         </div>
-                        @endforeach
                     </div>
-                    @else
-                    <p class="text-center">Tidak ada reservasi yang ditemukan.</p>
-                    @endif
+                    @endforeach
                 </div>
+                @else
+                <p class="text-center">Tidak ada reservasi yang ditemukan.</p>
+                @endif
+            </div>
                 <!-- End content container -->
             </div>
         </section><!-- End Reservation Section -->
     </main>
 
-    <!-- ======= Footer ======= -->
-    <footer id="footer" class="footer">
+   <footer id="footer" class="footer" style="background-color: var(--white-color); color: var(--text-color);">
 
         <div class="container">
             <div class="row gy-3">
                 <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-geo-alt icon"></i>
+                    <i class="bi bi-geo-alt icon" style="color: var(--primary-color);"></i>
                     <div class="address">
-                        <h4>Address</h4>
+                        <h4 class="text-dark">Address</h4>
                         <p>Jl. Patuan Nagari No.49, Ps. Porsea, Kec. Porsea, Toba, Sumatera Utara 22384</p>
+                        <p></p>
                     </div>
+
                 </div>
 
                 <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-telephone icon"></i>
+                    <i class="bi bi-telephone icon" style="color: var(--primary-color);"></i>
                     <div>
-                        <h4>Contact</h4>
+                        <h4 class="text-dark">Contact</h4>
                         <p>
                             <strong>Phone:</strong> <span>+62 822-7378-2156</span><br>
-                            <strong>Email:</strong> <span>qualitytimecafe45@gmail.com</span><br>
+                            <strong>Email:</strong> <span>qualitytimecafe45@gmail.com
+                            </span><br>
                         </p>
                     </div>
                 </div>
 
                 <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-clock icon"></i>
+                    <i class="bi bi-clock icon" style="color: var(--primary-color);"></i>
                     <div>
-                        <h4>Opening Hours</h4>
+                        <h4 class="text-dark">Opening Hours</h4>
                         <p>
-                            <strong>Mon-Sun:</strong> <span>10 AM - 11 PM</span><br>
+                            <strong>Mon-Sun:</strong> <span>10 am - 11pm</span><br>
+
                         </p>
                     </div>
                 </div>
 
                 <div class="col-lg-3 col-md-6">
-                    <h4>Follow Us</h4>
+                    <h4 class="text-dark">Follow Us</h4>
                     <div class="social-links d-flex">
-                        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="twitter" style="color: var(--primary-color);"><i
+                                class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="facebook" style="color: var(--primary-color);"><i
+                                class="bi bi-facebook"></i></a>
+                        <a href="#" class="instagram" style="color: var(--primary-color);"><i
+                                class="bi bi-instagram"></i></a>
+                        <a href="#" class="linkedin" style="color: var(--primary-color);"><i
+                                class="bi bi-linkedin"></i></a>
                     </div>
                 </div>
-            </div>
-        </div>
-    </footer><!-- End Footer -->
+
+        </footer>
+
 
     <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i
             class="bi bi-arrow-up-short"></i></a>

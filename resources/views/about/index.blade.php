@@ -98,8 +98,10 @@
         /* Hero Section Styles */
         #hero {
             width: 100%;
-            height: 80vh; /* Sesuaikan tinggi hero section */
-            background: url("assets/img/hero-bg.jpg") top center; /* Ganti dengan gambar berkualitas tinggi */
+            height: 80vh;
+            /* Sesuaikan tinggi hero section */
+            background: url("assets/img/hero-bg.jpg") top center;
+            /* Ganti dengan gambar berkualitas tinggi */
             background-size: cover;
             position: relative;
             margin-bottom: 30px;
@@ -144,7 +146,8 @@
 
         #hero::before {
             content: "";
-            background: rgba(0, 0, 0, 0.5); /* Overlay gelap */
+            background: rgba(0, 0, 0, 0.5);
+            /* Overlay gelap */
             position: absolute;
             bottom: 0;
             top: 0;
@@ -425,17 +428,16 @@
                             </p>
 
                             @if ($about && $about->video_url)
-                            <div class="d-flex align-items-center justify-content-center" data-aos="fade-up"
-                                data-aos-delay="200">
-                                <a href="{{ $about->video_url }}" class="glightbox btn-watch-video">
-                                    <img src="assets/img/OIP.jpg" alt="Watch Video" class="play-image">
-                                    <div class="play-icon">
-                                        <i class="bi bi-play-circle-fill"></i>
-                                    </div>
-                                </a>
-                            </div>
+                                <div class="d-flex align-items-center justify-content-center" data-aos="fade-up" data-aos-delay="200">
+                                    <a href="{{ $about->video_url }}" class="glightbox btn-watch-video">
+                                        <img src="assets/img/OIP.jpg" alt="Watch Video" class="play-image">
+                                        <div class="play-icon">
+                                            <i class="bi bi-play-circle-fill"></i>
+                                        </div>
+                                    </a>
+                                </div>
                             @else
-                            <p>Tidak ada video yang tersedia.</p>
+                                <p>Tidak ada video yang tersedia.</p>
                             @endif
                         </div>
                     </div>
@@ -450,6 +452,7 @@
             </div>
         </section><!-- End Testimonials Section -->
     </main><!-- End #main -->
+     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer" style="background-color: var(--white-color); color: var(--text-color);">
 
         <div class="container">
@@ -457,17 +460,15 @@
                 <div class="col-lg-3 col-md-6 d-flex">
                     <i class="bi bi-geo-alt icon" style="color: var(--primary-color);"></i>
                     <div class="address">
-                        <h4>Address</h4>
+                        <h4 style="color: var(--text-color);">Address</h4>
                         <p>Jl. Patuan Nagari No.49, Ps. Porsea, Kec. Porsea, Toba, Sumatera Utara 22384</p>
-                        <p></p>
                     </div>
-
                 </div>
 
                 <div class="col-lg-3 col-md-6 d-flex">
                     <i class="bi bi-telephone icon" style="color: var(--primary-color);"></i>
                     <div>
-                        <h4 class="text-clar">Contact</h4>
+                        <h4 style="color: var(--text-color);">Contact</h4>
                         <p>
                             <strong>Phone:</strong> <span>+62 822-7378-2156</span><br>
                             <strong>Email:</strong> <span>qualitytimecafe45@gmail.com
@@ -479,19 +480,18 @@
                 <div class="col-lg-3 col-md-6 d-flex">
                     <i class="bi bi-clock icon" style="color: var(--primary-color);"></i>
                     <div>
-                        <h4>Opening Hours</h4>
+                        <h4 style="color: var(--text-color);">Opening Hours</h4>
                         <p>
                             <strong>Mon-Sun:</strong> <span>10 am - 11pm</span><br>
-
                         </p>
                     </div>
                 </div>
 
                 <div class="col-lg-3 col-md-6">
-                    <h4>Follow Us</h4>
+                    <h4 style="color: var(--text-color);">Follow Us</h4>
                     <div class="social-links d-flex">
                         <a href="#" class="twitter" style="color: var(--primary-color);"><i
-                                class="bi bi-twitter-x"></i></a>
+                                class="bi bi-twitter"></i></a>
                         <a href="#" class="facebook" style="color: var(--primary-color);"><i
                                 class="bi bi-facebook"></i></a>
                         <a href="#" class="instagram" style="color: var(--primary-color);"><i
@@ -500,8 +500,10 @@
                                 class="bi bi-linkedin"></i></a>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <!-- Scroll Top -->
+    </footer><!-- End F             <!-- Scroll Top -->
                 <a href="#" id="scroll-top"
                     class="scroll-top d-flex align-items-center justify-content-center"><i
                         class="bi bi-arrow-up-short"></i></a>
