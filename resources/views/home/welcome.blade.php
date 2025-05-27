@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
+    <!-- Meta Tags -->
     <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quality Time Cafe & Resto</title>
-    <meta name="description"
-        content="Temukan momen istimewa di Quality Time Cafe & Resto. Hidangan lezat, kopi nikmat, dan suasana yang tak terlupakan.">
+    <meta name="description" content="Temukan momen istimewa di Quality Time Cafe & Resto. Hidangan lezat, kopi nikmat, dan suasana yang tak terlupakan.">
     <meta name="keywords" content="cafe, resto, kopi, makanan, minuman, suasana, quality time">
 
     <!-- Favicons -->
@@ -16,22 +16,24 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- Vendor CSS Files -->
+    <!-- Vendor CSS -->
     <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
 
-    <!-- Main CSS File -->
+    <!-- Main CSS -->
     <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
 
+    <!-- Bootstrap CSS (Consider removing if already included in main.css) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Styles -->
     <style>
-        /* Variabel Warna (Konsisten dengan Halaman Gallery) */
+        /* Color Variables */
         :root {
             --primary-color: #667eea;
             --secondary-color: #43cea2;
@@ -41,7 +43,7 @@
             --white-color: #fff;
         }
 
-        /* Gaya Umum */
+        /* General Styles */
         body {
             font-family: 'Poppins', sans-serif;
             min-height: 100vh;
@@ -61,10 +63,9 @@
             color: var(--primary-color);
         }
 
-        /* Header */
+        /* Header Styles */
         #header {
             background-color: var(--white-color);
-            /* White */
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 15px 0;
             transition: all 0.5s ease;
@@ -72,28 +73,24 @@
 
         #header.header-scrolled {
             background-color: var(--white-color);
-            /* White */
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
         }
 
         .logo img {
             max-height: 40px;
-            /* Sesuaikan ukuran logo */
         }
 
         .sitename {
             font-size: 1.8em;
             font-weight: 700;
             color: var(--text-color);
-            /* Dark Gray */
             margin-left: 10px;
         }
 
-        /* Navbar */
+        /* Navbar Styles */
         .navbar a {
             font-size: 1.1em;
             color: var(--text-color);
-            /* Dark Gray */
             padding: 10px 15px;
             transition: color 0.3s ease;
         }
@@ -103,7 +100,7 @@
             color: var(--primary-color);
         }
 
-       /* Hero Section */
+        /* Hero Section Styles */
         #hero {
             background: url("{{ asset('assets/img/cafe.jpg') }}") center/cover no-repeat;
             color: var(--white-color);
@@ -120,7 +117,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Warna hitam semi-transparan */
+            background-color: rgba(0, 0, 0, 0.5);
             z-index: 1;
         }
 
@@ -164,15 +161,56 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
 
+        /* Section Separator Styles */
+        .section-separator {
+            padding: 30px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-        /* Section Separator (About Section) */
+        .section-separator h2 {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 0.5em;
+        }
+
+        .section-separator p {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 1em;
+        }
+
+        .section-separator::before,
+        .section-separator::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            border-bottom: 2px dashed #ccc;
+        }
+
+        .section-separator::before {
+            left: 0;
+        }
+
+        .section-separator::after {
+            right: 0;
+        }
+
+        .section-separator span {
+            background-color: #fff;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* About Section Styles */
         #about {
             padding: 80px 0;
             text-align: center;
             background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            /* Gradien */
             color: var(--white-color);
-            /* White */
         }
 
         #about .container {
@@ -188,7 +226,6 @@
             font-family: 'Playfair Display', serif;
             font-size: 3em;
             color: var(--white-color);
-            /* White */
             margin-bottom: 25px;
             font-weight: 700;
             letter-spacing: 1px;
@@ -197,16 +234,14 @@
         #about p {
             font-size: 1.1em;
             color: var(--text-color);
-            /* Navy Blue */
             max-width: 900px;
             margin: 0 auto;
             line-height: 1.6;
         }
 
-        /* Menu Section */
+        /* Menu Section Styles */
         #menu {
             background-color: var(--light-gray);
-            /* Light Gray */
             padding: 80px 0;
         }
 
@@ -235,9 +270,7 @@
             overflow: hidden;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
             background-color: var(--white-color);
-            /* White background */
         }
 
         .menu-item:hover {
@@ -248,7 +281,6 @@
         .menu-item img {
             width: 100%;
             height: 250px;
-            /* Sesuaikan tinggi gambar */
             object-fit: cover;
             transition: transform 0.5s ease;
         }
@@ -265,22 +297,36 @@
         .menu-item-details h3 {
             font-family: 'Playfair Display', serif;
             font-size: 1.8em;
-            /* Ukuran lebih kecil untuk responsivitas */
             color: var(--secondary-color);
             margin-bottom: 15px;
         }
 
         .menu-item-details p {
             font-size: 1em;
-            /* Ukuran lebih kecil untuk responsivitas */
             color: var(--text-color);
             line-height: 1.5;
         }
 
-        /* Testimonial Section */
+        .menu-item .order-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .menu-item .order-button:hover {
+            background-color: #3e8e41;
+        }
+
+        /* Testimonial Section Styles */
         #testimonials {
             background-color: var(--light-gray);
-            /* Cream */
             padding: 80px 0;
             text-align: center;
         }
@@ -302,6 +348,7 @@
             line-height: 1.6;
         }
 
+        /* Testimonial Card Styles */
         .testimonial-card {
             border: none;
             padding: 40px;
@@ -309,7 +356,6 @@
             border-radius: 25px;
             box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
             background-color: var(--white-color);
-            /* White */
             text-align: center;
             transition: all 0.4s ease;
         }
@@ -327,7 +373,12 @@
         .testimonial-card p {
             font-style: italic;
             color: #555;
-            margin-bottom: 30px;
+        }
+
+        .testimonial-card .profile {
+            display: flex;
+            align-items: center;
+            margin-top: 30px;
             font-size: 1.1em;
             line-height: 1.6;
         }
@@ -336,8 +387,8 @@
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            object-fit: cover;
             margin: 0 auto 20px;
+            object-fit: cover;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
@@ -351,12 +402,12 @@
         .testimonial-card .profile h4 {
             font-size: 0.9em;
             color: #777;
+            margin-bottom: 0;
         }
 
-        /* Contact Section */
+        /* Contact Section Styles */
         #contact {
             background-color: var(--light-gray);
-            /* Cream */
             padding: 80px 0;
             text-align: center;
         }
@@ -378,12 +429,34 @@
             line-height: 1.6;
         }
 
-        /* Footer */
+        /* Map Styles */
+        .map-responsive {
+            overflow: hidden;
+            padding-bottom: 56.25%;
+            position: relative;
+            height: 0;
+        }
+
+        .map-responsive iframe {
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            border: 0;
+        }
+
+        /* Error Message Styles */
+        .error-message {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+
+        /* Footer Styles */
         #footer {
             background-color: var(--secondary-color);
-            /* Dark Blue */
             color: var(--white-color);
-            /* White */
             padding: 40px 0;
             text-align: center;
         }
@@ -393,7 +466,6 @@
             margin-bottom: 15px;
             font-weight: 600;
             color: var(--white-color);
-            /* White */
         }
 
         #footer p {
@@ -412,7 +484,61 @@
             color: var(--primary-color);
         }
 
-        /* Media Queries untuk Responsivitas */
+        /* Quantity Styles */
+        .quantity-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .quantity-label {
+            margin-right: 5px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .button-group .order-button {
+            margin: 0 5px;
+        }
+
+        .quantity-input {
+            width: 50px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        /* Gallery Section Styles */
+        #gallery {
+            background-color: var(--light-gray);
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        #gallery h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3em;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        #gallery p {
+            font-size: 1.1em;
+            color: var(--text-color);
+            max-width: 900px;
+            margin: 0 auto 35px;
+            line-height: 1.6;
+        }
+
+        /* Responsive Styles */
         @media (max-width: 768px) {
             #hero h1 {
                 font-size: 3.5em;
@@ -453,19 +579,16 @@
             }
         }
     </style>
-
 </head>
 
-<body class="index-page">
+<body>
 
     <!-- ======= Header ======= -->
-    <header id="header" class="header d-flex align-items-center sticky-top">
-        <div class="container position-relative d-flex align-items-center justify-content-between">
-
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center justify-content-between">
             <a href="{{ route('welcome') }}" class="logo d-flex align-items-center me-auto me-xl-0">
                 <img src="{{ asset('assets/img/logo.png') }}" alt="Quality Time Cafe Logo">
                 <h1 class="sitename">Quality Time</h1>
-                <span>.</span>
             </a>
 
             @include('layouts.navbar')
@@ -479,7 +602,7 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-8 text-center">
-                        <h1 class="text-white">Selamat Datang di Quality Time</h1>
+                        <h1>Selamat Datang di Quality Time</h1>
                         <p>Nikmati hidangan lezat dan kopi berkualitas tinggi dalam suasana yang nyaman dan penuh kehangatan. Jadikan setiap momen berharga di Quality Time.</p>
                         <a href="#menu" class="btn btn-primary">Jelajahi Menu Kami</a>
                     </div>
@@ -488,143 +611,98 @@
         </section><!-- End Hero Section -->
 
         <!-- ======= Menu Section ======= -->
-        <section id="menu" class="section">
+        <section id="menu" class="menu py-5">
             <div class="container">
-                <h2>Menu Unggulan Kami</h2>
-                <p>Sempurnakan momen bersantap Anda dengan pilihan menu unggulan yang kami racik dengan penuh dedikasi dan bahan-bahan terbaik.</p>
+                <h2 class="text-center mb-5 fw-bold" style="color: var(--primary-color);">Menu Unggulan Kami</h2>
+                <p class="text-center lead mb-5 text-muted">Sempurnakan momen bersantap Anda dengan pilihan menu unggulan yang kami racik dengan penuh dedikasi dan bahan-bahan terbaik.</p>
 
                 <div class="row">
-                    <!-- Contoh Menu Item -->
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up">
-                        <div class="menu-item">
-                            <img src="{{ asset('assets/img/menu/Cappucino .jpg') }}" alt="Cappucino">
-                            <div class="menu-item-details">
-                                <h3>Cappucino</h3>
-                                <p>Kopi klasik Italia yang kaya dengan espresso, susu hangat, dan lapisan busa yang lembut. Nikmati kehangatan dan kelezatan dalam setiap tegukan.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                        <div class="menu-item">
-                            <img src="{{ asset('assets/img/menu/nasi ayambakar.jpg') }}" alt="Nasi Ayam Bakar">
-                            <div class="menu-item-details">
-                                <h3>Nasi Ayam Bakar</h3>
-                                <p>Nasi Ayam Bakar dengan cita rasa yang khas, diperkaya dengan bumbu rahasia Quality Time.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
-                        <div class="menu-item">
-                            <a href="#">
-                                <img src="{{ asset('assets/img/menu/CaramelCoffeeJellyFrappucino.jpg') }}" alt="Caramel Coffee">
-                                <div class="menu-item-details">
-                                    <h3>Caramel Coffee</h3>
-                                    <p>Nikmati Caramel Coffee Jelly Frappucino yang segar dan lezat. Kombinasi sempurna antara kopi, karamel, dan jelly yang menyegarkan.</p>
+                    @php
+                    $count = 0;
+                    @endphp
+                    @foreach($menus as $menu)
+                        @if($count < 3)
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card menu-item h-100 border-0 shadow" style="transition: all 0.3s ease;">
+                                    <div class="overflow-hidden" style="border-radius: 15px;">
+                                        <img src="{{ asset('storage/menus/' . $menu->gambar) }}" class="card-img-top" alt="{{ $menu->nama }}" style="height: 250px; object-fit: cover; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                                    </div>
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title fw-bold">{{ $menu->nama }}</h5>
+                                        <p class="card-text text-muted flex-grow-1">{{ $menu->deskripsi }}</p>
+                                    </div>
                                 </div>
-                            </a>
-                        </div>
-                    </div>
+                            </div>
+                            @php
+                            $count++;
+                            @endphp
+                        @endif
+                    @endforeach
                 </div>
             </div>
         </section><!-- End Menu Section -->
 
         <!-- ======= Testimonials Section ======= -->
-        <section id="testimonials" class="section">
+        <section id="testimonials" class="py-5" style="background-color: #f8f9fa;">
             <div class="container">
-                <h2>Kata Mereka Tentang Kami</h2>
-                <p>Simak pengalaman berkesan dari para pelanggan yang telah menikmati momen berharga di Quality Time Cafe & Resto.</p>
+                <h2 class="text-center mb-5 fw-bold" style="color: var(--primary-color);">Kata Mereka Tentang Kami</h2>
+                <p class="text-center lead mb-5 text-muted">Simak pengalaman berkesan dari para pelanggan yang telah menikmati momen berharga di Quality Time Cafe & Resto.</p>
 
                 <div class="row">
-                    <!-- Contoh Testimonial Card -->
-                    <div class="col-lg-4" data-aos="fade-up">
-                        <div class="testimonial-card">
-                            <div class="stars">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                            </div>
-                            <p>"Tempatnya nyaman, makanannya enak, dan pelayanannya ramah. Sangat recommended untuk quality time bersama keluarga!"</p>
-                            <div class="profile">
-                                <img src="https://via.placeholder.com/100" alt="Foto Profil Sarah">
-                                <div>
-                                    <h3>Sarah J</h3>
-                                    <h4>Ibu Rumah Tangga</h4>
+                    @foreach($feedbacks->take(3) as $testimoni)
+                        <div class="col-lg-4 mb-4">
+                            <div class="card testimonial-card h-100 border-0 shadow" style="border-radius: 15px; transition: all 0.3s ease;">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="stars text-center mb-3" style="color: #f39c12;">
+                                        @for($i = 0; $i < $testimoni->rating; $i++)
+                                            <i class="bi bi-star-fill"></i>
+                                        @endfor
+                                        @for($i = $testimoni->rating; $i < 5; $i++)
+                                            <i class="bi bi-star"></i>
+                                        @endfor
+                                    </div>
+                                    <p class="card-text text-muted flex-grow-1" style="font-style: italic;">"{{ $testimoni->isi }}"</p>
+                                    <hr>
+                                    <div class="profile mt-3 d-flex align-items-center">
+                                        @if($testimoni->jenis_kelamin == 'pria')
+                                            <img src="{{ asset('assets/img/pria.png') }}" alt="Foto {{ $testimoni->nama }}" class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                        @elseif($testimoni->jenis_kelamin == 'wanita')
+                                            <img src="{{ asset('assets/img/wanita.png') }}" alt="Foto {{ $testimoni->nama }}" class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                        @else
+                                            <img src="{{ asset('assets/img/testimonials/default_avatar.png') }}" alt="Foto {{ $testimoni->nama }}" class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                        @endif
+                                        <div>
+                                            <h5 class="mb-1 fw-bold">{{ $testimoni->nama }}</h5>
+                                            <small class="text-muted">Pelanggan Setia</small>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
-                        <div class="testimonial-card">
-                            <div class="stars">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star"></i>
-                            </div>
-                            <p>"Kopi di Quality Time Cafe selalu jadi andalan saya. Tempatnya juga asik banget buat kerja atau sekadar nongkrong santai."</p>
-                            <div class="profile">
-                                <img src="https://via.placeholder.com/100" alt="Foto Profil Michael">
-                                <div>
-                                    <h3>Michael L</h3>
-                                    <h4>Freelancer</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4" data-aos="fade-up" data-aos-delay="400">
-                        <div class="testimonial-card">
-                            <div class="stars">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                            </div>
-                            <p>"Saya dan teman-teman sering banget ke sini. Makanannya enak, harganya terjangkau, dan suasananya bikin betah!"</p>
-                            <div class="profile">
-                                <img src="https://via.placeholder.com/100" alt="Foto Profil Emily">
-                                <div>
-                                    <h3>Emily K</h3>
-                                    <h4>Mahasiswa</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Tambahkan testimonial card lainnya di sini -->
+                    @endforeach
                 </div>
             </div>
         </section><!-- End Testimonials Section -->
 
-        <!-- ======= Contact Section ======= -->
-        <section id="contact" class="contact section">
-            <div class="container">
-                <h2>Hubungi Kami</h2>
-                <p>Kami selalu senang mendengar dari Anda. Jangan ragu untuk menghubungi kami melalui formulir di bawah ini atau melalui informasi kontak yang tertera.</p>
-                <!-- Form kontak dan informasi kontak lainnya -->
-            </div>
-        </section><!-- End Contact Section -->
     </main>
 
     <!-- ======= Footer ======= -->
-    <footer id="footer" class="footer">
+    <footer id="footer" class="footer" style="background-color: var(--white-color); color: #000;">
         <div class="container">
             <div class="row gy-3">
                 <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-geo-alt icon"></i>
+                    <i class="bi bi-geo-alt icon" style="color: #000;"></i>
                     <div class="address">
                         <h4>Address</h4>
-                        <p>Jl. Patuan Nagari No.49, Ps. Porsea, Kec. Porsea, Toba, Sumatera Utara 22384</p>
+                        <p style="color: #000;">Jl. Patuan Nagari No.49, Ps. Porsea, Kec. Porsea, Toba, Sumatera Utara 22384</p>
                     </div>
                 </div>
 
                 <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-telephone icon"></i>
+                    <i class="bi bi-telephone icon" style="color: #000;"></i>
                     <div>
                         <h4>Contact</h4>
-                        <p>
+                        <p style="color: #000;">
                             <strong>Phone:</strong> <span>+62 822-7378-2156</span><br>
                             <strong>Email:</strong> <span>qualitytimecafe45@gmail.com</span><br>
                         </p>
@@ -632,11 +710,11 @@
                 </div>
 
                 <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-clock icon"></i>
+                    <i class="bi bi-clock icon" style="color: #000;"></i>
                     <div>
                         <h4>Opening Hours</h4>
-                        <p>
-                            <strong>Mon-Sun:</strong> <span>10 AM - 11 PM</span><br>
+                        <p style="color: #000;">
+                            <strong>Mon-Sun:</strong> <span>10 am - 11pm</span><br>
                         </p>
                     </div>
                 </div>
@@ -644,54 +722,33 @@
                 <div class="col-lg-3 col-md-6">
                     <h4>Follow Us</h4>
                     <div class="social-links d-flex">
-                        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="twitter" style="color: #000;"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="facebook" style="color: #000;"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="instagram" style="color: #000;"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="linkedin" style="color: #000;"><i class="bi bi-linkedin"></i></a>
                     </div>
                 </div>
             </div>
         </div>
     </footer><!-- End Footer -->
 
-    <!-- Scroll Top -->
-    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-            class="bi bi-arrow-up-short"></i></a>
-
-    <!-- Preloader -->
-    <div id="preloader"></div>
+    <!-- Scroll Top Button -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
     <!-- Vendor JS Files -->
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
     <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
     <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
     <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
 
     <!-- Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
 
-    <!-- Script tambahan  -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            AOS.init({
-                duration: 1000,
-                easing: 'ease-in-out',
-                once: true
-            });
+    <!-- Bootstrap JS (Consider removing if already included in main.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-            // Fungsi untuk menangani scrolling header
-            const header = document.getElementById('header');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 100) {
-                    header.classList.add('header-scrolled');
-                } else {
-                    header.classList.remove('header-scrolled');
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>

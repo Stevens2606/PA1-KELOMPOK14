@@ -450,24 +450,25 @@
             </div>
         </section><!-- End Testimonials Section -->
     </main><!-- End #main -->
-    <!-- ======= Footer ======= -->
-    <footer id="footer" class="footer" style="background-color: var(--white-color); color: #000;">
+    <footer id="footer" class="footer" style="background-color: var(--white-color); color: var(--text-color);">
 
         <div class="container">
             <div class="row gy-3">
                 <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-geo-alt icon" style="color: #000;"></i>
+                    <i class="bi bi-geo-alt icon" style="color: var(--primary-color);"></i>
                     <div class="address">
                         <h4>Address</h4>
-                        <p style="color: #000;">Jl. Patuan Nagari No.49, Ps. Porsea, Kec. Porsea, Toba, Sumatera Utara 22384</p>
+                        <p>Jl. Patuan Nagari No.49, Ps. Porsea, Kec. Porsea, Toba, Sumatera Utara 22384</p>
+                        <p></p>
                     </div>
+
                 </div>
 
                 <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-telephone icon" style="color: #000;"></i>
+                    <i class="bi bi-telephone icon" style="color: var(--primary-color);"></i>
                     <div>
-                        <h4>Contact</h4>
-                        <p style="color: #000;">
+                        <h4 class="text-clar">Contact</h4>
+                        <p>
                             <strong>Phone:</strong> <span>+62 822-7378-2156</span><br>
                             <strong>Email:</strong> <span>qualitytimecafe45@gmail.com
                             </span><br>
@@ -476,10 +477,10 @@
                 </div>
 
                 <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-clock icon" style="color: #000;"></i>
+                    <i class="bi bi-clock icon" style="color: var(--primary-color);"></i>
                     <div>
                         <h4>Opening Hours</h4>
-                        <p style="color: #000;">
+                        <p>
                             <strong>Mon-Sun:</strong> <span>10 am - 11pm</span><br>
 
                         </p>
@@ -489,13 +490,13 @@
                 <div class="col-lg-3 col-md-6">
                     <h4>Follow Us</h4>
                     <div class="social-links d-flex">
-                        <a href="#" class="twitter" style="color: #000;"><i
+                        <a href="#" class="twitter" style="color: var(--primary-color);"><i
                                 class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="facebook" style="color: #000;"><i
+                        <a href="#" class="facebook" style="color: var(--primary-color);"><i
                                 class="bi bi-facebook"></i></a>
-                        <a href="#" class="instagram" style="color: #000;"><i
+                        <a href="#" class="instagram" style="color: var(--primary-color);"><i
                                 class="bi bi-instagram"></i></a>
-                        <a href="#" class="linkedin" style="color: #000;"><i
+                        <a href="#" class="linkedin" style="color: var(--primary-color);"><i
                                 class="bi bi-linkedin"></i></a>
                     </div>
                 </div>

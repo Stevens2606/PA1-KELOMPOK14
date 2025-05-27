@@ -4,10 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-    <title>Keranjang Belanja - Quality Time</title>
-    <meta name="description" content="Keranjang belanja Quality Time Cafe">
-    <meta name="keywords" content="keranjang, belanja, quality time, cafe">
+    <title>Keranjang Belanja Saya</title>
 
     <!-- Favicons -->
     <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
@@ -17,385 +14,236 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Amatic+SC:wght@400;700&display=swap"
         rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Vendor CSS Files -->
     <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/aos/aos.js') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
 
     <!-- Main CSS File -->
     <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
 
+    <!-- Custom CSS -->
+    <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
+
     <style>
+        /* Gaya tambahan yang diperlukan untuk keranjang, disesuaikan agar serasi */
         :root {
             --primary-color: #667eea;
             --secondary-color: #43cea2;
             --light-gray: #f8f9fa;
             --text-color: #343a40;
-            --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            --white-color: #fff;
-            --border-color: #ddd;
-            --update-button-color: #f39c12;
-            --delete-button-color: #e74c3c;
-            --cart-item-bg: #fff;
-            --quantity-button-bg: #f0f0f0; /* Abu-abu terang untuk quantity button */
+            --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            --border-radius: 0.5rem;
+            --transition-duration: 0.2s;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Nunito', sans-serif;
             background-color: var(--light-gray);
             color: var(--text-color);
-            line-height: 1.7;
-            margin: 0;
-            padding: 0;
+            min-height: 100vh;
         }
 
-        #header {
-            background-color: var(--white-color);
-            color: var(--text-color);
-            padding: 15px 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        #header .logo h1 {
-            color: var(--primary-color);
-            font-size: 2.2em;
-            margin: 0;
-        }
-
-        #hero {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            background: url('{{ asset('assets/img/hero-bg.jpg') }}') center/cover no-repeat;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: var(--white-color);
-            padding: 20px;
-            border-radius: 0 0 12px 12px;
-        }
-
-        #hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-            z-index: 1;
-        }
-
-        /* Cart Section Styles */
         #cart {
             padding: 50px 0;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: #fff;
+            /* Teks putih */
         }
 
-        .cart-container {
-            margin: 20px auto;
-            padding: 30px;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
+        #cart .section-header h2,
+        #cart .section-header p {
+            color: #fff;
+        }
+
+        .cart-list {
+            margin-top: 30px;
+        }
+
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .cart-table th,
+        .cart-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-table th {
+            font-weight: bold;
+        }
+
+        .cart-item:hover {
+            transform: scale(1.03);
+        }
+
+        .cart-header {
+            margin-top: 0;
+            font-size: 1.25rem;
+            /* Ukuran lebih kecil untuk kerapian */
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            /* Spasi lebih kecil */
+        }
+
+        .cart-body {
+            font-size: 1rem;
+            flex-grow: 1;
+            /* Memenuhi ruang yang tersedia */
+        }
+
+        .cart-body p {
+            margin-bottom: 0.5rem;
+            /* Spasi antar paragraf */
+        }
+
+        .action-buttons {
+            display: flex;
+            align-items: center;
+            /* Vertikal center */
+            gap: 5px;
+            /* Spasi antara input dan button */
+        }
+
+        .action-buttons .btn {
+            border-radius: var(--border-radius);
+            transition: transform var(--transition-duration) ease-in-out, box-shadow var(--transition-duration)
+                ease-in-out;
+            padding: 0.3rem 0.7rem;
+            /* Padding tombol */
+            font-size: 0.8rem;
+            /* Ukuran font tombol */
+        }
+
+        .action-buttons .btn:hover {
+            transform: translateY(-3px);
             box-shadow: var(--box-shadow);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #c82333;
+        }
+
+        .text-center {
             color: var(--text-color);
         }
 
-        .section-header {
+        .cart-totals {
+            margin-top: 2rem;
             text-align: center;
-            margin-bottom: 30px;
+            /* Pusatkan total belanja */
         }
 
-        .section-header h2 {
+        .cart-totals-text {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-totals-subtotal {
+            font-size: 1.1rem;
+        }
+
+        .checkout-button {
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.1rem;
+            border-radius: var(--border-radius);
+            background-color: var(--secondary-color);
+            color: #fff;
+            border: none;
+            transition: background-color var(--transition-duration) ease-in-out;
+        }
+
+        .checkout-button:hover {
+            background-color: darken(var(--secondary-color), 10%);
+        }
+
+        .back-to-menu {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            background-color: transparent;
             color: var(--primary-color);
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            border: 2px solid var(--primary-color);
+            text-decoration: none;
+            transition: background-color var(--transition-duration) ease-in-out, color var(--transition-duration)
+                ease-in-out;
         }
 
-        .cart-item {
-            display: grid;
-            grid-template-columns: 1fr 0.5fr 0.8fr 0.8fr 0.5fr;
-            align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid var(--border-color);
-            background-color: var(--cart-item-bg);
-            border-radius: 8px;
-            margin-bottom: 10px;
-            transition: background-color 0.3s ease;
-        }
-
-        .cart-item:last-child {
-            border-bottom: none;
-        }
-
-        .product {
-            display: flex;
-            align-items: center;
-        }
-
-        .product-image {
-            max-width: 60px;
-            max-height: 60px;
-            border-radius: 5px;
-            margin-right: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .product-name {
-            font-weight: 500;
-            font-size: 1.1em;
-        }
-
-        .price,
-        .quantity,
-        .subtotal,
-        .actions {
-            text-align: center;
-            padding: 0;
-            font-size: 0.9em;
+        .back-to-menu:hover {
+            background-color: var(--primary-color);
+            color: #fff;
         }
 
         .quantity-control {
             display: flex;
             align-items: center;
-            justify-content: center;
-        }
-
-        .quantity-button {
-            background-color: var(--white-color);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-            font-size: 1.2em;
-            padding: 0;
-            margin: 0 5px;
-            transition: all 0.3s ease;
-            font-weight: bold;
-        }
-
-        .quantity-button:hover {
-            background-color: var(--light-gray);
         }
 
         .quantity-input {
             width: 40px;
+            /* Lebar input quantity */
+            padding: 3px;
+            /* Padding di dalam input */
             text-align: center;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            margin: 0 5px;
-            font-size: 0.9em;
-            padding: 4px;
+            /* Teks di tengah */
+            border-radius: var(--border-radius);
+            border: 1px solid #ccc;
+            /* Border lebih jelas */
+            font-size: 0.8rem;
+            /* Ukuran font input */
         }
 
-        .update-button,
-        .delete-button {
-            padding: 6px 10px;
+        /* Gaya tambahan untuk tombol + dan - */
+        .quantity-button {
+            background-color: #eee;
             border: none;
-            border-radius: 5px;
+            padding: 2px 5px;
+            /* Ukuran padding yang lebih kecil */
+            margin: 0 2px;
+            /* Spasi horizontal antara tombol */
+            border-radius: 3px;
+            /* Radius sudut lebih kecil */
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
-            font-size: 0.7em;
+            font-size: 0.7rem;
+            /* Ukuran font lebih kecil */
+            line-height: 1;
+            /* Mengurangi tinggi baris */
         }
 
-        .update-button {
-            background-color: var(--update-button-color);
-            color: var(--white-color);
-        }
-
-        .update-button:hover {
-            background-color: darken(var(--update-button-color), 10%);
-        }
-
-        .delete-button {
-            background-color: var(--delete-button-color);
-            color: var(--white-color);
-        }
-
-        .delete-button:hover {
-            background-color: darken(var(--delete-button-color), 10%);
-        }
-
-        .cart-totals {
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: right;
-        }
-
-        .cart-totals-text {
-            font-size: 1.3em;
-            margin-bottom: 5px;
-            font-weight: 600;
-            color: var(--text-color);
-        }
-
-        .cart-totals-subtotal {
-            font-size: 1.1em;
-            color: var(--text-color);
-        }
-
-        /* Checkout button */
-        .buy-all-button {
-            background-color: var(--primary-color);
-            color: var(--white-color);
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            display: inline-block;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-            font-size: 1em;
-        }
-
-        .buy-all-button:hover {
-            background-color: var(--secondary-color);
-        }
-
-        .button-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-         /* Empty Cart Message */
-        .empty-cart {
-            text-align: center;
-            padding: 30px;
-            font-style: italic;
-            color: #999;
-        }
-
-        /* Styling untuk tombol "Kembali ke Menu" */
-        .back-to-menu {
-            display: inline-block;
-            padding: 10px 20px;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            border-radius: 5px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-size: 0.9em;
-        }
-
-        .back-to-menu:hover {
-            background-color: var(--primary-color);
-            color: var(--white-color);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Footer Styles */
-        #footer {
-            background-color: var(--secondary-color);
-            color: var(--white-color);
-            padding: 60px 0;
-        }
-
-        #footer h4 {
-            color: var(--white-color);
-            font-size: 1.4em;
-            margin-bottom: 15px;
-        }
-
-        #footer .social-links a {
-            color: var(--white-color);
-            font-size: 1.3em;
-            margin-right: 15px;
-            transition: color 0.3s ease;
-        }
-
-        #footer .social-links a:hover {
-            color: var(--primary-color);
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .cart-container {
-                padding: 25px;
-                margin: 15px;
-            }
-
-            .section-header h2 {
-                font-size: 2.2em;
-            }
-
-            .cart-item {
-                grid-template-columns: 1fr; /* Susun vertikal di layar kecil */
-                text-align: center; /* Pusatkan konten */
-            }
-
-            .product {
-                flex-direction: column; /* Susun gambar dan nama vertikal */
-            }
-
-            .product-image {
-                margin-right: 0;
-                margin-bottom: 10px; /* Beri jarak antara gambar dan nama */
-            }
-
-            .quantity-control {
-                margin-top: 10px; /* Beri jarak dengan elemen di atasnya */
-            }
-
-            .cart-table th,
-            .cart-table td {
-                padding: 12px;
-                font-size: 0.9em;
-            }
-
-            .quantity-input {
-                width: 50px;
-                padding: 6px;
-            }
-
-            .update-button,
-            .delete-button {
-                padding: 8px 12px;
-                font-size: 0.8em;
-            }
-
-            .buy-all-button {
-                padding: 12px 20px;
-                font-size: 1em;
-            }
-
-            .back-to-menu,
-            .back-to-home {
-                display: block;
-                /* Tampilkan sebagai blok penuh */
-                width: 100%;
-                /* Lebar penuh */
-                margin: 10px 0;
-                /* Margin yang disesuaikan */
-            }
-
-             .price,
-             .quantity,
-             .subtotal,
-             .actions {
-                text-align: center;
-                padding: 5px;
-            }
+        .quantity-button:hover {
+            background-color: #ddd;
         }
     </style>
 </head>
@@ -407,28 +255,24 @@
         <div class="container position-relative d-flex align-items-center justify-content-between">
             <a href="{{ route('home') }}" class="logo d-flex align-items-center me-auto me-xl-0">
                 <img src="{{ asset('assets/img/logo.png') }}" alt="Quality Time Logo">
-                <h1 class="sitename">Quality Time</h1>
+                <h1>Quality Times</h1>
                 <span>.</span>
             </a>
-
             @include('layouts.navbar')
         </div>
     </header><!-- End Header -->
 
     <main id="main">
 
-       
-
         <!-- ======= Cart Section ======= -->
-        <section id="cart" class="cart">
-            <div class="container cart-container">
-
-                <div class="section-header">
-                    <h2>Ringkasan Belanja</h2>
+        <section id="cart">
+            <div class="container">
+                <div class="section-header text-center">
+                    <h2>Keranjang Belanja Saya</h2>
+                    <p>Item yang ada di <span>Keranjang Saya</span></p>
                 </div>
 
-                {{-- Flash Messages --}}
-                @if (session('success'))
+                @if(session('success'))
                 <div class="alert alert-success">
                     {{ session('success') }}
                 </div>
@@ -440,63 +284,73 @@
                 </div>
                 @endif
 
-                @if(count($cart->cartItems ?? []) > 0)
-                    @foreach($cart->cartItems ?? [] as $item)
-                <div class="cart-item">
-                    <div class="product">
-                         <img src="{{ asset('storage/menus/' . $item->menu->gambar) }}" alt="{{ $item->menu->nama }}" class="product-image">
-                            <span class="product-name">{{ $item->menu->nama ?? 'Nama Tidak Tersedia' }}</span>
-                </div>
+                <div class="cart-list">
+                    @if(count($cart->cartItems ?? []) > 0)
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th>Menu</th>
+                                <th>Harga per Item</th>
+                                <th>Quantity</th>
+                                <th>Subtotal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($cart->cartItems ?? [] as $item)
+                            <tr>
+                                <td>{{ $item->menu->nama ?? 'Nama Tidak Tersedia' }}</td>
+                                <td>Rp {{ number_format($item->price, 0, ',', '.') }}</td>
+                                <td>
+                                    <form action="{{ route('cart.update', $item->id) }}" method="post">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="action-buttons quantity-control">
+                                            <button type="button"
+                                                onclick="decrementQuantity(this.parentNode.querySelector('input[name=\'quantity\']'))"
+                                                class="quantity-button">-</button>
+                                            <input type="number" name="quantity"
+                                                class="form-control quantity-input" value="{{ $item->quantity }}"
+                                                min="1">
+                                            <button type="button"
+                                                onclick="incrementQuantity(this.parentNode.querySelector('input[name=\'quantity\']'))"
+                                                class="quantity-button">+</button>
+                                            <button type="submit" class="btn btn-primary"
+                                                style="background-color: #667eea; border-color: #667eea; margin-left: 5px">Update</button>
+                                        </div>
+                                    </form>
+                                </td>
+                                <td>Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}</td>
+                                <td>
+                                    <form action="{{ route('cart.remove', $item->id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
 
-                <div class="price">Rp {{ number_format($item->price, 0, ',', '.') }}</div>
-
-                <div class="quantity">
-                 <form action="{{ route('cart.update', $item->id) }}" method="post" class="quantity-control">
-                 @csrf
-                 @method('PUT')
-                   
-                <button type="button" class="quantity-button" onclick="decrementQuantity(this)">-</button>
-                <input type="number" class="quantity-input" name="quantity" value="{{ $item->quantity }}" min="1" readonly>
-                 <button type="button" class="quantity-button" onclick="incrementQuantity(this)">+</button>
-                   
-                    <button type="submit" class="update-button"><i class="bi bi-arrow-clockwise"></i></button>
-                </form>
-             </div>
-                 <div class="subtotal">Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}</div>
-
-                <div class="actions">
-                 <form action="{{ route('cart.remove', $item->id) }}" method="post">
-                 @csrf
-                 @method('DELETE')
-                    <button type="submit" class="delete-button"><i class="bi bi-trash"></i></button>
-                 </form>
-                </div>
-            </div>
-             @endforeach
-
-                <div class="cart-totals">
-                    <div class="cart-totals-text">Total Belanja</div>
-                    <div class="cart-totals-subtotal">Subtotal: Rp
-                        {{ number_format(collect($cart->cartItems ?? [])->sum(function ($item) {
-                                        return $item->price * $item->quantity;
-                                    }), 0, ',', '.') }}
+                    <div class="cart-totals text-center">
+                        <div class="cart-totals-text">Total Belanja</div>
+                        <div class="cart-totals-subtotal">Subtotal: Rp
+                            {{ number_format(collect($cart->cartItems ?? [])->sum(function ($item) {
+                                    return $item->price * $item->quantity;
+                                }), 0, ',', '.') }}
+                        </div>
+                        <form action="{{ route('checkout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="checkout-button">Checkout</button>
+                        </form>
                     </div>
-                </div>
-
-                <!-- Formulir "Beli Semua" -->
-                <div class="button-container">
-                    <form action="{{ route('checkout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="buy-all-button">Beli Semua</button>
-                    </form>
-                </div>
-
-                @else
-                <p class="empty-cart">Keranjang belanja Anda kosong.</p>
-                @endif
-
-                <div class="button-container">
-                    <a href="{{ route('menu.public') }}" class="back-to-menu">Kembali ke Menu</a>
+                    @else
+                    <p class="text-center">Keranjang belanja Anda kosong.</p>
+                    @endif
+                    <div class="text-center">
+                        <a href="{{ route('menu.public') }}" class="back-to-menu">Kembali ke Menu</a>
+                    </div>
                 </div>
             </div>
         </section><!-- End Cart Section -->
@@ -531,7 +385,7 @@
                     <div>
                         <h4>Opening Hours</h4>
                         <p>
-                            <strong>Mon-Sun:</strong> <span>10 am - 11pm</span><br>
+                            <strong>Mon-Sun:</strong> <span>10 AM - 11 PM</span><br>
                         </p>
                     </div>
                 </div>
@@ -549,34 +403,37 @@
         </div>
     </footer><!-- End Footer -->
 
+    <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+    <div id="preloader"></div>
+
     <!-- Vendor JS Files -->
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
     <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
     <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
-    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="{{ asset('assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
+    <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
 
     <!-- Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
 
     <script>
-       function incrementQuantity(button) {
-        var input = button.parentNode.querySelector('.quantity-input');
-        var value = parseInt(input.value, 10);
-        value = isNaN(value) ? 1 : value + 1;
-        input.value = value;
-    }
-
-    function decrementQuantity(button) {
-        var input = button.parentNode.querySelector('.quantity-input');
-        var value = parseInt(input.value, 10);
-        if (value > 1) {
-            value = value - 1;
+        function incrementQuantity(input) {
+            let value = parseInt(input.value, 10);
+            value = isNaN(value) ? 1 : value + 1;
             input.value = value;
         }
-    }
+
+        function decrementQuantity(input) {
+            let value = parseInt(input.value, 10);
+            if (value > 1) {
+                value = value - 1;
+                input.value = value;
+            }
+        }
     </script>
+
 </body>
 
 </html>

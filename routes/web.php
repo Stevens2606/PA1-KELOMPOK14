@@ -22,7 +22,7 @@ use App\Http\Controllers\HomeController;
 
 
 // **Halaman Statis**
-Route::get('/', [TestimoniController::class, 'showPublic'])->name('home');
+Route::get('/', [WelcomeController::class, 'index'])->name('home');
 
 Route::get('/about', [AboutController::class, 'showAboutPage'])->name('about');
 

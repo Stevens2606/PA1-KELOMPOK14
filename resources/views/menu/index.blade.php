@@ -244,18 +244,19 @@
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $menu->nama }}</h5>
                                         <p class="card-text">{{ $menu->deskripsi }}</p>
-                                        <p class="card-text">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
+                                        
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="quantity-control">
                                                 <button type="button" class="quantity-button" data-action="decrease"
                                                     data-menu-id="{{ $menu->id }}"
-                                                    data-category="{{ $menu->kategori }}">-</button>
-                                                <input type="text" class="quantity-input form-control" value="1"
+                                                    data-category="{{ $menu->kategori }}" onclick="decrementQuantity(this.parentNode.querySelector('input[name=\'quantity\']'))">-</button>
+                                                <input type="number" class="quantity-input form-control" value="1"
                                                     min="1" id="{{ strtolower($menu->kategori) }}_{{ $menu->id }}"
-                                                    name="quantity" readonly>
+                                                    name="quantity" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1'); updateHiddenQuantity(this)"
+                                                     data-menu-id="{{ $menu->id }}" data-category="{{ $menu->kategori }}">
                                                 <button type="button" class="quantity-button" data-action="increase"
                                                     data-menu-id="{{ $menu->id }}"
-                                                    data-category="{{ $menu->kategori }}">+</button>
+                                                    data-category="{{ $menu->kategori }}" onclick="incrementQuantity(this.parentNode.querySelector('input[name=\'quantity\']'))">+</button>
                                             </div>
                                             <div class="button-group">
                                                 <form action="{{ route('cart.add') }}" method="POST" style="margin-right: 5px;">
@@ -301,18 +302,19 @@
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $menu->nama }}</h5>
                                         <p class="card-text">{{ $menu->deskripsi }}</p>
-                                        <p class="card-text">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
+                                       
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="quantity-control">
                                                 <button type="button" class="quantity-button" data-action="decrease"
                                                     data-menu-id="{{ $menu->id }}"
-                                                    data-category="{{ $menu->kategori }}">-</button>
-                                                <input type="text" class="quantity-input form-control" value="1"
+                                                    data-category="{{ $menu->kategori }}" onclick="decrementQuantity(this.parentNode.querySelector('input[name=\'quantity\']'))">-</button>
+                                                <input type="number" class="quantity-input form-control" value="1"
                                                     min="1" id="{{ strtolower($menu->kategori) }}_{{ $menu->id }}"
-                                                    name="quantity" readonly>
+                                                    name="quantity" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1'); updateHiddenQuantity(this)"
+                                                     data-menu-id="{{ $menu->id }}" data-category="{{ $menu->kategori }}">
                                                 <button type="button" class="quantity-button" data-action="increase"
                                                     data-menu-id="{{ $menu->id }}"
-                                                    data-category="{{ $menu->kategori }}">+</button>
+                                                    data-category="{{ $menu->kategori }}" onclick="incrementQuantity(this.parentNode.querySelector('input[name=\'quantity\']'))">+</button>
                                             </div>
                                             <div class="button-group">
                                                 <form action="{{ route('cart.add') }}" method="POST" style="margin-right: 5px;">
@@ -358,18 +360,18 @@
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $menu->nama }}</h5>
                                         <p class="card-text">{{ $menu->deskripsi }}</p>
-                                        <p class="card-text">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
+                                      
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="quantity-control">
                                                 <button type="button" class="quantity-button" data-action="decrease"
                                                     data-menu-id="{{ $menu->id }}"
-                                                    data-category="{{ $menu->kategori }}">-</button>
-                                                <input type="text" class="quantity-input form-control" value="1"
+                                                    data-category="{{ $menu->kategori }}" onclick="decrementQuantity(this.parentNode.querySelector('input[name=\'quantity\']'))">-</button>
+                                                <input type="number" class="quantity-input form-control" value="1"
                                                     min="1" id="{{ strtolower($menu->kategori) }}_{{ $menu->id }}"
-                                                    name="quantity" readonly>
+                                                    name="quantity" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1'); updateHiddenQuantity(this)">
                                                 <button type="button" class="quantity-button" data-action="increase"
                                                     data-menu-id="{{ $menu->id }}"
-                                                    data-category="{{ $menu->kategori }}">+</button>
+                                                    data-category="{{ $menu->kategori }}" onclick="incrementQuantity(this.parentNode.querySelector('input[name=\'quantity\']'))">+</button>
                                             </div>
                                             <div class="button-group">
                                                 <form action="{{ route('cart.add') }}" method="POST" style="margin-right: 5px;">
@@ -415,18 +417,18 @@
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $menu->nama }}</h5>
                                         <p class="card-text">{{ $menu->deskripsi }}</p>
-                                        <p class="card-text">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
+                                       
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="quantity-control">
                                                 <button type="button" class="quantity-button" data-action="decrease"
                                                     data-menu-id="{{ $menu->id }}"
-                                                    data-category="{{ $menu->kategori }}">-</button>
-                                                <input type="text" class="quantity-input form-control" value="1"
+                                                    data-category="{{ $menu->kategori }}" onclick="decrementQuantity(this.parentNode.querySelector('input[name=\'quantity\']'))">-</button>
+                                                <input type="number" class="quantity-input form-control" value="1"
                                                     min="1" id="{{ strtolower($menu->kategori) }}_{{ $menu->id }}"
-                                                    name="quantity" readonly>
+                                                    name="quantity" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1'); updateHiddenQuantity(this)">
                                                 <button type="button" class="quantity-button" data-action="increase"
                                                     data-menu-id="{{ $menu->id }}"
-                                                    data-category="{{ $menu->kategori }}">+</button>
+                                                    data-category="{{ $menu->kategori }}" onclick="incrementQuantity(this.parentNode.querySelector('input[name=\'quantity\']'))">+</button>
                                             </div>
                                             <div class="button-group">
                                                 <form action="{{ route('cart.add') }}" method="POST" style="margin-right: 5px;">
@@ -521,24 +523,24 @@
                 <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
                 <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
                 <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
-                <script src="{{ asset('assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
-                <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+                <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+                <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
 
                 <!-- Main JS File -->
                 <script src="{{ asset('assets/js/main.js') }}"></script>
 
                 <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        const quantityButtons = document.querySelectorAll('.quantity-button');
+                     document.addEventListener('DOMContentLoaded', function () {
+                         const quantityButtons = document.querySelectorAll('.quantity-button');
 
-                        quantityButtons.forEach(button => {
+                         quantityButtons.forEach(button => {
                             button.addEventListener('click', function () {
                                 const action = this.dataset.action;
                                 const menuId = this.dataset.menuId;
                                 const category = this.dataset.category;
                                 const quantityInputId = `${category.toLowerCase()}_${menuId}`;
                                 const quantityInput = document.getElementById(quantityInputId);
-                                let quantity = parseInt(quantityInput.value);
+                                let quantity = parseInt(quantityInput.value, 10); // Memastikan quantity adalah integer
 
                                 if (action === 'increase') {
                                     quantity++;
@@ -547,44 +549,48 @@
                                 }
 
                                 quantityInput.value = quantity;
-
-                                // Update the hidden quantity input in the form
-                                const quantityHiddenInput = document.getElementById(`quantity_${menuId}`);
-                                if (quantityHiddenInput) {
-                                    quantityHiddenInput.value = quantity;
-                                }
+                                updateHiddenQuantity(quantityInput); // Update hidden quantity input
                             });
-                        });
+                         });
 
-                        // Intercept form submission to ensure the quantity is updated
-                        const orderForms = document.querySelectorAll('form[action="{{ route('orders.store') }}"]');
-                        orderForms.forEach(form => {
-                            form.addEventListener('submit', function (event) {
-                                event.preventDefault(); // Prevent the default form submission
-
-                                const menuId = this.querySelector('input[name="menu_id"]').value;
-                                const category = this.closest('.card').querySelector('.quantity-button').dataset.category;
-                                const quantityInputId = `${category.toLowerCase()}_${menuId}`;
-                                const quantityInput = document.getElementById(quantityInputId);
-                                const quantity = quantityInput.value;
-
-                                // Find the hidden quantity input inside the form and update its value
-                                const hiddenQuantityInput = this.querySelector('input[name="quantity"]');
-                                if (hiddenQuantityInput) {
-                                    hiddenQuantityInput.value = quantity;
-                                } else {
-                                    // If it doesn't exist, create and append it (for the first time)
-                                    const newHiddenQuantityInput = document.createElement('input');
-                                    newHiddenQuantityInput.type = 'hidden';
-                                    newHiddenQuantityInput.name = 'quantity';
-                                    newHiddenQuantityInput.value = quantity;
-                                    this.appendChild(newHiddenQuantityInput);
-                                }
-
-                                this.submit();
+                         // Mencegah non-angka dimasukkan dan update hidden quantity input
+                         document.querySelectorAll('.quantity-input').forEach(input => {
+                            input.addEventListener('input', function () {
+                                this.value = this.value.replace(/[^0-9]/g, ''); // Hanya angka yang diperbolehkan
+                                updateHiddenQuantity(this); // Update hidden quantity input
                             });
-                        });
+                         });
+
+                         // Update hidden quantity input saat halaman pertama kali dimuat
+                         document.querySelectorAll('.quantity-input').forEach(input => {
+                             updateHiddenQuantity(input);
+                         });
                     });
+
+                    function incrementQuantity(input) {
+                         let value = parseInt(input.value, 10);
+                         value = isNaN(value) ? 1 : value + 1;
+                         input.value = value;
+                         updateHiddenQuantity(input); // Panggil fungsi update
+                    }
+
+                    function decrementQuantity(input) {
+                         let value = parseInt(input.value, 10);
+                         if (value > 1) {
+                            value = value - 1;
+                            input.value = value;
+                            updateHiddenQuantity(input); // Panggil fungsi update
+                         }
+                    }
+
+                    //Fungsi bantuan untuk update hidden input
+                    function updateHiddenQuantity(input) {
+                         const menuId = input.id.split('_')[1]; //Ambil menu id dari input id
+                         const quantityHiddenInput = document.getElementById(`quantity_${menuId}`);
+                         if (quantityHiddenInput) {
+                             quantityHiddenInput.value = input.value; //Update dengan nilai baru
+                         }
+                    }
                 </script>
 </body>
 

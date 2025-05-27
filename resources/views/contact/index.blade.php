@@ -350,15 +350,14 @@
         </section><!-- End Contact Section -->
     </main>
 
-        <!-- ======= Footer ======= -->
-    <footer id="footer" class="footer" style="background-color: var(--white-color); color: var(--text-color);">
+        <footer id="footer" class="footer" style="background-color: var(--white-color); color: var(--text-color);">
 
         <div class="container">
             <div class="row gy-3">
                 <div class="col-lg-3 col-md-6 d-flex">
                     <i class="bi bi-geo-alt icon" style="color: var(--primary-color);"></i>
                     <div class="address">
-                        <h4>Address</h4>
+                        <h4 class="text-dark">Address</h4>
                         <p>Jl. Patuan Nagari No.49, Ps. Porsea, Kec. Porsea, Toba, Sumatera Utara 22384</p>
                         <p></p>
                     </div>
@@ -368,7 +367,7 @@
                 <div class="col-lg-3 col-md-6 d-flex">
                     <i class="bi bi-telephone icon" style="color: var(--primary-color);"></i>
                     <div>
-                        <h4>Contact</h4>
+                        <h4 class="text-dark">Contact</h4>
                         <p>
                             <strong>Phone:</strong> <span>+62 822-7378-2156</span><br>
                             <strong>Email:</strong> <span>qualitytimecafe45@gmail.com
@@ -380,7 +379,7 @@
                 <div class="col-lg-3 col-md-6 d-flex">
                     <i class="bi bi-clock icon" style="color: var(--primary-color);"></i>
                     <div>
-                        <h4>Opening Hours</h4>
+                        <h4 class="text-dark">Opening Hours</h4>
                         <p>
                             <strong>Mon-Sun:</strong> <span>10 am - 11pm</span><br>
 
@@ -389,7 +388,7 @@
                 </div>
 
                 <div class="col-lg-3 col-md-6">
-                    <h4>Follow Us</h4>
+                    <h4 class="text-dark">Follow Us</h4>
                     <div class="social-links d-flex">
                         <a href="#" class="twitter" style="color: var(--primary-color);"><i
                                 class="bi bi-twitter-x"></i></a>
@@ -402,6 +401,7 @@
                     </div>
                 </div>
 
+        </footer>
                 <!-- Scroll Top -->
                 <a href="#" id="scroll-top"
                     class="scroll-top d-flex align-items-center justify-content-center"><i

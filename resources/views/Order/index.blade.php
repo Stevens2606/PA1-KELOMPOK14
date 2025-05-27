@@ -144,7 +144,7 @@
         <div class="container position-relative d-flex align-items-center justify-content-between">
             <a href="{{ route('home') }}" class="logo d-flex align-items-center me-auto me-xl-0">
                 <img src="{{ asset('assets/img/logo.png') }}" alt="Quality Time Logo">
-                <h1>Quality Time</h1>
+                <h1>Quality Times</h1>
                 <span>.</span>
             </a>
             @include('layouts.navbar')
