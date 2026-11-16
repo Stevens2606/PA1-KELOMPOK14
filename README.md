@@ -45,6 +45,23 @@ php artisan serve
 
 Open http://localhost:8000. The seeder creates a demo admin account (see `database/seeders/AdminUserSeeder.php`). Change it before using this anywhere outside your own computer.
 
+## Screenshots
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/images/screenshot-home.png" width="380"><br>Home</td>
+    <td align="center"><img src="docs/images/screenshot-about.png" width="380"><br>About</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/images/screenshot-menu.png" width="380"><br>Menu with cart and order buttons</td>
+    <td align="center"><img src="docs/images/screenshot-testimonials.png" width="380"><br>Testimonials</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/images/screenshot-contact.png" width="380"><br>Contact and map</td>
+    <td align="center"><img src="docs/images/screenshot-login.png" width="380"><br>Login</td>
+  </tr>
+</table>
+
 ## Design
 
 **Use case diagram** (guest, customer, admin)
